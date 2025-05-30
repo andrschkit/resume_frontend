@@ -1,7 +1,8 @@
 <template>
   <MenuComponent>
     <template #content>
-      <h1>Ничего нет(((</h1>
+      <h1>404 NOT FOUND</h1>
+      <p>Вам не сюда)))</p>
     </template>
   </MenuComponent>
 </template>

@@ -10,7 +10,7 @@
     >
       <div class="user-data" :style="rail ? 'height:10vh' : 'height:20vh'">
         <v-avatar class="avatar" :size="rail ? '70' : '120'">
-          <img alt="Avatar" src="https://randomuser.me/api/portraits/men/86.jpg">
+          <img alt="Avatar" src="@/assets/avatar.jpg">
         </v-avatar>
 
         <transition name="fade">

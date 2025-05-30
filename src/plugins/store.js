@@ -1,10 +1,10 @@
 import { createStore } from 'vuex'
 
-import about_store from '@/store/about_store.js'
+import resume_store from '@/store/resume_store.js';
 
 const store = {
   modules: {
-    about_store,
+    resume_store,
   },
 }
 export default createStore(store);
