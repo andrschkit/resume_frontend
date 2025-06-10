@@ -1,10 +1,34 @@
 <template>
   <MenuComponent>
     <template #content>
-      <h1>Портфолио</h1>
-      <div v-for="(item, index) in products">
-        <p>----------------------------------</p>
-        <p>{{ item }}</p>
+      <div class="portfolio-container">
+        <div class="welcome-section">
+          <h1 class="welcome-title">Мои проекты</h1>
+          <p class="welcome-subtitle">Реализованные решения и приложения</p>
+        </div>
+
+        <div class="portfolio-grid">
+          <div v-for="project in portfolioItems" :key="project.id" class="project-card">
+            <div class="project-image-container">
+              <img :alt="project.name" class="project-image" :src="project.img">
+              <div class="project-logo">
+                <img :alt="project.name + ' лого'" :src="project.logo">
+              </div>
+            </div>
+
+            <div class="project-content">
+              <h3 class="project-title">{{ project.name }}</h3>
+              <p class="project-description">{{ project.description }}</p>
+
+              <div class="project-footer">
+                <a class="project-link" :href="project.link" target="_blank">
+                  <v-icon>mdi-open-in-new</v-icon>
+                  <span>Посмотреть проект</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </template>
   </MenuComponent>
@@ -14,21 +38,223 @@
   import MenuComponent from '@/components/MenuComponent.vue';
   import store from '@/plugins/store.js';
   import { mapGetters } from 'vuex';
+
   export default {
     name: 'Portfolio',
-    components:{ MenuComponent },
-    data: ()=>({
-
-    }),
+    components: { MenuComponent },
     computed: {
-      ...mapGetters('resume_store', { products: 'products_all' }),
+      ...mapGetters('resume_store', { portfolioItems: 'products_all' }),
     },
     mounted () {
       store.dispatch('resume_store/loadProducts');
+    },
+    methods: {
+      handleImageError (e) {
+        e.target.src = this.defaultImage;
+      },
+      handleLogoError (e) {
+        e.target.src = this.defaultLogo;
+      },
     },
   }
 </script>
 
 <style scoped>
+.portfolio-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
 
+.welcome-section {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding: 2rem;
+  background: linear-gradient(135deg, #fff5f5 0%, #ffecec 100%);
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+}
+
+.welcome-title {
+  color: #2c3e50;
+  font-size: 2.8rem;
+  margin-bottom: 1rem;
+}
+
+.welcome-subtitle {
+  color: #8d4a4a;
+  font-size: 1.4rem;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 30px;
+  margin-top: 2rem;
+}
+
+.project-card {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.project-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 40px rgba(206, 83, 83, 0.2);
+}
+
+.project-image-container {
+  position: relative;
+  height: 220px;
+  overflow: hidden;
+}
+
+.project-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.project-card:hover .project-image {
+  transform: scale(1.05);
+}
+
+.project-logo {
+  position: absolute;
+  bottom: -25px;
+  right: 25px;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  border: 5px solid white;
+}
+
+.project-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 50%;
+}
+
+.project-content {
+  padding: 2rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.project-title {
+  color: #2c3e50;
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+  padding-right: 60px;
+}
+
+.project-description {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: #3a506b;
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
+}
+
+.project-footer {
+  border-top: 1px solid #eee;
+  padding-top: 1.5rem;
+}
+
+.project-link {
+  display: inline-flex;
+  align-items: center;
+  color: #ce5353;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: rgba(206, 83, 83, 0.1);
+}
+
+.project-link:hover {
+  background: rgba(206, 83, 83, 0.2);
+  color: #b54545;
+}
+
+.project-link .v-icon {
+  margin-right: 8px;
+}
+
+@media (max-width: 1200px) {
+  .portfolio-grid {
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .welcome-title {
+    font-size: 2.2rem;
+  }
+
+  .welcome-subtitle {
+    font-size: 1.2rem;
+  }
+
+  .portfolio-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .project-image-container {
+    height: 200px;
+  }
+
+  .project-logo {
+    width: 70px;
+    height: 70px;
+    right: 20px;
+    bottom: -20px;
+  }
+
+  .project-content {
+    padding: 1.5rem;
+  }
+
+  .project-title {
+    font-size: 1.5rem;
+    padding-right: 50px;
+  }
+}
+
+@media (max-width: 480px) {
+  .portfolio-container {
+    padding: 1.5rem 1rem;
+  }
+
+  .welcome-section {
+    padding: 1.5rem;
+  }
+
+  .project-image-container {
+    height: 180px;
+  }
+
+  .project-logo {
+    width: 60px;
+    height: 60px;
+    bottom: -15px;
+  }
+}
 </style>

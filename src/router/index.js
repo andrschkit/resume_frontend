@@ -6,6 +6,7 @@ import Education from '@/pages/Education.vue';
 import Portfolio from '@/pages/Portfolio.vue';
 import Skills from '@/pages/Skills.vue';
 import E404 from '@/pages/E404.vue';
+import Tools from '@/pages/Tools.vue';
 
 const routes = [
   { path: '/', redirect: { name: 'about' } },
@@ -38,6 +39,11 @@ const routes = [
     name: 'skills',
     path: '/skills',
     component: Skills,
+  },
+  {
+    name: 'tools',
+    path: '/tools',
+    component: Tools,
   },
   {
     name: 'error',

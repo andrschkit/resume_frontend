@@ -8,7 +8,7 @@
       @mouseenter="hovered = true"
       @mouseleave="hovered = false"
     >
-      <div class="user-data" :style="rail ? 'height:10vh' : 'height:20vh'">
+      <div class="user-data" :style="rail ? 'height:10vh' : 'height:21vh'">
         <v-avatar class="avatar" :size="rail ? '70' : '120'">
           <img alt="Avatar" src="@/assets/avatar.jpg">
         </v-avatar>
@@ -93,6 +93,7 @@
     { route: 'portfolio', title: 'Портфолио', icon: portfolio },
     { route: 'skills', title: 'Навыки', icon: skills },
     { route: 'contacts', title: 'Контакты', icon: contacts },
+    { route: 'tools', title: 'Инструменты', icon: contacts },
   ]
 
   const currentWidth = computed(() => {
@@ -141,8 +142,11 @@
   position: fixed;
   height: 100vh;
   transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-  border-right:1px solid rgba(var(--v-theme-border), 0.3);
+  border-right: 1px solid rgba(var(--v-theme-border), 0.3);
   z-index: 100;
+  background: rgba(var(--v-theme-background), 0.95) !important;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
 .custom-navigation.collapsed {
@@ -153,24 +157,35 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 15px 16px;
+  padding: 20px 16px;
   transition: all 0.3s ease;
   overflow: hidden;
-  height: 17vh;
+  height: 20vh;
 }
 
 .avatar {
   transition: all 0.3s ease;
-  margin-bottom: 12px;
+  margin-bottom: 15px;
+  border: 5px solid rgba(var(--v-theme-primary), 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.avatar img {
+  object-fit: cover;
 }
 
 .username {
   white-space: nowrap;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: rgba(var(--v-theme-on-background), 0.9);
+  text-align: center;
 }
 
 .divider {
-  margin: 8px 0;
+  margin: 15px 0;
   transition: margin 0.3s ease;
+  opacity: 0.3;
 }
 
 .menu-list {
@@ -178,64 +193,58 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: left;
-  padding: 1px 12px;
+  padding: 5px 12px;
 }
 
 .menu-item {
   width: 100%;
-  border-radius: 10px !important;
-  margin: 10px 0;
+  border-radius: 12px !important;
+  margin: 8px 0;
   transition: all 0.3s ease;
-  min-height: 48px;
+  min-height: 50px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  padding: 0 12px;
+  padding: 0 16px;
+}
+
+.menu-item:hover {
+  background-color: rgba(var(--v-theme-primary), 0.05);
+  transform: translateX(5px);
 }
 
 .menu-icon {
-  width: 24px;
-  height: 24px;
+  width: 26px;
+  height: 26px;
   transition: all 0.3s ease;
   flex-shrink: 0;
 }
-
-.menu-title {
-  white-space: nowrap;
-  margin-left: 12px;
-}
-
 .active-menu-item {
   background-color: rgba(var(--v-theme-primary), 0.1);
   border-radius: 50%;
 }
 .menu-icon-dark {
-  filter: brightness(0);
+  filter: brightness(0) !important;
 }
 .menu-icon-light {
-  filter: brightness(0) invert(1);
+  filter: brightness(0) invert(1) !important;
 }
-.active-menu-item .menu-icon-dark {
-  filter:
-    brightness(0)
-    saturate(100%)
-    invert(8%)
-    sepia(100%)
-    saturate(7488%)
-    hue-rotate(246deg)
-    brightness(98%)
-    contrast(94%);
+.menu-title {
+  white-space: nowrap;
+
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: rgba(var(--v-theme-on-background), 0.8);
 }
-.active-menu-item .menu-icon-light {
-  filter:
-    brightness(0)
-    saturate(100%)
-    invert(48%)
-    sepia(89%)
-    saturate(1200%)
-    hue-rotate(195deg)
-    brightness(110%)
-    contrast(90%);
+
+.active-menu-item {
+  background-color: rgba(var(--v-theme-primary), 0.1) !important;
+  border-radius: 12px !important;
+}
+
+.active-menu-item .menu-title {
+  color: rgb(var(--v-theme-primary)) !important;
+  font-weight: 600;
 }
 
 .toggle-button {
@@ -243,13 +252,25 @@
   bottom: 20px;
   right: 20px;
   cursor: pointer;
-  padding: 8px;
+  padding: 10px;
   border-radius: 50%;
   transition: all 0.3s ease;
+  background-color: rgba(var(--v-theme-primary), 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
 }
 
 .toggle-button:hover {
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(var(--v-theme-primary), 0.2);
+  transform: scale(1.1);
+}
+
+.toggle-button .v-icon {
+  color: rgb(var(--v-theme-primary));
+  transition: transform 0.3s ease;
 }
 
 .fade-enter-active,
@@ -261,30 +282,97 @@
 .fade-leave-to {
   opacity: 0;
 }
-.mode-toggle{
+
+.mode-toggle {
   transition: all 0.3s ease;
   display: flex;
   width: 100%;
   align-items: center;
   justify-content: center;
   position: absolute;
-  bottom: 7vh;
+  bottom: 12vh;
   padding: 8px;
 }
-.mode-toggle-expand{
+
+.mode-toggle-expand {
   flex-direction: row;
+  gap: 12px;
 }
-.mode-toggle-collapse{
+
+.mode-toggle-collapse {
   flex-direction: column;
 }
-.switch-expand{
+
+.switch-expand {
   padding: 10px !important;
 }
-.switch-collapse{
+
+.switch-collapse {
   padding: 0 !important;
 }
-.mode-icon{
+
+.mode-icon {
   width: 28px;
   height: 28px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  transition: transform 0.3s ease;
+}
+
+.mode-icon:hover {
+  transform: scale(1.1);
+}
+
+/* Анимации */
+.v-avatar {
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.v-avatar:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Адаптивность */
+@media (max-width: 960px) {
+  .custom-navigation {
+    border-radius: 0 20px 20px 0;
+  }
+
+  .user-data {
+    padding: 15px 10px;
+  }
+
+  .menu-item {
+    padding: 0 12px;
+  }
+}
+
+@media (max-width: 600px) {
+  .custom-navigation {
+    --collapsed-width: 70px;
+    --expanded-width: 200px;
+  }
+
+  .avatar {
+    width: 50px !important;
+    height: 50px !important;
+  }
+
+  .menu-icon {
+    width: 22px;
+    height: 22px;
+  }
+
+  .menu-title {
+    font-size: 1rem;
+  }
+
+  .toggle-button {
+    width: 36px;
+    height: 36px;
+    padding: 8px;
+    bottom: 15px;
+    right: 15px;
+  }
 }
 </style>
