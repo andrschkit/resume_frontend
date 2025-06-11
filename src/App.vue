@@ -83,6 +83,7 @@
 
         if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
           activeSection.value = section.id;
+          router.push({ hash: `#` });
           break;
         }
       }

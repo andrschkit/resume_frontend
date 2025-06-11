@@ -169,6 +169,7 @@
 
 .avatar img {
   object-fit: cover;
+  width: 125px;
 }
 
 .username {
