@@ -1,96 +1,92 @@
 <template>
-  <MenuComponent>
-    <template #content>
-      <div class="tools-container">
-        <div class="welcome-section">
-          <h1 class="welcome-title">Инструменты</h1>
-          <p class="welcome-subtitle">Технологии и средства, использованные при создании этого резюме</p>
+  <div class="tools-container">
+    <div class="welcome-section">
+      <h1 class="welcome-title">Инструменты</h1>
+      <p class="welcome-subtitle">Технологии и средства, использованные при создании этого резюме</p>
+    </div>
+
+    <div class="tools-grid">
+      <!-- Vue 3 -->
+      <div class="tool-card">
+        <div class="tool-header">
+          <div class="tool-logo">
+            <v-icon color="#42b883" large>mdi-vuejs</v-icon>
+          </div>
+          <h2 class="tool-name">Vue 3</h2>
         </div>
-
-        <div class="tools-grid">
-          <!-- Vue 3 -->
-          <div class="tool-card">
-            <div class="tool-header">
-              <div class="tool-logo">
-                <v-icon color="#42b883" large>mdi-vuejs</v-icon>
-              </div>
-              <h2 class="tool-name">Vue 3</h2>
-            </div>
-            <p class="tool-description">
-              Фреймворк для создания пользовательских интерфейсов. Использован для разработки фронтенд части резюме.
-            </p>
-            <div class="tool-footer">
-              <a class="tool-link" href="https://vuejs.org/" target="_blank">
-                <v-icon small>mdi-open-in-new</v-icon>
-                <span>Официальный сайт</span>
-              </a>
-            </div>
-          </div>
-
-          <!-- Java -->
-          <div class="tool-card">
-            <div class="tool-header">
-              <div class="tool-logo">
-                <v-icon color="#5382a1" large>mdi-language-java</v-icon>
-              </div>
-              <h2 class="tool-name">Java</h2>
-            </div>
-            <p class="tool-description">
-              Язык программирования для бэкенд разработки. Использован для создания API и бизнес-логики приложения.
-            </p>
-            <div class="tool-footer">
-              <a class="tool-link" href="https://www.java.com/" target="_blank">
-                <v-icon small>mdi-open-in-new</v-icon>
-                <span>Официальный сайт</span>
-              </a>
-            </div>
-          </div>
-
-          <!-- PostgreSQL -->
-          <div class="tool-card">
-            <div class="tool-header">
-              <div class="tool-logo">
-                <v-icon color="#336791" large>mdi-database</v-icon>
-              </div>
-              <h2 class="tool-name">PostgreSQL</h2>
-            </div>
-            <p class="tool-description">
-              Реляционная СУБД. Использована для хранения данных резюме и обеспечения их целостности.
-            </p>
-            <div class="tool-footer">
-              <a class="tool-link" href="https://www.postgresql.org/" target="_blank">
-                <v-icon small>mdi-open-in-new</v-icon>
-                <span>Официальный сайт</span>
-              </a>
-            </div>
-          </div>
-
-          <!-- Swagger -->
-          <div class="tool-card">
-            <div class="tool-header">
-              <div class="tool-logo">
-                <v-icon color="#85ea2d" large>mdi-api</v-icon>
-              </div>
-              <h2 class="tool-name">Swagger</h2>
-            </div>
-            <p class="tool-description">
-              Инструмент для документирования и тестирования API. Использован для описания эндпоинтов бэкенда.
-            </p>
-            <div class="tool-footer">
-              <a class="tool-link" href="https://swagger.io/" target="_blank">
-                <v-icon small>mdi-open-in-new</v-icon>
-                <span>Официальный сайт</span>
-              </a>
-              <a class="tool-link swagger-link" :href="swaggerLink" target="_blank">
-                <v-icon small>mdi-link-variant</v-icon>
-                <span>Моя документация</span>
-              </a>
-            </div>
-          </div>
+        <p class="tool-description">
+          Фреймворк для создания пользовательских интерфейсов. Использован для разработки фронтенд части резюме.
+        </p>
+        <div class="tool-footer">
+          <a class="tool-link" href="https://vuejs.org/" target="_blank">
+            <v-icon small>mdi-open-in-new</v-icon>
+            <span>Официальный сайт</span>
+          </a>
         </div>
       </div>
-    </template>
-  </MenuComponent>
+
+      <!-- Java -->
+      <div class="tool-card">
+        <div class="tool-header">
+          <div class="tool-logo">
+            <v-icon color="#5382a1" large>mdi-language-java</v-icon>
+          </div>
+          <h2 class="tool-name">Java</h2>
+        </div>
+        <p class="tool-description">
+          Язык программирования для бэкенд разработки. Использован для создания API и бизнес-логики приложения.
+        </p>
+        <div class="tool-footer">
+          <a class="tool-link" href="https://www.java.com/" target="_blank">
+            <v-icon small>mdi-open-in-new</v-icon>
+            <span>Официальный сайт</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- PostgreSQL -->
+      <div class="tool-card">
+        <div class="tool-header">
+          <div class="tool-logo">
+            <v-icon color="#336791" large>mdi-database</v-icon>
+          </div>
+          <h2 class="tool-name">PostgreSQL</h2>
+        </div>
+        <p class="tool-description">
+          Реляционная СУБД. Использована для хранения данных резюме и обеспечения их целостности.
+        </p>
+        <div class="tool-footer">
+          <a class="tool-link" href="https://www.postgresql.org/" target="_blank">
+            <v-icon small>mdi-open-in-new</v-icon>
+            <span>Официальный сайт</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Swagger -->
+      <div class="tool-card">
+        <div class="tool-header">
+          <div class="tool-logo">
+            <v-icon color="#85ea2d" large>mdi-api</v-icon>
+          </div>
+          <h2 class="tool-name">Swagger</h2>
+        </div>
+        <p class="tool-description">
+          Инструмент для документирования и тестирования API. Использован для описания эндпоинтов бэкенда.
+        </p>
+        <div class="tool-footer">
+          <a class="tool-link" href="https://swagger.io/" target="_blank">
+            <v-icon small>mdi-open-in-new</v-icon>
+            <span>Официальный сайт</span>
+          </a>
+          <a class="tool-link swagger-link" :href="swaggerLink" target="_blank">
+            <v-icon small>mdi-link-variant</v-icon>
+            <span>Моя документация</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>

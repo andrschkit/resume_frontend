@@ -1,53 +1,49 @@
 <template>
-  <MenuComponent>
-    <template #content>
-      <div class="about-container">
-        <div class="welcome-section">
-          <h1 class="welcome-title">Добро пожаловать в мое резюме!</h1>
-          <p class="welcome-subtitle">Здесь вы найдёте информацию о моих навыках, опыте и профессиональных достижениях</p>
+  <div class="about-container">
+    <div class="welcome-section">
+      <h1 class="welcome-title">Добро пожаловать в мое резюме!</h1>
+      <p class="welcome-subtitle">Здесь вы найдёте информацию о моих навыках, опыте и профессиональных достижениях</p>
+    </div>
+
+    <div class="about-content">
+      <div class="about-card">
+        <h2 class="section-title">Обо мне</h2>
+        <div class="bio-section">
+          <p>Я frontend-разработчик с опытом создания современных веб-приложений. Специализируюсь на Vue.js, люблю создавать интерактивные и отзывчивые интерфейсы. В свободное время изучаю новые технологии и улучшаю свои навыки.</p>
+          <p>Мой подход к работе сочетает внимание к деталям, стремление к чистому коду и ориентацию на потребности пользователей. Верю, что хороший интерфейс должен быть не только красивым, но и функциональным.</p>
         </div>
 
-        <div class="about-content">
-          <div class="about-card">
-            <h2 class="section-title">Обо мне</h2>
-            <div class="bio-section">
-              <p>Я frontend-разработчик с опытом создания современных веб-приложений. Специализируюсь на Vue.js, люблю создавать интерактивные и отзывчивые интерфейсы. В свободное время изучаю новые технологии и улучшаю свои навыки.</p>
-              <p>Мой подход к работе сочетает внимание к деталям, стремление к чистому коду и ориентацию на потребности пользователей. Верю, что хороший интерфейс должен быть не только красивым, но и функциональным.</p>
+        <div v-for="user in contacts" :key="user.id" class="user-card">
+          <div class="user-header">
+            <div class="user-name">
+              {{ user.last_name }} {{ user.first_name }} {{ user.middle_name }}
             </div>
+          </div>
 
-            <div v-for="user in contacts" :key="user.id" class="user-card">
-              <div class="user-header">
-                <div class="user-name">
-                  {{ user.last_name }} {{ user.first_name }} {{ user.middle_name }}
-                </div>
+          <div class="contact-section">
+            <div class="contact-info">
+              <div class="contact-item">
+                <span class="icon">📱</span>
+                <span class="contact-value">{{ user.phone }}</span>
               </div>
 
-              <div class="contact-section">
-                <div class="contact-info">
-                  <div class="contact-item">
-                    <span class="icon">📱</span>
-                    <span class="contact-value">{{ user.phone }}</span>
-                  </div>
+              <div class="contact-item">
+                <span class="icon">✉️</span>
+                <span class="contact-value">{{ user.mail }}</span>
+              </div>
 
-                  <div class="contact-item">
-                    <span class="icon">✉️</span>
-                    <span class="contact-value">{{ user.mail }}</span>
-                  </div>
-
-                  <div class="contact-item">
-                    <span class="icon">🔗</span>
-                    <a class="contact-link" :href="user.git" target="_blank">
-                      Мой GitHub
-                    </a>
-                  </div>
-                </div>
+              <div class="contact-item">
+                <span class="icon">🔗</span>
+                <a class="contact-link" :href="user.git" target="_blank">
+                  Мой GitHub
+                </a>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </template>
-  </MenuComponent>
+    </div>
+  </div>
 </template>
 
 <script>

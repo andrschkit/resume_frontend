@@ -1,76 +1,69 @@
 <template>
-  <MenuComponent>
-    <template #content>
-      <div class="contacts-container">
-        <div class="welcome-section">
-          <h1 class="welcome-title">Контакты</h1>
-          <p class="welcome-subtitle">Свяжитесь со мной через форму обратной связи или напрямую</p>
-        </div>
+  <div class="contacts-container">
+    <div class="welcome-section">
+      <h1 class="welcome-title">Контакты</h1>
+      <p class="welcome-subtitle">Свяжитесь со мной через форму обратной связи или напрямую</p>
+    </div>
 
-        <div class="contacts-content">
-          <!-- Контактная информация -->
-          <div class="contact-info-card">
-            <h2 class="contact-name">{{ fullName }}</h2>
+    <div class="contacts-content">
+      <!-- Контактная информация -->
+      <div class="contact-info-card">
+        <h2 class="contact-name">{{ fullName }}</h2>
 
-            <div class="contact-details">
-              <div class="contact-item">
-                <v-icon class="contact-icon">mdi-phone</v-icon>
-                <span>{{ contactData.phone }}</span>
-              </div>
-              <div class="contact-item">
-                <v-icon class="contact-icon">mdi-email</v-icon>
-                <span>{{ contactData.mail }}</span>
-              </div>
-              <div class="contact-item">
-                <v-icon class="contact-icon">mdi-github</v-icon>
-                <a :href="contactData.git" target="_blank">GitHub профиль</a>
-              </div>
-            </div>
+        <div class="contact-details">
+          <div class="contact-item">
+            <v-icon class="contact-icon">mdi-phone</v-icon>
+            <span>{{ contactData.phone }}</span>
           </div>
-
-          <!-- Форма обратной связи -->
-          <div class="feedback-form">
-            <h2 class="form-title">
-              <v-icon color="#6a5acd" large>mdi-email-edit</v-icon>
-              Форма обратной связи
-            </h2>
-
-            <form @submit.prevent="submitForm">
-              <div class="form-group">
-                <label for="name">Ваше имя *</label>
-                <input id="name" v-model="form.name" required type="text">
-              </div>
-
-              <div class="form-group">
-                <label for="email">Ваш Email *</label>
-                <input id="email" v-model="form.email" required type="email">
-              </div>
-
-              <div class="form-group">
-                <label for="subject">Тема</label>
-                <input id="subject" v-model="form.subject" type="text">
-              </div>
-
-              <div class="form-group">
-                <label for="message">Сообщение *</label>
-                <textarea id="message" v-model="form.message" required />
-              </div>
-
-              <button class="submit-btn" type="submit">Отправить сообщение</button>
-            </form>
+          <div class="contact-item">
+            <v-icon class="contact-icon">mdi-email</v-icon>
+            <span>{{ contactData.mail }}</span>
+          </div>
+          <div class="contact-item">
+            <v-icon class="contact-icon">mdi-github</v-icon>
+            <a :href="contactData.git" target="_blank">GitHub профиль</a>
           </div>
         </div>
       </div>
-    </template>
-  </MenuComponent>
+
+      <!-- Форма обратной связи -->
+      <div class="feedback-form">
+        <h2 class="form-title">
+          <v-icon color="#6a5acd" large>mdi-email-edit</v-icon>
+          Форма обратной связи
+        </h2>
+
+        <form @submit.prevent="submitForm">
+          <div class="form-group">
+            <label for="name">Ваше имя *</label>
+            <input id="name" v-model="form.name" required type="text">
+          </div>
+
+          <div class="form-group">
+            <label for="email">Ваш Email *</label>
+            <input id="email" v-model="form.email" required type="email">
+          </div>
+
+          <div class="form-group">
+            <label for="subject">Тема</label>
+            <input id="subject" v-model="form.subject" type="text">
+          </div>
+
+          <div class="form-group">
+            <label for="message">Сообщение *</label>
+            <textarea id="message" v-model="form.message" required />
+          </div>
+
+          <button class="submit-btn" type="submit">Отправить сообщение</button>
+        </form>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-  import MenuComponent from '@/components/MenuComponent.vue';
-
   export default {
     name: 'Contacts',
-    components: { MenuComponent },
     data () {
       return {
         contactData: {

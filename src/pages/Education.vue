@@ -1,44 +1,40 @@
 <template>
-  <MenuComponent>
-    <template #content>
-      <div class="education-container">
-        <div class="welcome-section">
-          <h1 class="welcome-title">Мое образование</h1>
-          <p class="welcome-subtitle">Учебные заведения и курсы повышения квалификации</p>
-        </div>
+  <div class="education-container">
+    <div class="welcome-section">
+      <h1 class="welcome-title">Мое образование</h1>
+      <p class="welcome-subtitle">Учебные заведения и курсы повышения квалификации</p>
+    </div>
 
-        <div class="education-grid">
-          <div v-for="item in educationPlaces" :key="item.id" class="education-card">
-            <div class="education-header">
-              <div class="education-logo">
-                <div class="logo-placeholder">
-                  <v-icon color="white" large>mdi-school</v-icon>
-                </div>
-              </div>
-              <div class="education-info">
-                <h2 class="education-title">{{ item.name }}</h2>
-                <div class="education-interval">
-                  <v-icon small>mdi-calendar</v-icon>
-                  <span>{{ item.interval }}</span>
-                </div>
-              </div>
+    <div class="education-grid">
+      <div v-for="item in educationPlaces" :key="item.id" class="education-card">
+        <div class="education-header">
+          <div class="education-logo">
+            <div class="logo-placeholder">
+              <v-icon color="white" large>mdi-school</v-icon>
             </div>
-
-            <div class="education-description">
-              <p>{{ item.description }}</p>
-            </div>
-
-            <div class="education-footer">
-              <div class="education-badge">
-                <v-icon small>mdi-certificate</v-icon>
-                <span>Диплом/Сертификат</span>
-              </div>
+          </div>
+          <div class="education-info">
+            <h2 class="education-title">{{ item.name }}</h2>
+            <div class="education-interval">
+              <v-icon small>mdi-calendar</v-icon>
+              <span>{{ item.interval }}</span>
             </div>
           </div>
         </div>
+
+        <div class="education-description">
+          <p>{{ item.description }}</p>
+        </div>
+
+        <div class="education-footer">
+          <div class="education-badge">
+            <v-icon small>mdi-certificate</v-icon>
+            <span>Диплом/Сертификат</span>
+          </div>
+        </div>
       </div>
-    </template>
-  </MenuComponent>
+    </div>
+  </div>
 </template>
 
 <script>

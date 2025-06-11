@@ -1,37 +1,33 @@
 <template>
-  <MenuComponent>
-    <template #content>
-      <div class="portfolio-container">
-        <div class="welcome-section">
-          <h1 class="welcome-title">Мои проекты</h1>
-          <p class="welcome-subtitle">Реализованные решения и приложения</p>
+  <div class="portfolio-container">
+    <div class="welcome-section">
+      <h1 class="welcome-title">Мои проекты</h1>
+      <p class="welcome-subtitle">Реализованные решения и приложения</p>
+    </div>
+
+    <div class="portfolio-grid">
+      <div v-for="project in portfolioItems" :key="project.id" class="project-card">
+        <div class="project-image-container">
+          <img :alt="project.name" class="project-image" :src="project.img">
+          <div class="project-logo">
+            <img :alt="project.name + ' лого'" :src="project.logo">
+          </div>
         </div>
 
-        <div class="portfolio-grid">
-          <div v-for="project in portfolioItems" :key="project.id" class="project-card">
-            <div class="project-image-container">
-              <img :alt="project.name" class="project-image" :src="project.img">
-              <div class="project-logo">
-                <img :alt="project.name + ' лого'" :src="project.logo">
-              </div>
-            </div>
+        <div class="project-content">
+          <h3 class="project-title">{{ project.name }}</h3>
+          <p class="project-description">{{ project.description }}</p>
 
-            <div class="project-content">
-              <h3 class="project-title">{{ project.name }}</h3>
-              <p class="project-description">{{ project.description }}</p>
-
-              <div class="project-footer">
-                <a class="project-link" :href="project.link" target="_blank">
-                  <v-icon>mdi-open-in-new</v-icon>
-                  <span>Посмотреть проект</span>
-                </a>
-              </div>
-            </div>
+          <div class="project-footer">
+            <a class="project-link" :href="project.link" target="_blank">
+              <v-icon>mdi-open-in-new</v-icon>
+              <span>Посмотреть проект</span>
+            </a>
           </div>
         </div>
       </div>
-    </template>
-  </MenuComponent>
+    </div>
+  </div>
 </template>
 
 <script>

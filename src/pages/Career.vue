@@ -1,44 +1,40 @@
 <template>
-  <MenuComponent>
-    <template #content>
-      <div class="career-container">
-        <div class="welcome-section">
-          <h1 class="welcome-title">Профессиональный путь</h1>
-          <p class="welcome-subtitle">Мой опыт работы и образования</p>
-        </div>
+  <div class="career-container">
+    <div class="welcome-section">
+      <h1 class="welcome-title">Профессиональный путь</h1>
+      <p class="welcome-subtitle">Мой опыт работы и образования</p>
+    </div>
 
-        <div class="timeline">
-          <div v-for="(item, index) in work_places" :key="item.id" class="timeline-item">
-            <div class="timeline-content">
-              <div class="timeline-header">
-                <div class="timeline-logo-placeholder">
-                  <div class="logo-placeholder">
-                    <span>{{ item.name.charAt(0) }}</span>
-                  </div>
-                </div>
-                <div class="timeline-info">
-                  <h2 class="timeline-title">{{ item.name }}</h2>
-                  <div class="timeline-interval">
-                    <v-icon small>mdi-calendar</v-icon>
-                    <span>{{ item.interval }}</span>
-                  </div>
-                </div>
+    <div class="timeline">
+      <div v-for="(item, index) in work_places" :key="item.id" class="timeline-item">
+        <div class="timeline-content">
+          <div class="timeline-header">
+            <div class="timeline-logo-placeholder">
+              <div class="logo-placeholder">
+                <span>{{ item.name.charAt(0) }}</span>
               </div>
-
-              <div class="timeline-description">
-                <p>{{ item.description }}</p>
-              </div>
-
-              <div v-if="index < work_places.length - 1" class="timeline-connector">
-                <div class="connector-line" />
-                <div class="connector-dot" />
+            </div>
+            <div class="timeline-info">
+              <h2 class="timeline-title">{{ item.name }}</h2>
+              <div class="timeline-interval">
+                <v-icon small>mdi-calendar</v-icon>
+                <span>{{ item.interval }}</span>
               </div>
             </div>
           </div>
+
+          <div class="timeline-description">
+            <p>{{ item.description }}</p>
+          </div>
+
+          <div v-if="index < work_places.length - 1" class="timeline-connector">
+            <div class="connector-line" />
+            <div class="connector-dot" />
+          </div>
         </div>
       </div>
-    </template>
-  </MenuComponent>
+    </div>
+  </div>
 </template>
 
 <script>

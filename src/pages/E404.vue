@@ -1,64 +1,60 @@
 <template>
-  <MenuComponent>
-    <template #content>
-      <div class="not-found-container">
-        <div class="welcome-section">
-          <h1 class="welcome-title">404</h1>
-          <p class="welcome-subtitle">Страница не найдена</p>
-          <div class="not-found-icon">
-            <v-icon color="#6a5acd" x-large>mdi-emoticon-sad-outline</v-icon>
-          </div>
-        </div>
+  <div class="not-found-container">
+    <div class="welcome-section">
+      <h1 class="welcome-title">404</h1>
+      <p class="welcome-subtitle">Страница не найдена</p>
+      <div class="not-found-icon">
+        <v-icon color="#6a5acd" x-large>mdi-emoticon-sad-outline</v-icon>
+      </div>
+    </div>
 
-        <div class="not-found-content">
-          <div class="skills-category">
-            <h2 class="category-title">
-              <v-icon color="#e74c3c" large>mdi-alert-circle</v-icon>
-              Что случилось?
-            </h2>
-            <div class="skills-grid">
-              <div class="skill-card">
-                <div class="skill-icon">
-                  <v-icon large>mdi-map-marker-off</v-icon>
-                </div>
-                <h3 class="skill-name">Страница перемещена</h3>
-                <p class="skill-description">Искомый контент был перенесен в другой раздел сайта</p>
-              </div>
-
-              <div class="skill-card">
-                <div class="skill-icon">
-                  <v-icon large>mdi-link-off</v-icon>
-                </div>
-                <h3 class="skill-name">Некорректная ссылка</h3>
-                <p class="skill-description">В адресе может быть опечатка или устаревшая информация</p>
-              </div>
-
-              <div class="skill-card">
-                <div class="skill-icon">
-                  <v-icon large>mdi-delete</v-icon>
-                </div>
-                <h3 class="skill-name">Страница удалена</h3>
-                <p class="skill-description">Ресурс больше не доступен на нашем сайте</p>
-              </div>
+    <div class="not-found-content">
+      <div class="skills-category">
+        <h2 class="category-title">
+          <v-icon color="#e74c3c" large>mdi-alert-circle</v-icon>
+          Что случилось?
+        </h2>
+        <div class="skills-grid">
+          <div class="skill-card">
+            <div class="skill-icon">
+              <v-icon large>mdi-map-marker-off</v-icon>
             </div>
+            <h3 class="skill-name">Страница перемещена</h3>
+            <p class="skill-description">Искомый контент был перенесен в другой раздел сайта</p>
           </div>
 
-          <div class="solution-section">
-            <v-btn
-              class="action-button"
-              color="#6a5acd"
-              dark
-              large
-              to="/"
-            >
-              <v-icon left>mdi-home</v-icon>
-              Вернуться на главную
-            </v-btn>
+          <div class="skill-card">
+            <div class="skill-icon">
+              <v-icon large>mdi-link-off</v-icon>
+            </div>
+            <h3 class="skill-name">Некорректная ссылка</h3>
+            <p class="skill-description">В адресе может быть опечатка или устаревшая информация</p>
+          </div>
+
+          <div class="skill-card">
+            <div class="skill-icon">
+              <v-icon large>mdi-delete</v-icon>
+            </div>
+            <h3 class="skill-name">Страница удалена</h3>
+            <p class="skill-description">Ресурс больше не доступен на нашем сайте</p>
           </div>
         </div>
       </div>
-    </template>
-  </MenuComponent>
+
+      <div class="solution-section">
+        <v-btn
+          class="action-button"
+          color="#6a5acd"
+          dark
+          large
+          to="/"
+        >
+          <v-icon left>mdi-home</v-icon>
+          Вернуться на главную
+        </v-btn>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>

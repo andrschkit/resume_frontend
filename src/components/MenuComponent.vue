@@ -29,9 +29,10 @@
         <v-list-item
           v-for="item in menu"
           :key="item.route"
+          :active="item.route === activeSection"
           active-class="active-menu-item"
           class="menu-item"
-          :to="{ name: item.route }"
+          @click="$emit('scroll-to', item.route)"
         >
           <template #prepend>
             <v-icon>
@@ -69,12 +70,6 @@
 <script setup>
   import { computed, onMounted, ref } from 'vue'
   import { useTheme } from 'vuetify'
-  import addressCard from '@/assets/address-card.svg'
-  import education from '@/assets/graduation-hat-alt.svg'
-  import career from '@/assets/career.svg'
-  import portfolio from '@/assets/folder-user.svg'
-  import skills from '@/assets/skills.svg'
-  import contacts from '@/assets/pen.svg'
   import moon from '@/assets/moon-svgrepo.svg'
   import sun from '@/assets/sun-svgrepo.svg'
 
@@ -86,15 +81,17 @@
   const collapsedWidth = 80
   const expandedWidth = 240
 
-  const menu = [
-    { route: 'about', title: 'Обо мне', icon: addressCard },
-    { route: 'education', title: 'Образование', icon: education },
-    { route: 'career', title: 'Карьера', icon: career },
-    { route: 'portfolio', title: 'Портфолио', icon: portfolio },
-    { route: 'skills', title: 'Навыки', icon: skills },
-    { route: 'contacts', title: 'Контакты', icon: contacts },
-    { route: 'tools', title: 'Инструменты', icon: contacts },
-  ]
+  defineProps({
+    menu: {
+      type: Array,
+      required: true,
+    },
+    activeSection: {
+      type: String,
+      required: true,
+    },
+  });
+  defineEmits(['scroll-to']);
 
   const currentWidth = computed(() => {
     return rail.value ? collapsedWidth : expandedWidth

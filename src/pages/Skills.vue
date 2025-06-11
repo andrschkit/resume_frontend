@@ -1,67 +1,63 @@
 <template>
-  <MenuComponent>
-    <template #content>
-      <div class="skills-container">
-        <div class="welcome-section">
-          <h1 class="welcome-title">Мои навыки</h1>
-          <p class="welcome-subtitle">Профессиональные компетенции и технологии</p>
-        </div>
+  <div class="skills-container">
+    <div class="welcome-section">
+      <h1 class="welcome-title">Мои навыки</h1>
+      <p class="welcome-subtitle">Профессиональные компетенции и технологии</p>
+    </div>
 
-        <div class="skills-categories">
-          <!-- Основные навыки -->
-          <div class="skills-category">
-            <h2 class="category-title">
-              <v-icon color="#6a5acd" large>mdi-star-circle</v-icon>
-              Основные
-            </h2>
-            <div class="skills-grid">
-              <div v-for="item in coreSkills" :key="'core-'+item.id" class="skill-card">
-                <div class="skill-icon">
-                  <v-icon large>mdi-{{ getSkillIcon(item.name) }}</v-icon>
-                </div>
-                <h3 class="skill-name">{{ item.name }}</h3>
-                <p class="skill-description">{{ item.description }}</p>
-              </div>
+    <div class="skills-categories">
+      <!-- Основные навыки -->
+      <div class="skills-category">
+        <h2 class="category-title">
+          <v-icon color="#6a5acd" large>mdi-star-circle</v-icon>
+          Основные
+        </h2>
+        <div class="skills-grid">
+          <div v-for="item in coreSkills" :key="'core-'+item.id" class="skill-card">
+            <div class="skill-icon">
+              <v-icon large>mdi-{{ getSkillIcon(item.name) }}</v-icon>
             </div>
-          </div>
-
-          <!-- Фронтенд -->
-          <div class="skills-category">
-            <h2 class="category-title">
-              <v-icon color="#6a5acd" large>mdi-monitor</v-icon>
-              Фронтенд
-            </h2>
-            <div class="skills-grid">
-              <div v-for="item in frontendSkills" :key="'front-'+item.id" class="skill-card">
-                <div class="skill-icon">
-                  <v-icon large>mdi-{{ getSkillIcon(item.name) }}</v-icon>
-                </div>
-                <h3 class="skill-name">{{ item.name }}</h3>
-                <p class="skill-description">{{ item.description }}</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Бэкенд -->
-          <div class="skills-category">
-            <h2 class="category-title">
-              <v-icon color="#6a5acd" large>mdi-server</v-icon>
-              Бэкенд
-            </h2>
-            <div class="skills-grid">
-              <div v-for="item in backendSkills" :key="'back-'+item.id" class="skill-card">
-                <div class="skill-icon">
-                  <v-icon large>mdi-{{ getSkillIcon(item.name) }}</v-icon>
-                </div>
-                <h3 class="skill-name">{{ item.name }}</h3>
-                <p class="skill-description">{{ item.description }}</p>
-              </div>
-            </div>
+            <h3 class="skill-name">{{ item.name }}</h3>
+            <p class="skill-description">{{ item.description }}</p>
           </div>
         </div>
       </div>
-    </template>
-  </MenuComponent>
+
+      <!-- Фронтенд -->
+      <div class="skills-category">
+        <h2 class="category-title">
+          <v-icon color="#6a5acd" large>mdi-monitor</v-icon>
+          Фронтенд
+        </h2>
+        <div class="skills-grid">
+          <div v-for="item in frontendSkills" :key="'front-'+item.id" class="skill-card">
+            <div class="skill-icon">
+              <v-icon large>mdi-{{ getSkillIcon(item.name) }}</v-icon>
+            </div>
+            <h3 class="skill-name">{{ item.name }}</h3>
+            <p class="skill-description">{{ item.description }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Бэкенд -->
+      <div class="skills-category">
+        <h2 class="category-title">
+          <v-icon color="#6a5acd" large>mdi-server</v-icon>
+          Бэкенд
+        </h2>
+        <div class="skills-grid">
+          <div v-for="item in backendSkills" :key="'back-'+item.id" class="skill-card">
+            <div class="skill-icon">
+              <v-icon large>mdi-{{ getSkillIcon(item.name) }}</v-icon>
+            </div>
+            <h3 class="skill-name">{{ item.name }}</h3>
+            <p class="skill-description">{{ item.description }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
