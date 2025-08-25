@@ -1,74 +1,111 @@
 <template>
-  <div class="navigation-wrapper">
-    <v-navigation-drawer
-      v-model="drawer"
-      class="custom-navigation"
-      permanent
-      :width="currentWidth"
-      @mouseenter="hovered = true"
-      @mouseleave="hovered = false"
-    >
-      <div class="user-data" :style="rail ? 'height:10vh' : 'height:21vh'">
-        <v-avatar class="avatar" :size="rail ? '70' : '120'">
-          <img alt="Avatar" src="@/assets/avatar.jpg">
-        </v-avatar>
-
-        <transition name="fade">
-          <v-list-item-title
-            v-if="!rail"
-            class="text-h6 username"
-          >
-            Щербаков Андрей
-          </v-list-item-title>
-        </transition>
-      </div>
-
-      <v-divider class="divider" />
-
-      <v-list class="menu-list">
-        <v-list-item
-          v-for="item in menu"
-          :key="item.route"
-          :active="item.route === activeSection"
-          active-class="active-menu-item"
-          class="menu-item"
-          @click="$emit('scroll-to', item.route)"
-        >
-          <template #prepend>
-            <v-icon>
-              <img alt="" class="menu-icon" :class="!darkMode? 'menu-icon-dark':'menu-icon-light'" :src="item.icon">
-            </v-icon>
-          </template>
+  <div class="layout-wrapper">
+    <!-- Десктопная навигация -->
+    <div v-if="!isMobile" class="navigation-wrapper">
+      <v-navigation-drawer
+        v-model="drawer"
+        class="custom-navigation"
+        permanent
+        :width="currentWidth"
+        @mouseenter="hovered = true"
+        @mouseleave="hovered = false"
+      >
+        <div class="user-data" :style="rail ? 'height:10vh' : 'height:21vh'">
+          <v-avatar class="avatar" :size="rail ? '70' : '120'">
+            <img alt="Avatar" src="@/assets/avatar.jpg">
+          </v-avatar>
 
           <transition name="fade">
-            <v-list-item-title v-if="!rail" class="menu-title">
-              {{ item.title }}
+            <v-list-item-title
+              v-if="!rail"
+              class="text-h6 username"
+            >
+              Щербаков Андрей
             </v-list-item-title>
           </transition>
-        </v-list-item>
-      </v-list>
+        </div>
 
-      <div class="toggle-button" @click="toggleRail">
-        <v-icon>{{ rail ? 'mdi-chevron-right' : 'mdi-chevron-left' }}</v-icon>
-      </div>
-      <div class="mode-toggle" :class="!rail ? 'mode-toggle-expand' : 'mode-toggle-collapse'">
-        <v-switch
-          v-model="darkMode"
-          :class="!rail ? 'switch-expand' : 'switch-collapse'"
-          hide-details
-          style="padding: 10px; justify-items: center"
-          @change="toggleDarkMode"
-        />
-        <img alt="" class="mode-icon" :src="darkMode?sun:moon">
-      </div>
-    </v-navigation-drawer>
+        <v-divider class="divider" />
 
-    <slot name="content" />
+        <v-list class="menu-list">
+          <v-list-item
+            v-for="item in menu"
+            :key="item.route"
+            :active="item.route === activeSection"
+            active-class="active-menu-item"
+            class="menu-item"
+            @click="$emit('scroll-to', item.route)"
+          >
+            <template #prepend>
+              <v-icon>
+                <img alt="" class="menu-icon" :class="!darkMode? 'menu-icon-dark':'menu-icon-light'" :src="item.icon">
+              </v-icon>
+            </template>
+
+            <transition name="fade">
+              <v-list-item-title v-if="!rail" class="menu-title">
+                {{ item.title }}
+              </v-list-item-title>
+            </transition>
+          </v-list-item>
+        </v-list>
+
+        <div class="toggle-button" @click="toggleRail">
+          <v-icon>{{ rail ? 'mdi-chevron-right' : 'mdi-chevron-left' }}</v-icon>
+        </div>
+        <div class="mode-toggle" :class="!rail ? 'mode-toggle-expand' : 'mode-toggle-collapse'">
+          <v-switch
+            v-model="darkMode"
+            :class="!rail ? 'switch-expand' : 'switch-collapse'"
+            hide-details
+            style="padding: 10px; justify-items: center"
+            @click="toggleDarkMode"
+          />
+          <img alt="" class="mode-icon" :src="darkMode?sun:moon">
+        </div>
+      </v-navigation-drawer>
+    </div>
+    <!-- Основной контент -->
+    <div :class="{'content-desktop': !isMobile, 'content-mobile': isMobile}">
+      <slot name="content" />
+    </div>
+    <!-- Мобильная навигация -->
+    <v-bottom-navigation
+      v-if="isMobile"
+      v-model="activeTab"
+      class="mobile-navigation"
+      grow
+    >
+      <v-btn
+        v-for="item in menu"
+        :key="item.route"
+        :value="item.route"
+        @click="$emit('scroll-to', item.route)"
+      >
+        <v-icon>
+          <img
+            alt=""
+            class="mobile-menu-icon"
+            :class="darkMode ? 'menu-icon-light' : 'menu-icon-dark'"
+            :src="item.icon"
+          >
+        </v-icon>
+        <span>{{ item.title }}</span>
+      </v-btn>
+
+      <!-- Кнопка переключения темы для мобильной версии -->
+      <v-btn value="theme" @click="toggleDarkMode">
+        <v-icon>
+          <img alt="" class="mode-icon" :src="darkMode?sun:moon">
+        </v-icon>
+        <span>{{ darkMode ? 'Светлая' : 'Тёмная' }}</span>
+      </v-btn>
+    </v-bottom-navigation>
   </div>
 </template>
 
 <script setup>
-  import { computed, onMounted, ref } from 'vue'
+  import { computed, onMounted, onUnmounted, ref } from 'vue'
   import { useTheme } from 'vuetify'
   import moon from '@/assets/moon-svgrepo.svg'
   import sun from '@/assets/sun-svgrepo.svg'
@@ -78,8 +115,15 @@
   const rail = ref(true)
   const hovered = ref(false)
   const darkMode = ref(false)
+  const isMobile = ref(false)
+  const activeTab = ref('')
   const collapsedWidth = 80
   const expandedWidth = 240
+
+  // Функция для проверки мобильного устройства
+  const checkMobile = () => {
+    isMobile.value = window.innerWidth < 960 // Брекпоинт Vuetify для md
+  }
 
   defineProps({
     menu: {
@@ -103,11 +147,19 @@
   }
 
   const toggleDarkMode = () => {
+    console.log(darkMode.value)
+    darkMode.value = !darkMode.value
+    console.log(darkMode.value)
     theme.global.name.value = darkMode.value ? 'customDarkTheme' : 'customLightTheme'
+    console.log(theme.global.name.value)
     localStorage.setItem('theme', theme.global.name.value)
   }
 
   onMounted(() => {
+    // Проверка мобильного устройства при загрузке
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+
     // Загрузка состояния навигации
     const savedRail = localStorage.getItem('navigationRail')
     if (savedRail !== null) {
@@ -126,11 +178,35 @@
       localStorage.setItem('theme', theme.global.name.value)
     }
   })
+
+  onUnmounted(() => {
+    window.removeEventListener('resize', checkMobile)
+  })
 </script>
 
 <style scoped>
-.navigation-wrapper {
+.layout-wrapper {
   position: relative;
+  min-height: 100vh;
+}
+
+.navigation-wrapper {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  z-index: 100;
+}
+
+.content-desktop {
+  margin-left: 0;
+  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  min-height: 100vh;
+}
+
+.content-mobile {
+  padding-bottom: 70px; /* Отступ для мобильной навигации */
+  min-height: 100vh;
 }
 
 .custom-navigation {
@@ -371,6 +447,38 @@
     padding: 8px;
     bottom: 15px;
     right: 15px;
+  }
+
+  .mobile-navigation {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: rgba(var(--v-theme-background), 0.95) !important;
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(var(--v-theme-border), 0.3);
+    height: 56px;
+  }
+
+  .mobile-content {
+    padding-bottom: 56px; /* Высота bottom navigation */
+  }
+
+  .mobile-menu-icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  /* Адаптивность для мобильных устройств */
+  @media (max-width: 960px) {
+    .navigation-wrapper {
+      display: none !important;
+    }
+
+    .custom-navigation {
+      display: none !important;
+    }
   }
 }
 </style>
