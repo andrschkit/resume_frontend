@@ -147,11 +147,8 @@
   }
 
   const toggleDarkMode = () => {
-    console.log(darkMode.value)
     darkMode.value = !darkMode.value
-    console.log(darkMode.value)
     theme.global.name.value = darkMode.value ? 'customDarkTheme' : 'customLightTheme'
-    console.log(theme.global.name.value)
     localStorage.setItem('theme', theme.global.name.value)
   }
 

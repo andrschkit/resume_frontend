@@ -26,11 +26,10 @@
           <div class="timeline-description">
             <p>{{ item.description }}</p>
           </div>
-
-          <div v-if="index < work_places.length - 1" class="timeline-connector">
-            <div class="connector-line" />
-            <div class="connector-dot" />
-          </div>
+        </div>
+        <div v-if="index < work_places.length - 1" class="timeline-connector">
+          <div class="connector-line" />
+          <div class="connector-dot" />
         </div>
       </div>
     </div>
@@ -38,13 +37,12 @@
 </template>
 
 <script>
-  import MenuComponent from '@/components/MenuComponent.vue';
+
   import store from '@/plugins/store.js';
   import { mapGetters } from 'vuex';
 
   export default {
     name: 'Career',
-    components: { MenuComponent },
     computed: {
       ...mapGetters('resume_store', { work_places: 'work_places_all' }),
     },
@@ -86,26 +84,17 @@
 
 .timeline {
   position: relative;
-  padding-left: 30px;
-}
-
-.timeline::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 4px;
-  background: linear-gradient(to bottom, #42b983, #3498db);
-  border-radius: 2px;
 }
 
 .timeline-item {
   margin-bottom: 3rem;
   position: relative;
+  display: flex;
+  justify-content: center;
 }
 
 .timeline-content {
+  width: 100%;
   background: white;
   border-radius: 15px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
@@ -175,7 +164,6 @@
 
 .timeline-connector {
   position: absolute;
-  left: -30px;
   top: 100%;
   height: 50px;
   width: 30px;
@@ -210,15 +198,6 @@
     font-size: 1.2rem;
   }
 
-  .timeline {
-    padding-left: 20px;
-  }
-
-  .timeline::before {
-    width: 3px;
-    left: -1px;
-  }
-
   .timeline-header {
     flex-direction: column;
     text-align: center;
@@ -244,7 +223,6 @@
   }
 
   .timeline-connector {
-    left: -20px;
     width: 20px;
   }
 

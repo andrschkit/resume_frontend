@@ -9,7 +9,7 @@
       <div class="about-card">
         <h2 class="section-title">Обо мне</h2>
         <div class="bio-section">
-          <p>Я frontend-разработчик с опытом создания современных веб-приложений. Специализируюсь на Vue.js, люблю создавать интерактивные и отзывчивые интерфейсы. В свободное время изучаю новые технологии и улучшаю свои навыки.</p>
+          <p>Я fullstack-разработчик с опытом создания современных веб-приложений. Специализируюсь на Vue.js, люблю создавать интерактивные и отзывчивые интерфейсы. В свободное время изучаю новые технологии и улучшаю свои навыки.</p>
           <p>Мой подход к работе сочетает внимание к деталям, стремление к чистому коду и ориентацию на потребности пользователей. Верю, что хороший интерфейс должен быть не только красивым, но и функциональным.</p>
         </div>
 
@@ -119,6 +119,11 @@
   border-bottom: 2px solid #42b983;
 }
 
+.user-card{
+  display: flex;
+  flex-direction: column;
+}
+
 .bio-section {
   margin-bottom: 2.5rem;
 }
@@ -160,12 +165,16 @@
 
 .contact-info {
   display: flex;
-  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
 }
 
 .contact-item {
   display: flex;
+  justify-content: center;
   align-items: center;
+  min-width: 295px;
   margin: 1rem 1.5rem;
   padding: 1rem 1.5rem;
   background: rgba(var(--v-theme-background), 0.5) !important;
