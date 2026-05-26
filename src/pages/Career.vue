@@ -167,6 +167,12 @@
   margin-bottom: 0;
 }
 
+@media (max-width: 959px) {
+  .career-container {
+    padding: 0;
+  }
+}
+
 @media (max-width: 768px) {
   .career-card {
     padding: 1.5rem;

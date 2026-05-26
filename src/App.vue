@@ -159,4 +159,10 @@
   padding: 24px;
   border-bottom: 1px solid rgba(var(--v-theme-border), 0.4);
 }
+
+@media (max-width: 959px) {
+  .page-section {
+    padding: var(--page-mobile-gutter, 0.9rem);
+  }
+}
 </style>

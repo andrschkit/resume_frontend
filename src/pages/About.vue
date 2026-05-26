@@ -226,7 +226,7 @@
 
   margin: 0 auto;
 
-  padding: 2rem;
+  padding: 2rem 1.5rem;
 
 }
 
@@ -555,6 +555,20 @@
 }
 
 
+
+@media (max-width: 959px) {
+
+  .about-container {
+    padding: 0;
+  }
+
+  .contact-item {
+    min-width: 0;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+}
 
 @media (max-width: 768px) {
 

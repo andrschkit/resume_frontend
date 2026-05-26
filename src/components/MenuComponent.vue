@@ -71,34 +71,91 @@
       <slot name="content" />
     </div>
 
-    <nav v-if="isMobile" class="mobile-navigation">
-      <button
-        v-for="item in menu"
-        :key="item.route"
-        type="button"
-        class="mobile-nav-btn"
-        :class="{ 'mobile-nav-btn--active': item.route === activeSection }"
-        @click="$emit('scroll-to', item.route)"
-      >
-        <img
-          alt=""
-          class="mobile-menu-icon"
-          :class="darkMode ? 'menu-icon-light' : 'menu-icon-dark'"
-          :src="item.icon"
+    <template v-if="isMobile">
+      <header class="mobile-header">
+        <button
+          ref="mobileMenuToggleRef"
+          type="button"
+          class="mobile-header-btn"
+          :aria-expanded="mobileMenuOpen"
+          aria-controls="mobile-drawer"
+          :aria-label="mobileMenuOpen ? 'Закрыть меню' : 'Открыть меню'"
+          @click="toggleMobileMenu"
         >
-        <span>{{ item.title }}</span>
-      </button>
+          <MdiIcon :icon="mobileMenuOpen ? 'mdi-close' : 'mdi-menu'" />
+        </button>
 
-      <button type="button" class="mobile-nav-btn" @click="toggleDarkMode">
-        <img alt="" class="mode-icon" :src="darkMode ? sun : moon">
-        <span>{{ darkMode ? 'Светлая' : 'Тёмная' }}</span>
-      </button>
-    </nav>
+        <p class="mobile-header-title">{{ activeMenuTitle }}</p>
+
+        <button
+          type="button"
+          class="mobile-header-btn mobile-header-btn--theme"
+          :aria-label="darkMode ? 'Светлая тема' : 'Тёмная тема'"
+          @click="toggleDarkMode"
+        >
+          <img alt="" class="mode-icon mode-icon--compact" :src="darkMode ? sun : moon">
+        </button>
+      </header>
+
+      <transition name="drawer-backdrop">
+        <button
+          v-if="mobileMenuOpen"
+          type="button"
+          class="mobile-drawer-backdrop"
+          aria-label="Закрыть меню"
+          @click="closeMobileMenu"
+        />
+      </transition>
+
+      <nav
+        id="mobile-drawer"
+        ref="mobileDrawerRef"
+        class="mobile-drawer"
+        :class="{ 'mobile-drawer--open': mobileMenuOpen }"
+        role="dialog"
+        aria-label="Навигация по разделам"
+        :aria-modal="mobileMenuOpen ? 'true' : undefined"
+        :inert="!mobileMenuOpen"
+      >
+        <div class="mobile-drawer-user">
+          <div class="mobile-drawer-avatar">
+            <img alt="Avatar" src="@/assets/avatar.jpg">
+          </div>
+          <div>
+            <p class="mobile-drawer-name">Щербаков Андрей</p>
+            <p class="mobile-drawer-role">Руководитель IT-проектов</p>
+          </div>
+        </div>
+
+        <hr class="divider mobile-drawer-divider">
+
+        <div class="mobile-drawer-menu">
+          <button
+            v-for="item in menu"
+            :key="item.route"
+            type="button"
+            class="mobile-drawer-item"
+            :class="{ 'mobile-drawer-item--active': item.route === activeSection }"
+            @click="onMobileNavClick(item.route)"
+          >
+            <span class="menu-icon-wrap">
+              <img
+                alt=""
+                class="menu-icon menu-icon--mobile"
+                :class="darkMode ? 'menu-icon-light' : 'menu-icon-dark'"
+                :src="item.icon"
+              >
+            </span>
+            <span class="mobile-drawer-item-title">{{ item.title }}</span>
+          </button>
+        </div>
+      </nav>
+    </template>
   </div>
 </template>
 
 <script setup>
-  import { computed, onMounted, onUnmounted, ref } from 'vue'
+  import { computed, nextTick, onMounted, onUnmounted, ref } from 'vue'
   import { applyTheme, getInitialTheme, isDarkTheme } from '@/plugins/theme'
   import MdiIcon from '@/components/MdiIcon.vue'
   import moon from '@/assets/moon-svgrepo.svg'
@@ -107,14 +164,13 @@
   const rail = ref(true)
   const darkMode = ref(false)
   const isMobile = ref(false)
+  const mobileMenuOpen = ref(false)
+  const mobileMenuToggleRef = ref(null)
+  const mobileDrawerRef = ref(null)
   const collapsedWidth = 80
   const expandedWidth = 240
 
-  const checkMobile = () => {
-    isMobile.value = window.innerWidth < 960
-  }
-
-  defineProps({
+  const props = defineProps({
     menu: {
       type: Array,
       required: true,
@@ -124,7 +180,21 @@
       required: true,
     },
   })
-  defineEmits(['scroll-to'])
+  const emit = defineEmits(['scroll-to'])
+
+  const checkMobile = () => {
+    const wasMobile = isMobile.value
+    isMobile.value = window.innerWidth < 960
+
+    if (wasMobile && !isMobile.value) {
+      closeMobileMenu()
+    }
+  }
+
+  const activeMenuTitle = computed(() => {
+    const active = props.menu.find(item => item.route === props.activeSection)
+    return active?.title ?? 'Резюме'
+  })
 
   const currentWidth = computed(() => (rail.value ? collapsedWidth : expandedWidth))
 
@@ -143,6 +213,48 @@
     setTheme(darkMode.value ? 'customLightTheme' : 'customDarkTheme')
   }
 
+  const setBodyScrollLock = locked => {
+    document.body.style.overflow = locked ? 'hidden' : ''
+  }
+
+  const closeMobileMenu = () => {
+    if (!mobileMenuOpen.value) return
+
+    mobileMenuToggleRef.value?.focus()
+    mobileMenuOpen.value = false
+    setBodyScrollLock(false)
+  }
+
+  const openMobileMenu = async () => {
+    mobileMenuOpen.value = true
+    setBodyScrollLock(true)
+
+    await nextTick()
+
+    const activeItem = mobileDrawerRef.value?.querySelector('.mobile-drawer-item--active')
+    const firstItem = mobileDrawerRef.value?.querySelector('.mobile-drawer-item')
+    ;(activeItem ?? firstItem)?.focus()
+  }
+
+  const toggleMobileMenu = () => {
+    if (mobileMenuOpen.value) {
+      closeMobileMenu()
+    } else {
+      openMobileMenu()
+    }
+  }
+
+  const onMobileNavClick = route => {
+    emit('scroll-to', route)
+    closeMobileMenu()
+  }
+
+  const onEscapeKey = event => {
+    if (event.key === 'Escape' && mobileMenuOpen.value) {
+      closeMobileMenu()
+    }
+  }
+
   onMounted(() => {
     checkMobile()
     window.addEventListener('resize', checkMobile)
@@ -153,10 +265,13 @@
     }
 
     setTheme(getInitialTheme())
+    window.addEventListener('keydown', onEscapeKey)
   })
 
   onUnmounted(() => {
     window.removeEventListener('resize', checkMobile)
+    window.removeEventListener('keydown', onEscapeKey)
+    setBodyScrollLock(false)
   })
 </script>
 
@@ -188,8 +303,40 @@
 }
 
 .content-mobile {
-  padding-bottom: 70px;
+  --page-mobile-gutter: 0.9rem;
+  padding-top: 52px;
   min-height: 100vh;
+  font-size: 0.9375rem;
+}
+
+.content-mobile :deep(.page-section) {
+  padding: var(--page-mobile-gutter);
+}
+
+.content-mobile :deep(.page-section > [class$="-container"]) {
+  padding: 0;
+}
+
+.content-mobile :deep(.page-header) {
+  margin-bottom: 1.25rem;
+  padding: 0.75rem 0 1rem;
+}
+
+.content-mobile :deep(.page-header__title) {
+  font-size: clamp(1.45rem, 5vw, 1.7rem);
+}
+
+.content-mobile :deep(.page-header__subtitle) {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.content-mobile :deep(.page-header--hero .page-header__title) {
+  font-size: clamp(1.75rem, 8vw, 2.5rem);
+}
+
+.content-mobile :deep(.page-header--hero .page-header__subtitle) {
+  font-size: clamp(1rem, 3.5vw, 1.2rem);
 }
 
 .user-data {
@@ -261,7 +408,7 @@
   align-items: stretch;
   padding: 5px 12px;
   flex: 1;
-  overflow-y: auto;
+  overflow: hidden;
 }
 
 .menu-item {
@@ -423,43 +570,194 @@
   transform: scale(1.1);
 }
 
-.mobile-navigation {
+.mobile-header {
   position: fixed;
-  bottom: 0;
+  top: 0;
   left: 0;
   right: 0;
-  z-index: 100;
+  z-index: 110;
   display: flex;
-  overflow-x: auto;
+  align-items: center;
+  gap: 8px;
+  min-height: 52px;
+  padding: 0 8px 0 4px;
   background: rgba(var(--v-theme-background), 0.95);
   backdrop-filter: blur(10px);
-  border-top: 1px solid rgba(var(--v-theme-border), 0.3);
-  min-height: 56px;
+  border-bottom: 1px solid rgba(var(--v-theme-border), 0.3);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
 }
 
-.mobile-nav-btn {
-  flex: 1 0 auto;
-  min-width: 72px;
-  display: flex;
-  flex-direction: column;
+.mobile-header-btn {
+  flex-shrink: 0;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  padding: 8px 6px;
+  width: 40px;
+  height: 40px;
   border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: rgb(var(--v-theme-primary));
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.mobile-header-btn:hover,
+.mobile-header-btn:focus-visible {
+  background-color: rgba(var(--v-theme-primary), 0.08);
+}
+
+.mobile-header-title {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: rgba(var(--v-theme-on-background), 0.9);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mobile-header-btn--theme {
+  margin-left: auto;
+}
+
+.mode-icon--compact {
+  width: 22px;
+  height: 22px;
+}
+
+.mobile-drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 115;
+  border: none;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.45);
+  cursor: pointer;
+}
+
+.drawer-backdrop-enter-active,
+.drawer-backdrop-leave-active {
+  transition: opacity 0.25s ease;
+}
+
+.drawer-backdrop-enter-from,
+.drawer-backdrop-leave-to {
+  opacity: 0;
+}
+
+.mobile-drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 120;
+  width: min(85vw, 300px);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 12px 12px 24px;
+  background: rgba(var(--v-theme-background), 0.98);
+  backdrop-filter: blur(12px);
+  border-right: 1px solid rgba(var(--v-theme-border), 0.3);
+  box-shadow: 8px 0 24px rgba(0, 0, 0, 0.12);
+  transform: translateX(-105%);
+  transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+.mobile-drawer--open {
+  transform: translateX(0);
+}
+
+.mobile-drawer-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 4px 4px;
+}
+
+.mobile-drawer-avatar {
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid rgba(var(--v-theme-primary), 0.12);
+}
+
+.mobile-drawer-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mobile-drawer-name {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: rgba(var(--v-theme-on-background), 0.9);
+}
+
+.mobile-drawer-role {
+  margin: 4px 0 0;
+  font-size: 0.75rem;
+  line-height: 1.3;
+  color: rgba(var(--v-theme-on-background), 0.65);
+}
+
+.mobile-drawer-divider {
+  margin: 12px 0;
+}
+
+.mobile-drawer-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mobile-drawer-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  padding: 0 12px;
+  border: none;
+  border-radius: 10px;
   background: transparent;
   cursor: pointer;
-  font-size: 0.7rem;
-  color: rgba(var(--v-theme-on-background), 0.8);
+  text-align: left;
+  font: inherit;
+  transition: background-color 0.2s ease;
 }
 
-.mobile-nav-btn--active {
+.mobile-drawer-item:hover,
+.mobile-drawer-item:focus-visible {
+  background-color: rgba(var(--v-theme-primary), 0.06);
+}
+
+.mobile-drawer-item--active {
+  background-color: rgba(var(--v-theme-primary), 0.1);
+}
+
+.mobile-drawer-item-title {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: rgba(var(--v-theme-on-background), 0.85);
+}
+
+.mobile-drawer-item--active .mobile-drawer-item-title {
   color: rgb(var(--v-theme-primary));
+  font-weight: 600;
 }
 
-.mobile-menu-icon {
-  width: 24px;
-  height: 24px;
+.menu-icon--mobile {
+  width: 22px;
+  height: 22px;
 }
 
 @media (max-width: 960px) {

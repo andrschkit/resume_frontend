@@ -181,6 +181,12 @@
   margin: 0;
 }
 
+@media (max-width: 959px) {
+  .skills-container {
+    padding: 0;
+  }
+}
+
 @media (max-width: 900px) {
   .skills-grid {
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));

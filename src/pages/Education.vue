@@ -159,6 +159,12 @@
   margin-right: 6px;
 }
 
+@media (max-width: 959px) {
+  .education-container {
+    padding: 0;
+  }
+}
+
 @media (max-width: 900px) {
   .education-grid {
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));

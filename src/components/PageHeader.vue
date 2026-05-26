@@ -103,10 +103,17 @@
   justify-content: center;
 }
 
+@media (max-width: 959px) {
+  .page-header {
+    margin-bottom: 1.25rem;
+    padding: 0.75rem 0 1rem;
+  }
+}
+
 @media (max-width: 768px) {
   .page-header {
-    margin-bottom: 2rem;
-    padding-bottom: 1.25rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 1rem;
   }
 }
 </style>

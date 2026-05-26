@@ -199,6 +199,12 @@
   background: rgba(133, 234, 45, 0.2);
 }
 
+@media (max-width: 959px) {
+  .tools-container {
+    padding: 0;
+  }
+}
+
 @media (max-width: 900px) {
   .tools-grid {
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));

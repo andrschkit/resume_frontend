@@ -308,6 +308,12 @@
   color: #e57373;
 }
 
+@media (max-width: 959px) {
+  .contacts-container {
+    padding: 0;
+  }
+}
+
 @media (max-width: 768px) {
   .contacts-card {
     padding: 1.75rem 1.25rem;

@@ -1,7 +1,7 @@
 <template>
   <div class="portfolio-container">
     <PageHeader
-      subtitle="Корпоративные продукты и инфраструктура с измеримым результатом"
+      subtitle="Корпоративные продукты и инфраструктура с измеримым результатом. (NDA не позволяет публиковать все проекты)"
       title="Кейсы и проекты"
     />
 
@@ -173,6 +173,12 @@
   margin-right: 8px;
 }
 
+@media (max-width: 959px) {
+  .portfolio-container {
+    padding: 0;
+  }
+}
+
 @media (max-width: 1200px) {
   .portfolio-grid {
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -206,10 +212,6 @@
 }
 
 @media (max-width: 480px) {
-  .portfolio-container {
-    padding: 1.5rem 1rem;
-  }
-
   .project-image-container {
     height: 180px;
   }
