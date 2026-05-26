@@ -1,9 +1,9 @@
 <template>
   <div class="about-container">
-    <div class="welcome-section">
-      <h1 class="welcome-title">Добро пожаловать в мое резюме!</h1>
-      <p class="welcome-subtitle">Здесь вы найдёте информацию о моих навыках, опыте и профессиональных достижениях</p>
-    </div>
+    <PageHeader
+      subtitle="Здесь вы найдёте информацию о моих навыках, опыте и профессиональных достижениях"
+      title="Добро пожаловать на мое портфолио"
+    />
 
     <div class="about-content">
       <div class="about-card">
@@ -48,12 +48,13 @@
 
 <script>
   import MenuComponent from '@/components/MenuComponent.vue';
+  import PageHeader from '@/components/PageHeader.vue';
   import store from '@/plugins/store.js';
   import { mapGetters } from 'vuex';
 
   export default {
     name: 'About',
-    components: { MenuComponent },
+    components: { MenuComponent, PageHeader },
     computed: {
       ...mapGetters('resume_store', { contacts: 'users_all' }),
     },
@@ -68,29 +69,6 @@
   max-width: 1300px;
   margin: 0 auto;
   padding: 2rem;
-}
-
-.welcome-section {
-  text-align: center;
-  margin-bottom: 3rem;
-  padding: 2rem;
-  background-color: rgba(var(--v-theme-primary), 0.1) !important;
-  border-radius: 15px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-}
-
-.welcome-title {
-  color: rgb(var(--v-theme-text)) !important;
-  font-size: 2.8rem;
-  margin-bottom: 1rem;
-}
-
-.welcome-subtitle {
-  color: rgb(var(--v-theme-text)) !important;
-  font-size: 1.4rem;
-  max-width: 700px;
-  margin: 0 auto;
-  line-height: 1.6;
 }
 
 .about-content {
@@ -217,14 +195,6 @@
 @media (max-width: 768px) {
   .about-content {
     flex-direction: column;
-  }
-
-  .welcome-title {
-    font-size: 2.2rem;
-  }
-
-  .welcome-subtitle {
-    font-size: 1.2rem;
   }
 
   .user-header {

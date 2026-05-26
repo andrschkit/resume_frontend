@@ -1,9 +1,9 @@
 <template>
   <div class="education-container">
-    <div class="welcome-section">
-      <h1 class="welcome-title">Мое образование</h1>
-      <p class="welcome-subtitle">Учебные заведения и курсы повышения квалификации</p>
-    </div>
+    <PageHeader
+      subtitle="Учебные заведения и курсы повышения квалификации"
+      title="Моё образование"
+    />
 
     <div class="education-grid">
       <div v-for="item in educationPlaces" :key="item.id" class="education-card">
@@ -39,12 +39,13 @@
 
 <script>
   import MenuComponent from '@/components/MenuComponent.vue';
+  import PageHeader from '@/components/PageHeader.vue';
   import store from '@/plugins/store.js';
   import { mapGetters } from 'vuex';
 
   export default {
     name: 'Education',
-    components: { MenuComponent },
+    components: { MenuComponent, PageHeader },
     computed: {
       ...mapGetters('resume_store', { educationPlaces: 'education_places_all' }),
     },
@@ -59,29 +60,6 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem 1.5rem;
-}
-
-.welcome-section {
-  text-align: center;
-  margin-bottom: 3rem;
-  padding: 2rem;
-  background: linear-gradient(135deg, #f0f2ff 0%, #e6e9ff 100%);
-  border-radius: 15px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-}
-
-.welcome-title {
-  color: #2c3e50;
-  font-size: 2.8rem;
-  margin-bottom: 1rem;
-}
-
-.welcome-subtitle {
-  color: #4a5b8d;
-  font-size: 1.4rem;
-  max-width: 700px;
-  margin: 0 auto;
-  line-height: 1.6;
 }
 
 .education-grid {
@@ -187,14 +165,6 @@
 }
 
 @media (max-width: 768px) {
-  .welcome-title {
-    font-size: 2.2rem;
-  }
-
-  .welcome-subtitle {
-    font-size: 1.2rem;
-  }
-
   .education-header {
     flex-direction: column;
     text-align: center;
@@ -224,8 +194,5 @@
     grid-template-columns: 1fr;
   }
 
-  .welcome-section {
-    padding: 1.5rem;
-  }
 }
 </style>

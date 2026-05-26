@@ -1,9 +1,9 @@
 <template>
   <div class="contacts-container">
-    <div class="welcome-section">
-      <h1 class="welcome-title">Контакты</h1>
-      <p class="welcome-subtitle">Свяжитесь со мной через форму обратной связи или напрямую</p>
-    </div>
+    <PageHeader
+      subtitle="Свяжитесь со мной через форму обратной связи или напрямую"
+      title="Контакты"
+    />
 
     <div class="contacts-content">
       <!-- Контактная информация -->
@@ -62,8 +62,11 @@
 </template>
 
 <script>
+  import PageHeader from '@/components/PageHeader.vue';
+
   export default {
     name: 'Contacts',
+    components: { PageHeader },
     data () {
       return {
         contactData: {
@@ -110,29 +113,6 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem 1.5rem;
-}
-
-.welcome-section {
-  text-align: center;
-  margin-bottom: 3rem;
-  padding: 2rem;
-  background: linear-gradient(135deg, #f5f7ff 0%, #e8ecff 100%);
-  border-radius: 15px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-}
-
-.welcome-title {
-  color: #2c3e50;
-  font-size: 2.8rem;
-  margin-bottom: 1rem;
-}
-
-.welcome-subtitle {
-  color: #4a5b8d;
-  font-size: 1.4rem;
-  max-width: 700px;
-  margin: 0 auto;
-  line-height: 1.6;
 }
 
 .contacts-content {
@@ -266,14 +246,6 @@ textarea {
 }
 
 @media (max-width: 768px) {
-  .welcome-title {
-    font-size: 2.2rem;
-  }
-
-  .welcome-subtitle {
-    font-size: 1.2rem;
-  }
-
   .contact-name {
     font-size: 1.5rem;
   }
@@ -290,10 +262,6 @@ textarea {
 @media (max-width: 480px) {
   .contacts-container {
     padding: 1.5rem 1rem;
-  }
-
-  .welcome-section {
-    padding: 1.5rem;
   }
 
   .contact-info-card,

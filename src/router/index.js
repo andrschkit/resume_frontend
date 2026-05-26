@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import About from '@/pages/About.vue'
-import E404 from '@/pages/E404.vue'
 
 const routes = [
   {
@@ -14,12 +13,7 @@ const routes = [
     name: 'resume',
     path: '/resume',
     component: About,
-  },
-  {
-    name: 'error',
-    path: '/:pathMatch(.*)*',
-    component: E404,
-  },
+  }
 ]
 
 const router = createRouter({

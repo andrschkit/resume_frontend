@@ -1,9 +1,9 @@
 <template>
   <div class="skills-container">
-    <div class="welcome-section">
-      <h1 class="welcome-title">Мои навыки</h1>
-      <p class="welcome-subtitle">Профессиональные компетенции и технологии</p>
-    </div>
+    <PageHeader
+      subtitle="Профессиональные компетенции и технологии"
+      title="Мои навыки"
+    />
 
     <div class="skills-categories">
       <!-- Основные навыки -->
@@ -62,12 +62,13 @@
 
 <script>
   import MenuComponent from '@/components/MenuComponent.vue';
+  import PageHeader from '@/components/PageHeader.vue';
   import store from '@/plugins/store.js';
   import { mapGetters } from 'vuex';
 
   export default {
     name: 'Skills',
-    components: { MenuComponent },
+    components: { MenuComponent, PageHeader },
     computed: {
       ...mapGetters('resume_store', {
         coreSkills: 'main_skills_all',
@@ -110,29 +111,6 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem 1.5rem;
-}
-
-.welcome-section {
-  text-align: center;
-  margin-bottom: 3rem;
-  padding: 2rem;
-  background: linear-gradient(135deg, #f0f2ff 0%, #e6e9ff 100%);
-  border-radius: 15px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-}
-
-.welcome-title {
-  color: #2c3e50;
-  font-size: 2.8rem;
-  margin-bottom: 1rem;
-}
-
-.welcome-subtitle {
-  color: #4a5b8d;
-  font-size: 1.4rem;
-  max-width: 700px;
-  margin: 0 auto;
-  line-height: 1.6;
 }
 
 .skills-categories {
@@ -209,14 +187,6 @@
 }
 
 @media (max-width: 768px) {
-  .welcome-title {
-    font-size: 2.2rem;
-  }
-
-  .welcome-subtitle {
-    font-size: 1.2rem;
-  }
-
   .category-title {
     font-size: 1.8rem;
   }
@@ -233,10 +203,6 @@
 }
 
 @media (max-width: 480px) {
-  .welcome-section {
-    padding: 1.5rem;
-  }
-
   .category-title {
     font-size: 1.6rem;
   }
