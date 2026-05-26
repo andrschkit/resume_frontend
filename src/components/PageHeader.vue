@@ -82,7 +82,7 @@
 }
 
 .page-header--hero .page-header__title {
-  font-size: clamp(4rem, 12vw, 6rem);
+  font-size: clamp(2rem, 10vw, 4rem);
   font-weight: 800;
   line-height: 1;
 }

@@ -15,9 +15,10 @@
         </div>
 
         <transition name="fade">
-          <p v-if="!rail" class="username">
-            Щербаков Андрей
-          </p>
+          <div v-if="!rail" class="user-titles">
+            <p class="username">Щербаков Андрей</p>
+            <p class="user-role">Руководитель IT-проектов</p>
+          </div>
         </transition>
       </div>
 
@@ -227,13 +228,25 @@
   height: 100%;
 }
 
+.user-titles {
+  text-align: center;
+}
+
 .username {
   white-space: nowrap;
   font-size: 1.4rem;
   font-weight: 600;
   color: rgba(var(--v-theme-on-background), 0.9);
-  text-align: center;
   margin: 0;
+}
+
+.user-role {
+  margin: 0.35rem 0 0;
+  font-size: 0.8rem;
+  font-weight: 400;
+  line-height: 1.3;
+  color: rgba(var(--v-theme-on-background), 0.65);
+  max-width: 200px;
 }
 
 .divider {

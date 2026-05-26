@@ -1,8 +1,8 @@
 <template>
   <div class="portfolio-container">
     <PageHeader
-      subtitle="Реализованные решения и приложения"
-      title="Мои проекты"
+      subtitle="Корпоративные продукты и инфраструктура с измеримым результатом"
+      title="Кейсы и проекты"
     />
 
     <div class="portfolio-grid">

@@ -1,8 +1,8 @@
 <template>
   <div class="tools-container">
     <PageHeader
-      subtitle="Технологии и средства, использованные при создании этого резюме"
-      title="Инструменты"
+      subtitle="Стек этого сайта-resume: демонстрация fullstack и API-first подхода"
+      title="Стек проекта"
     />
 
     <div class="tools-grid">

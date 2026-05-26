@@ -1,108 +1,156 @@
 <template>
   <div class="contacts-container">
     <PageHeader
-      subtitle="Свяжитесь со мной через форму обратной связи или напрямую"
-      title="Контакты"
+      subtitle="Телефон, почта и мессенджеры — для HR или сотрудничества"
+      title="Связаться со мной"
     />
 
-    <div class="contacts-content">
-      <!-- Контактная информация -->
-      <div class="contact-info-card">
-        <h2 class="contact-name">{{ fullName }}</h2>
-
-        <div class="contact-details">
-          <div class="contact-item">
-            <MdiIcon class="contact-icon" icon="mdi-phone" />
-            <span>{{ contactData.phone }}</span>
-          </div>
-          <div class="contact-item">
-            <MdiIcon class="contact-icon" icon="mdi-email" />
-            <span>{{ contactData.mail }}</span>
-          </div>
-          <div class="contact-item">
-            <MdiIcon class="contact-icon" icon="mdi-github" />
-            <a :href="contactData.git" target="_blank">GitHub профиль</a>
+    <div v-if="user" class="contacts-card">
+      <div class="profile-block">
+        <div class="avatar-wrap">
+          <img
+            v-if="showPhoto"
+            :alt="fullName"
+            class="avatar"
+            :src="user.photo_url"
+            @error="showPhoto = false"
+          >
+          <div v-else class="avatar-placeholder">
+            <MdiIcon icon="mdi-account" size="large" />
           </div>
         </div>
+        <h2 class="profile-name">{{ fullName }}</h2>
+        <p class="profile-role">Руководитель IT-проектов · Москва</p>
       </div>
 
-      <!-- Форма обратной связи -->
-      <div class="feedback-form">
-        <h2 class="form-title">
-          <MdiIcon color="#6a5acd" icon="mdi-email-edit" size="large" />
-          Форма обратной связи
-        </h2>
-
-        <form @submit.prevent="submitForm">
-          <div class="form-group">
-            <label for="name">Ваше имя *</label>
-            <input id="name" v-model="form.name" required type="text">
+      <div class="channels-grid">
+        <a
+          v-for="channel in channels"
+          :key="channel.id"
+          class="channel-card"
+          :href="channel.href"
+          :rel="channel.external ? 'noopener noreferrer' : undefined"
+          :target="channel.external ? '_blank' : undefined"
+        >
+          <div class="channel-icon">
+            <MdiIcon :icon="channel.icon" size="large" />
           </div>
-
-          <div class="form-group">
-            <label for="email">Ваш Email *</label>
-            <input id="email" v-model="form.email" required type="email">
+          <div class="channel-body">
+            <span class="channel-label">{{ channel.label }}</span>
+            <span class="channel-value">{{ channel.value }}</span>
           </div>
-
-          <div class="form-group">
-            <label for="subject">Тема</label>
-            <input id="subject" v-model="form.subject" type="text">
-          </div>
-
-          <div class="form-group">
-            <label for="message">Сообщение *</label>
-            <textarea id="message" v-model="form.message" required />
-          </div>
-
-          <button class="submit-btn" type="submit">Отправить сообщение</button>
-        </form>
+          <MdiIcon class="channel-arrow" icon="mdi-chevron-right" size="small" />
+        </a>
       </div>
     </div>
+
+    <p v-else-if="loadError" class="contacts-status contacts-status--error">
+      Не удалось загрузить контакты. Убедитесь, что бэкенд запущен.
+    </p>
+    <p v-else class="contacts-status">Загрузка контактов…</p>
   </div>
 </template>
 
 <script>
   import PageHeader from '@/components/PageHeader.vue';
+  import store from '@/plugins/store.js';
+  import { mapGetters, mapState } from 'vuex';
 
   export default {
     name: 'Contacts',
     components: { PageHeader },
     data () {
-      return {
-        contactData: {
-          id: 1,
-          first_name: 'Андрей',
-          last_name: 'Щербаков',
-          middle_name: 'Алексеевич',
-          phone: '8-916-027-48-62',
-          mail: 'andrschkit@gmail.com',
-          git: 'https://github.com/andrschkit',
-          photo_url: 'https://localhost:8080/userphoto.jpg',
-        },
-        form: {
-          name: '',
-          email: '',
-          subject: '',
-          message: '',
-        },
-      };
+      return { showPhoto: true };
     },
     computed: {
+      ...mapGetters('resume_store', { users: 'users_all' }),
+      ...mapState('resume_store', { loadError: 'error' }),
+      user () {
+        return this.users[0] || null;
+      },
       fullName () {
-        return `${this.contactData.last_name} ${this.contactData.first_name} ${this.contactData.middle_name}`;
+        if (!this.user) return '';
+        const { last_name, first_name, middle_name } = this.user;
+        return [last_name, first_name, middle_name].filter(Boolean).join(' ');
+      },
+      channels () {
+        if (!this.user) return [];
+
+        const u = this.user;
+        const items = [
+          {
+            id: 'phone',
+            label: 'Телефон',
+            value: u.phone,
+            href: u.phone ? `tel:${this.phoneHref(u.phone)}` : null,
+            icon: 'mdi-phone',
+            external: false,
+          },
+          {
+            id: 'mail',
+            label: 'Email',
+            value: u.mail,
+            href: u.mail ? `mailto:${u.mail}` : null,
+            icon: 'mdi-email',
+            external: false,
+          },
+          {
+            id: 'telegram',
+            label: 'Telegram',
+            value: this.formatTelegram(u.telegram),
+            href: u.telegram,
+            icon: 'mdi-send',
+            external: true,
+          },
+          {
+            id: 'vk',
+            label: 'ВКонтакте',
+            value: this.formatVk(u.vk),
+            href: u.vk,
+            icon: 'mdi-vk',
+            external: true,
+          },
+          {
+            id: 'git',
+            label: 'GitHub',
+            value: this.formatGitHub(u.git),
+            href: u.git,
+            icon: 'mdi-github',
+            external: true,
+          },
+        ];
+
+        return items.filter(item => item.href && item.value);
       },
     },
+    mounted () {
+      store.dispatch('resume_store/loadUsers');
+    },
     methods: {
-      submitForm () {
-        // Здесь будет логика отправки формы
-        alert('Форма отправлена!');
-        // Сброс формы
-        this.form = {
-          name: '',
-          email: '',
-          subject: '',
-          message: '',
-        };
+      phoneHref (phone) {
+        return String(phone).replace(/\D/g, '');
+      },
+      formatTelegram (url) {
+        if (!url) return '';
+        const match = String(url).match(/t\.me\/([^/?#]+)/i);
+        return match ? `@${match[1]}` : url;
+      },
+      formatVk (url) {
+        if (!url) return '';
+        try {
+          return new URL(url).pathname.replace(/^\//, '');
+        } catch {
+          return url;
+        }
+      },
+      formatGitHub (url) {
+        if (!url) return '';
+        try {
+          const host = new URL(url).hostname.replace(/^www\./, '');
+          return `${host}${new URL(url).pathname}`.replace(/\/$/, '');
+        } catch {
+          return url;
+        }
       },
     },
   }
@@ -110,163 +158,178 @@
 
 <style scoped>
 .contacts-container {
-  max-width: 1200px;
+  max-width: 900px;
   margin: 0 auto;
   padding: 2rem 1.5rem;
 }
 
-.contacts-content {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
-  margin-top: 2rem;
+.contacts-card {
+  background: rgba(var(--v-theme-surface), 0.5);
+  border: 1px solid rgba(var(--v-theme-border), 0.3);
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  padding: 2.5rem;
+  transition: transform 0.3s ease;
 }
 
-@media (max-width: 900px) {
-  .contacts-content {
-    grid-template-columns: 1fr;
-  }
+.contacts-card:hover {
+  transform: translateY(-3px);
 }
 
-.contact-info-card {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-  padding: 2rem;
+.profile-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
-  border-top: 4px solid #6a5acd;
+  margin-bottom: 2.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid rgba(var(--v-theme-border), 0.35);
 }
 
-.contact-photo {
-  width: 150px;
-  height: 150px;
+.avatar-wrap {
+  margin-bottom: 1.25rem;
+}
+
+.avatar {
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   object-fit: cover;
-  margin: 0 auto 1.5rem;
-  border: 3px solid #6a5acd;
+  border: 4px solid rgba(var(--v-theme-primary), 0.25);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
-.contact-name {
-  color: #2c3e50;
-  font-size: 1.8rem;
-  margin-bottom: 1.5rem;
-}
-
-.contact-details {
-  text-align: left;
-  margin-top: 1.5rem;
-}
-
-.contact-item {
+.avatar-placeholder {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
-  margin-bottom: 1rem;
-  font-size: 1.1rem;
-}
-
-.contact-icon {
-  margin-right: 10px;
-  color: #6a5acd;
-}
-
-.contact-item a {
-  color: #6a5acd;
-  text-decoration: none;
-}
-
-.contact-item a:hover {
-  text-decoration: underline;
-}
-
-.feedback-form {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-  padding: 2rem;
-  border-top: 4px solid #42b983;
-}
-
-.form-title {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  color: #2c3e50;
-  font-size: 1.8rem;
-  margin-bottom: 1.5rem;
-  padding-bottom: 0.8rem;
-  border-bottom: 2px solid #42b983;
-}
-
-.form-group {
-  margin-bottom: 1.5rem;
-}
-
-label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 500;
-  color: #2c3e50;
-}
-
-input, textarea {
-  width: 100%;
-  padding: 12px 15px;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  font-size: 1rem;
-  transition: all 0.3s;
-  color: black;
-}
-
-input:focus, textarea:focus {
-  outline: none;
-  border-color: #6a5acd;
-  box-shadow: 0 0 0 3px rgba(106, 90, 205, 0.1);
-}
-
-textarea {
-  min-height: 150px;
-  resize: vertical;
-}
-
-.submit-btn {
-  background: #6a5acd;
+  justify-content: center;
+  background: linear-gradient(135deg, rgb(var(--v-theme-primary)), #4b6cb7);
   color: white;
-  border: none;
-  padding: 12px 25px;
-  font-size: 1rem;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background 0.3s;
-  font-weight: 600;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
-.submit-btn:hover {
-  background: #5a4ab5;
+.profile-name {
+  margin: 0 0 0.5rem;
+  font-size: 1.85rem;
+  font-weight: 600;
+  color: rgb(var(--v-theme-text));
+}
+
+.profile-role {
+  margin: 0;
+  font-size: 1rem;
+  color: rgb(var(--v-theme-subtext));
+}
+
+.channels-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.channel-card {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.25rem 1.5rem;
+  border-radius: 12px;
+  background: rgba(var(--v-theme-background), 0.5);
+  border: 1px solid rgba(var(--v-theme-border), 0.25);
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.25s ease;
+}
+
+.channel-card:hover {
+  background: rgba(var(--v-theme-primary), 0.08);
+  border-color: rgba(var(--v-theme-primary), 0.35);
+  transform: translateX(6px);
+}
+
+.channel-icon {
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgb(var(--v-theme-primary)), #4b6cb7);
+  color: white;
+}
+
+.channel-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.channel-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: rgb(var(--v-theme-subtext));
+}
+
+.channel-value {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: rgb(var(--v-theme-text));
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.channel-arrow {
+  flex-shrink: 0;
+  color: rgb(var(--v-theme-primary));
+  opacity: 0.6;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.channel-card:hover .channel-arrow {
+  opacity: 1;
+  transform: translateX(4px);
+}
+
+.contacts-status {
+  text-align: center;
+  padding: 2rem;
+  color: rgb(var(--v-theme-subtext));
+}
+
+.contacts-status--error {
+  color: #e57373;
 }
 
 @media (max-width: 768px) {
-  .contact-name {
+  .contacts-card {
+    padding: 1.75rem 1.25rem;
+  }
+
+  .profile-name {
     font-size: 1.5rem;
   }
 
-  .form-title {
-    font-size: 1.5rem;
+  .channel-card {
+    padding: 1rem 1.15rem;
+    gap: 1rem;
   }
 
-  .contact-item {
+  .channel-icon {
+    width: 46px;
+    height: 46px;
+  }
+
+  .channel-value {
     font-size: 1rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .contacts-container {
-    padding: 1.5rem 1rem;
-  }
-
-  .contact-info-card,
-  .feedback-form {
-    padding: 1.5rem;
+    white-space: normal;
   }
 }
 </style>
