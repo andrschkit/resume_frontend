@@ -10,13 +10,13 @@
         <div class="education-header">
           <div class="education-logo">
             <div class="logo-placeholder">
-              <v-icon color="white" large>mdi-school</v-icon>
+              <MdiIcon color="white" icon="mdi-school" size="large" />
             </div>
           </div>
           <div class="education-info">
             <h2 class="education-title">{{ item.name }}</h2>
             <div class="education-interval">
-              <v-icon small>mdi-calendar</v-icon>
+              <MdiIcon icon="mdi-calendar" size="small" />
               <span>{{ item.interval }}</span>
             </div>
           </div>
@@ -28,7 +28,7 @@
 
         <div class="education-footer">
           <div class="education-badge">
-            <v-icon small>mdi-certificate</v-icon>
+            <MdiIcon icon="mdi-certificate" size="small" />
             <span>Диплом/Сертификат</span>
           </div>
         </div>
@@ -147,7 +147,7 @@
   font-size: 1.1rem;
 }
 
-.education-interval .v-icon {
+.education-interval .mdi-icon {
   margin-right: 8px;
   color: #6a5acd;
 }
@@ -176,7 +176,7 @@
   font-weight: 500;
 }
 
-.education-badge .v-icon {
+.education-badge .mdi-icon {
   margin-right: 6px;
 }
 

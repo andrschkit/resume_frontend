@@ -17,7 +17,7 @@
             <div class="timeline-info">
               <h2 class="timeline-title">{{ item.name }}</h2>
               <div class="timeline-interval">
-                <v-icon small>mdi-calendar</v-icon>
+                <MdiIcon icon="mdi-calendar" size="small" />
                 <span>{{ item.interval }}</span>
               </div>
             </div>
@@ -150,7 +150,7 @@
   font-size: 1.1rem;
 }
 
-.timeline-interval .v-icon {
+.timeline-interval .mdi-icon {
   margin-right: 8px;
   color: #42b983;
 }

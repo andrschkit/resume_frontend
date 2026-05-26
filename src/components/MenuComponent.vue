@@ -1,128 +1,116 @@
 <template>
-  <div class="layout-wrapper">
-    <!-- Десктопная навигация -->
-    <div v-if="!isMobile" class="navigation-wrapper">
-      <v-navigation-drawer
-        v-model="drawer"
-        class="custom-navigation"
-        permanent
-        :width="currentWidth"
-        @mouseenter="hovered = true"
-        @mouseleave="hovered = false"
-      >
-        <div class="user-data" :style="rail ? 'height:10vh' : 'height:21vh'">
-          <v-avatar class="avatar" :size="rail ? '70' : '120'">
-            <img alt="Avatar" src="@/assets/avatar.jpg">
-          </v-avatar>
+  <div
+    class="layout-wrapper"
+    :style="{ '--nav-width': isMobile ? '0px' : `${currentWidth}px` }"
+  >
+    <aside
+      v-if="!isMobile"
+      class="side-nav custom-navigation"
+      :class="{ collapsed: rail }"
+      :style="{ width: `${currentWidth}px` }"
+    >
+      <div class="user-data" :style="rail ? 'height:10vh' : 'height:21vh'">
+        <div class="avatar" :class="{ 'avatar--small': rail }">
+          <img alt="Avatar" src="@/assets/avatar.jpg">
+        </div>
+
+        <transition name="fade">
+          <p v-if="!rail" class="username">
+            Щербаков Андрей
+          </p>
+        </transition>
+      </div>
+
+      <hr class="divider">
+
+      <nav class="menu-list">
+        <button
+          v-for="item in menu"
+          :key="item.route"
+          type="button"
+          class="menu-item"
+          :class="{ 'active-menu-item': item.route === activeSection }"
+          @click="$emit('scroll-to', item.route)"
+        >
+          <span class="menu-icon-wrap">
+            <img
+              alt=""
+              class="menu-icon"
+              :class="darkMode ? 'menu-icon-light' : 'menu-icon-dark'"
+              :src="item.icon"
+            >
+          </span>
 
           <transition name="fade">
-            <v-list-item-title
-              v-if="!rail"
-              class="text-h6 username"
-            >
-              Щербаков Андрей
-            </v-list-item-title>
+            <span v-if="!rail" class="menu-title">{{ item.title }}</span>
           </transition>
-        </div>
+        </button>
+      </nav>
 
-        <v-divider class="divider" />
+      <button type="button" class="toggle-button" aria-label="Свернуть меню" @click="toggleRail">
+        <MdiIcon :icon="rail ? 'mdi-chevron-right' : 'mdi-chevron-left'" />
+      </button>
 
-        <v-list class="menu-list">
-          <v-list-item
-            v-for="item in menu"
-            :key="item.route"
-            :active="item.route === activeSection"
-            active-class="active-menu-item"
-            class="menu-item"
-            @click="$emit('scroll-to', item.route)"
-          >
-            <template #prepend>
-              <v-icon>
-                <img alt="" class="menu-icon" :class="!darkMode? 'menu-icon-dark':'menu-icon-light'" :src="item.icon">
-              </v-icon>
-            </template>
+      <div class="mode-toggle" :class="!rail ? 'mode-toggle-expand' : 'mode-toggle-collapse'">
+        <button
+          type="button"
+          class="theme-toggle"
+          :aria-label="darkMode ? 'Светлая тема' : 'Тёмная тема'"
+          @click="toggleDarkMode"
+        >
+          <span class="theme-toggle-track" :class="{ 'theme-toggle-track--on': darkMode }">
+            <span class="theme-toggle-thumb" />
+          </span>
+        </button>
+        <img alt="" class="mode-icon" :src="darkMode ? sun : moon">
+      </div>
+    </aside>
 
-            <transition name="fade">
-              <v-list-item-title v-if="!rail" class="menu-title">
-                {{ item.title }}
-              </v-list-item-title>
-            </transition>
-          </v-list-item>
-        </v-list>
-
-        <div class="toggle-button" @click="toggleRail">
-          <v-icon>{{ rail ? 'mdi-chevron-right' : 'mdi-chevron-left' }}</v-icon>
-        </div>
-        <div class="mode-toggle" :class="!rail ? 'mode-toggle-expand' : 'mode-toggle-collapse'">
-          <v-switch
-            v-model="darkMode"
-            :class="!rail ? 'switch-expand' : 'switch-collapse'"
-            hide-details
-            style="padding: 10px; justify-items: center"
-            @click="toggleDarkMode"
-          />
-          <img alt="" class="mode-icon" :src="darkMode?sun:moon">
-        </div>
-      </v-navigation-drawer>
-    </div>
-    <!-- Основной контент -->
-    <div :class="{'content-desktop': !isMobile, 'content-mobile': isMobile}">
+    <div :class="{ 'content-desktop': !isMobile, 'content-mobile': isMobile }">
       <slot name="content" />
     </div>
-    <!-- Мобильная навигация -->
-    <v-bottom-navigation
-      v-if="isMobile"
-      v-model="activeTab"
-      class="mobile-navigation"
-      grow
-    >
-      <v-btn
+
+    <nav v-if="isMobile" class="mobile-navigation">
+      <button
         v-for="item in menu"
         :key="item.route"
-        :value="item.route"
+        type="button"
+        class="mobile-nav-btn"
+        :class="{ 'mobile-nav-btn--active': item.route === activeSection }"
         @click="$emit('scroll-to', item.route)"
       >
-        <v-icon>
-          <img
-            alt=""
-            class="mobile-menu-icon"
-            :class="darkMode ? 'menu-icon-light' : 'menu-icon-dark'"
-            :src="item.icon"
-          >
-        </v-icon>
+        <img
+          alt=""
+          class="mobile-menu-icon"
+          :class="darkMode ? 'menu-icon-light' : 'menu-icon-dark'"
+          :src="item.icon"
+        >
         <span>{{ item.title }}</span>
-      </v-btn>
+      </button>
 
-      <!-- Кнопка переключения темы для мобильной версии -->
-      <v-btn value="theme" @click="toggleDarkMode">
-        <v-icon>
-          <img alt="" class="mode-icon" :src="darkMode?sun:moon">
-        </v-icon>
+      <button type="button" class="mobile-nav-btn" @click="toggleDarkMode">
+        <img alt="" class="mode-icon" :src="darkMode ? sun : moon">
         <span>{{ darkMode ? 'Светлая' : 'Тёмная' }}</span>
-      </v-btn>
-    </v-bottom-navigation>
+      </button>
+    </nav>
   </div>
 </template>
 
 <script setup>
   import { computed, onMounted, onUnmounted, ref } from 'vue'
-  import { useTheme } from 'vuetify'
+  import { applyTheme, getInitialTheme, isDarkTheme } from '@/plugins/theme'
+  import MdiIcon from '@/components/MdiIcon.vue'
   import moon from '@/assets/moon-svgrepo.svg'
   import sun from '@/assets/sun-svgrepo.svg'
 
-  const theme = useTheme()
-  const drawer = ref(true)
   const rail = ref(true)
-  const hovered = ref(false)
   const darkMode = ref(false)
   const isMobile = ref(false)
-  const activeTab = ref('')
   const collapsedWidth = 80
   const expandedWidth = 240
 
-  // Функция для проверки мобильного устройства
   const checkMobile = () => {
-    isMobile.value = window.innerWidth < 960 // Брекпоинт Vuetify для md
+    isMobile.value = window.innerWidth < 960
   }
 
   defineProps({
@@ -134,46 +122,36 @@
       type: String,
       required: true,
     },
-  });
-  defineEmits(['scroll-to']);
-
-  const currentWidth = computed(() => {
-    return rail.value ? collapsedWidth : expandedWidth
   })
+  defineEmits(['scroll-to'])
+
+  const currentWidth = computed(() => (rail.value ? collapsedWidth : expandedWidth))
 
   const toggleRail = () => {
     rail.value = !rail.value
-    localStorage.setItem('navigationRail', rail.value)
+    localStorage.setItem('navigationRail', String(rail.value))
+  }
+
+  const setTheme = themeName => {
+    applyTheme(themeName)
+    darkMode.value = isDarkTheme(themeName)
+    localStorage.setItem('theme', themeName)
   }
 
   const toggleDarkMode = () => {
-    darkMode.value = !darkMode.value
-    theme.global.name.value = darkMode.value ? 'customDarkTheme' : 'customLightTheme'
-    localStorage.setItem('theme', theme.global.name.value)
+    setTheme(darkMode.value ? 'customLightTheme' : 'customDarkTheme')
   }
 
   onMounted(() => {
-    // Проверка мобильного устройства при загрузке
     checkMobile()
     window.addEventListener('resize', checkMobile)
 
-    // Загрузка состояния навигации
     const savedRail = localStorage.getItem('navigationRail')
     if (savedRail !== null) {
       rail.value = savedRail === 'true'
     }
 
-    // Загрузка темы
-    const savedTheme = localStorage.getItem('theme')
-    if (savedTheme) {
-      darkMode.value = savedTheme === 'customDarkTheme'
-      theme.global.name.value = savedTheme
-    } else {
-      const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
-      darkMode.value = isDarkMode
-      theme.global.name.value = isDarkMode ? 'customDarkTheme' : 'customLightTheme'
-      localStorage.setItem('theme', theme.global.name.value)
-    }
+    setTheme(getInitialTheme())
   })
 
   onUnmounted(() => {
@@ -187,40 +165,30 @@
   min-height: 100vh;
 }
 
-.navigation-wrapper {
+.side-nav {
   position: fixed;
   left: 0;
   top: 0;
   height: 100vh;
   z-index: 100;
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-right: 1px solid rgba(var(--v-theme-border), 0.3);
+  background: rgba(var(--v-theme-background), 0.95);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
 .content-desktop {
-  margin-left: 0;
+  margin-left: var(--nav-width, 80px);
   transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   min-height: 100vh;
 }
 
 .content-mobile {
-  padding-bottom: 70px; /* Отступ для мобильной навигации */
+  padding-bottom: 70px;
   min-height: 100vh;
-}
-
-.custom-navigation {
-  --collapsed-width: 80px;
-  --expanded-width: 240px;
-  position: fixed;
-  height: 100vh;
-  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-  border-right: 1px solid rgba(var(--v-theme-border), 0.3);
-  z-index: 100;
-  background: rgba(var(--v-theme-background), 0.95) !important;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-}
-
-.custom-navigation.collapsed {
-  width: var(--collapsed-width) !important;
 }
 
 .user-data {
@@ -230,19 +198,33 @@
   padding: 20px 16px;
   transition: all 0.3s ease;
   overflow: hidden;
-  height: 20vh;
 }
 
 .avatar {
-  transition: all 0.3s ease;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
   margin-bottom: 15px;
   border: 5px solid rgba(var(--v-theme-primary), 0.1);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+.avatar--small {
+  width: 70px;
+  height: 70px;
+}
+
+.avatar:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
 .avatar img {
   object-fit: cover;
-  width: 125px;
+  width: 100%;
+  height: 100%;
 }
 
 .username {
@@ -251,32 +233,39 @@
   font-weight: 600;
   color: rgba(var(--v-theme-on-background), 0.9);
   text-align: center;
+  margin: 0;
 }
 
 .divider {
-  margin: 15px 0;
-  transition: margin 0.3s ease;
-  opacity: 0.3;
+  margin: 15px 16px;
+  border: none;
+  border-top: 1px solid rgba(var(--v-theme-border), 0.3);
 }
 
 .menu-list {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  justify-content: left;
+  align-items: stretch;
   padding: 5px 12px;
+  flex: 1;
+  overflow-y: auto;
 }
 
 .menu-item {
   width: 100%;
-  border-radius: 12px !important;
+  border: none;
+  background: transparent;
+  border-radius: 12px;
   margin: 8px 0;
   transition: all 0.3s ease;
   min-height: 50px;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  gap: 12px;
   padding: 0 16px;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
 }
 
 .menu-item:hover {
@@ -284,37 +273,38 @@
   transform: translateX(5px);
 }
 
+.menu-icon-wrap {
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
 .menu-icon {
   width: 26px;
   height: 26px;
   transition: all 0.3s ease;
-  flex-shrink: 0;
 }
-.active-menu-item {
-  background-color: rgba(var(--v-theme-primary), 0.1);
-  border-radius: 50%;
-}
+
 .menu-icon-dark {
-  filter: brightness(0) !important;
+  filter: brightness(0);
 }
+
 .menu-icon-light {
-  filter: brightness(0) invert(1) !important;
+  filter: brightness(0) invert(1);
 }
+
 .menu-title {
   white-space: nowrap;
-
   font-size: 1.1rem;
   font-weight: 500;
   color: rgba(var(--v-theme-on-background), 0.8);
 }
 
 .active-menu-item {
-  background-color: rgba(var(--v-theme-primary), 0.1) !important;
-  border-radius: 12px !important;
+  background-color: rgba(var(--v-theme-primary), 0.1);
 }
 
 .active-menu-item .menu-title {
-  color: rgb(var(--v-theme-primary)) !important;
+  color: rgb(var(--v-theme-primary));
   font-weight: 600;
 }
 
@@ -324,6 +314,7 @@
   right: 20px;
   cursor: pointer;
   padding: 10px;
+  border: none;
   border-radius: 50%;
   transition: all 0.3s ease;
   background-color: rgba(var(--v-theme-primary), 0.1);
@@ -332,16 +323,12 @@
   justify-content: center;
   width: 40px;
   height: 40px;
+  color: rgb(var(--v-theme-primary));
 }
 
 .toggle-button:hover {
   background-color: rgba(var(--v-theme-primary), 0.2);
   transform: scale(1.1);
-}
-
-.toggle-button .v-icon {
-  color: rgb(var(--v-theme-primary));
-  transition: transform 0.3s ease;
 }
 
 .fade-enter-active,
@@ -363,23 +350,53 @@
   position: absolute;
   bottom: 12vh;
   padding: 8px;
+  gap: 12px;
 }
 
 .mode-toggle-expand {
   flex-direction: row;
-  gap: 12px;
 }
 
 .mode-toggle-collapse {
   flex-direction: column;
+  gap: 8px;
 }
 
-.switch-expand {
-  padding: 10px !important;
+.theme-toggle {
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
 }
 
-.switch-collapse {
-  padding: 0 !important;
+.theme-toggle-track {
+  display: block;
+  width: 44px;
+  height: 24px;
+  border-radius: 12px;
+  background: rgba(var(--v-theme-border), 0.5);
+  position: relative;
+  transition: background 0.2s ease;
+}
+
+.theme-toggle-track--on {
+  background: rgba(var(--v-theme-primary), 0.6);
+}
+
+.theme-toggle-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.2s ease;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+.theme-toggle-track--on .theme-toggle-thumb {
+  transform: translateX(20px);
 }
 
 .mode-icon {
@@ -393,40 +410,55 @@
   transform: scale(1.1);
 }
 
-/* Анимации */
-.v-avatar {
-  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+.mobile-navigation {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  overflow-x: auto;
+  background: rgba(var(--v-theme-background), 0.95);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(var(--v-theme-border), 0.3);
+  min-height: 56px;
 }
 
-.v-avatar:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+.mobile-nav-btn {
+  flex: 1 0 auto;
+  min-width: 72px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 8px 6px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.7rem;
+  color: rgba(var(--v-theme-on-background), 0.8);
 }
 
-/* Адаптивность */
+.mobile-nav-btn--active {
+  color: rgb(var(--v-theme-primary));
+}
+
+.mobile-menu-icon {
+  width: 24px;
+  height: 24px;
+}
+
 @media (max-width: 960px) {
-  .custom-navigation {
-    border-radius: 0 20px 20px 0;
-  }
-
-  .user-data {
-    padding: 15px 10px;
-  }
-
-  .menu-item {
-    padding: 0 12px;
+  .side-nav {
+    display: none;
   }
 }
 
 @media (max-width: 600px) {
-  .custom-navigation {
-    --collapsed-width: 70px;
-    --expanded-width: 200px;
-  }
-
-  .avatar {
-    width: 50px !important;
-    height: 50px !important;
+  .avatar--small {
+    width: 50px;
+    height: 50px;
   }
 
   .menu-icon {
@@ -444,38 +476,6 @@
     padding: 8px;
     bottom: 15px;
     right: 15px;
-  }
-
-  .mobile-navigation {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 100;
-    background: rgba(var(--v-theme-background), 0.95) !important;
-    backdrop-filter: blur(10px);
-    border-top: 1px solid rgba(var(--v-theme-border), 0.3);
-    height: 56px;
-  }
-
-  .mobile-content {
-    padding-bottom: 56px; /* Высота bottom navigation */
-  }
-
-  .mobile-menu-icon {
-    width: 24px;
-    height: 24px;
-  }
-
-  /* Адаптивность для мобильных устройств */
-  @media (max-width: 960px) {
-    .navigation-wrapper {
-      display: none !important;
-    }
-
-    .custom-navigation {
-      display: none !important;
-    }
   }
 }
 </style>

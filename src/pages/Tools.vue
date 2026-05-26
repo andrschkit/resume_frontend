@@ -10,7 +10,7 @@
       <div class="tool-card">
         <div class="tool-header">
           <div class="tool-logo">
-            <v-icon color="#42b883" large>mdi-vuejs</v-icon>
+            <MdiIcon color="#42b883" icon="mdi-vuejs" size="large" />
           </div>
           <h2 class="tool-name">Vue 3</h2>
         </div>
@@ -19,7 +19,7 @@
         </p>
         <div class="tool-footer">
           <a class="tool-link" href="https://vuejs.org/" target="_blank">
-            <v-icon small>mdi-open-in-new</v-icon>
+            <MdiIcon icon="mdi-open-in-new" size="small" />
             <span>Официальный сайт</span>
           </a>
         </div>
@@ -29,7 +29,7 @@
       <div class="tool-card">
         <div class="tool-header">
           <div class="tool-logo">
-            <v-icon color="#5382a1" large>mdi-language-java</v-icon>
+            <MdiIcon color="#5382a1" icon="mdi-language-java" size="large" />
           </div>
           <h2 class="tool-name">Java</h2>
         </div>
@@ -38,7 +38,7 @@
         </p>
         <div class="tool-footer">
           <a class="tool-link" href="https://www.java.com/" target="_blank">
-            <v-icon small>mdi-open-in-new</v-icon>
+            <MdiIcon icon="mdi-open-in-new" size="small" />
             <span>Официальный сайт</span>
           </a>
         </div>
@@ -48,7 +48,7 @@
       <div class="tool-card">
         <div class="tool-header">
           <div class="tool-logo">
-            <v-icon color="#336791" large>mdi-database</v-icon>
+            <MdiIcon color="#336791" icon="mdi-database" size="large" />
           </div>
           <h2 class="tool-name">PostgreSQL</h2>
         </div>
@@ -57,7 +57,7 @@
         </p>
         <div class="tool-footer">
           <a class="tool-link" href="https://www.postgresql.org/" target="_blank">
-            <v-icon small>mdi-open-in-new</v-icon>
+            <MdiIcon icon="mdi-open-in-new" size="small" />
             <span>Официальный сайт</span>
           </a>
         </div>
@@ -67,7 +67,7 @@
       <div class="tool-card">
         <div class="tool-header">
           <div class="tool-logo">
-            <v-icon color="#85ea2d" large>mdi-api</v-icon>
+            <MdiIcon color="#85ea2d" icon="mdi-api" size="large" />
           </div>
           <h2 class="tool-name">Swagger</h2>
         </div>
@@ -76,11 +76,11 @@
         </p>
         <div class="tool-footer">
           <a class="tool-link" href="https://swagger.io/" target="_blank">
-            <v-icon small>mdi-open-in-new</v-icon>
+            <MdiIcon icon="mdi-open-in-new" size="small" />
             <span>Официальный сайт</span>
           </a>
           <a class="tool-link swagger-link" :href="swaggerLink" target="_blank">
-            <v-icon small>mdi-link-variant</v-icon>
+            <MdiIcon icon="mdi-link-variant" size="small" />
             <span>Моя документация</span>
           </a>
         </div>
@@ -207,7 +207,7 @@
   text-decoration: none;
 }
 
-.tool-link .v-icon {
+.tool-link .mdi-icon {
   margin-right: 6px;
 }
 

@@ -12,15 +12,15 @@
 
         <div class="contact-details">
           <div class="contact-item">
-            <v-icon class="contact-icon">mdi-phone</v-icon>
+            <MdiIcon class="contact-icon" icon="mdi-phone" />
             <span>{{ contactData.phone }}</span>
           </div>
           <div class="contact-item">
-            <v-icon class="contact-icon">mdi-email</v-icon>
+            <MdiIcon class="contact-icon" icon="mdi-email" />
             <span>{{ contactData.mail }}</span>
           </div>
           <div class="contact-item">
-            <v-icon class="contact-icon">mdi-github</v-icon>
+            <MdiIcon class="contact-icon" icon="mdi-github" />
             <a :href="contactData.git" target="_blank">GitHub профиль</a>
           </div>
         </div>
@@ -29,7 +29,7 @@
       <!-- Форма обратной связи -->
       <div class="feedback-form">
         <h2 class="form-title">
-          <v-icon color="#6a5acd" large>mdi-email-edit</v-icon>
+          <MdiIcon color="#6a5acd" icon="mdi-email-edit" size="large" />
           Форма обратной связи
         </h2>
 

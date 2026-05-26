@@ -9,13 +9,13 @@
       <!-- Основные навыки -->
       <div class="skills-category">
         <h2 class="category-title">
-          <v-icon color="#6a5acd" large>mdi-star-circle</v-icon>
+          <MdiIcon color="#6a5acd" icon="mdi-star-circle" size="large" />
           Основные
         </h2>
         <div class="skills-grid">
           <div v-for="item in coreSkills" :key="'core-'+item.id" class="skill-card">
             <div class="skill-icon">
-              <v-icon large>mdi-{{ getSkillIcon(item.name) }}</v-icon>
+              <MdiIcon :icon="`mdi-${getSkillIcon(item.name)}`" size="large" />
             </div>
             <h3 class="skill-name">{{ item.name }}</h3>
             <p class="skill-description">{{ item.description }}</p>
@@ -26,13 +26,13 @@
       <!-- Фронтенд -->
       <div class="skills-category">
         <h2 class="category-title">
-          <v-icon color="#6a5acd" large>mdi-monitor</v-icon>
+          <MdiIcon color="#6a5acd" icon="mdi-monitor" size="large" />
           Фронтенд
         </h2>
         <div class="skills-grid">
           <div v-for="item in frontendSkills" :key="'front-'+item.id" class="skill-card">
             <div class="skill-icon">
-              <v-icon large>mdi-{{ getSkillIcon(item.name) }}</v-icon>
+              <MdiIcon :icon="`mdi-${getSkillIcon(item.name)}`" size="large" />
             </div>
             <h3 class="skill-name">{{ item.name }}</h3>
             <p class="skill-description">{{ item.description }}</p>
@@ -43,13 +43,13 @@
       <!-- Бэкенд -->
       <div class="skills-category">
         <h2 class="category-title">
-          <v-icon color="#6a5acd" large>mdi-server</v-icon>
+          <MdiIcon color="#6a5acd" icon="mdi-server" size="large" />
           Бэкенд
         </h2>
         <div class="skills-grid">
           <div v-for="item in backendSkills" :key="'back-'+item.id" class="skill-card">
             <div class="skill-icon">
-              <v-icon large>mdi-{{ getSkillIcon(item.name) }}</v-icon>
+              <MdiIcon :icon="`mdi-${getSkillIcon(item.name)}`" size="large" />
             </div>
             <h3 class="skill-name">{{ item.name }}</h3>
             <p class="skill-description">{{ item.description }}</p>

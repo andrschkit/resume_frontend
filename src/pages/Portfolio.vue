@@ -20,7 +20,7 @@
 
           <div class="project-footer">
             <a class="project-link" :href="project.link" target="_blank">
-              <v-icon>mdi-open-in-new</v-icon>
+              <MdiIcon icon="mdi-open-in-new" />
               <span>Посмотреть проект</span>
             </a>
           </div>
@@ -190,7 +190,7 @@
   color: #b54545;
 }
 
-.project-link .v-icon {
+.project-link .mdi-icon {
   margin-right: 8px;
 }
 

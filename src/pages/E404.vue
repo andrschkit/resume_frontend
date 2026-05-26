@@ -4,20 +4,20 @@
       <h1 class="welcome-title">404</h1>
       <p class="welcome-subtitle">Страница не найдена</p>
       <div class="not-found-icon">
-        <v-icon color="#6a5acd" x-large>mdi-emoticon-sad-outline</v-icon>
+        <MdiIcon color="#6a5acd" icon="mdi-emoticon-sad-outline" size="x-large" />
       </div>
     </div>
 
     <div class="not-found-content">
       <div class="skills-category">
         <h2 class="category-title">
-          <v-icon color="#e74c3c" large>mdi-alert-circle</v-icon>
+          <MdiIcon color="#e74c3c" icon="mdi-alert-circle" size="large" />
           Что случилось?
         </h2>
         <div class="skills-grid">
           <div class="skill-card">
             <div class="skill-icon">
-              <v-icon large>mdi-map-marker-off</v-icon>
+              <MdiIcon icon="mdi-map-marker-off" size="large" />
             </div>
             <h3 class="skill-name">Страница перемещена</h3>
             <p class="skill-description">Искомый контент был перенесен в другой раздел сайта</p>
@@ -25,7 +25,7 @@
 
           <div class="skill-card">
             <div class="skill-icon">
-              <v-icon large>mdi-link-off</v-icon>
+              <MdiIcon icon="mdi-link-off" size="large" />
             </div>
             <h3 class="skill-name">Некорректная ссылка</h3>
             <p class="skill-description">В адресе может быть опечатка или устаревшая информация</p>
@@ -33,7 +33,7 @@
 
           <div class="skill-card">
             <div class="skill-icon">
-              <v-icon large>mdi-delete</v-icon>
+              <MdiIcon icon="mdi-delete" size="large" />
             </div>
             <h3 class="skill-name">Страница удалена</h3>
             <p class="skill-description">Ресурс больше не доступен на нашем сайте</p>
@@ -42,27 +42,18 @@
       </div>
 
       <div class="solution-section">
-        <v-btn
-          class="action-button"
-          color="#6a5acd"
-          dark
-          large
-          to="/"
-        >
-          <v-icon left>mdi-home</v-icon>
+        <RouterLink class="action-button" to="/resume">
+          <MdiIcon icon="mdi-home" />
           Вернуться на главную
-        </v-btn>
+        </RouterLink>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-  import MenuComponent from '@/components/MenuComponent.vue';
-
   export default {
     name: 'NotFound',
-    components: { MenuComponent },
   }
 </script>
 
@@ -169,7 +160,7 @@
   margin-bottom: 1.2rem;
 }
 
-.skill-icon .v-icon {
+.skill-icon .mdi-icon {
   color: #e74c3c;
 }
 
@@ -194,11 +185,16 @@
 }
 
 .action-button {
-  padding: 1rem  !important;
-  height: 100% !important;
-  font-size: 1.1rem !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 1rem 1.5rem;
+  font-size: 1.1rem;
   font-weight: 600;
-  margin-bottom: 1.5rem;
+  color: #fff;
+  background: #6a5acd;
+  border-radius: 8px;
+  text-decoration: none;
   transition: transform 0.3s ease;
 }
 
@@ -206,7 +202,6 @@
   transform: scale(1.05);
 }
 
-/* Адаптивность */
 @media (max-width: 900px) {
   .skills-grid {
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -231,8 +226,8 @@
   }
 
   .action-button {
-    padding: 1.2rem 2rem !important;
-    font-size: 1rem !important;
+    padding: 1.2rem 2rem;
+    font-size: 1rem;
   }
 }
 

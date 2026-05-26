@@ -1,67 +1,37 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import About from '@/pages/About.vue'
-import Career from '@/pages//Career.vue'
-import Contacts from '@/pages/Contacts.vue';
-import Education from '@/pages/Education.vue';
-import Portfolio from '@/pages/Portfolio.vue';
-import Skills from '@/pages/Skills.vue';
-import E404 from '@/pages/E404.vue';
-import Tools from '@/pages/Tools.vue';
+import E404 from '@/pages/E404.vue'
 
 const routes = [
-  { path: '/', redirect: { name: 'about' } },
   {
-    name: 'about',
-    path: '/about',
+    path: '/',
+    redirect: to => ({
+      path: '/resume',
+      hash: to.hash || '#about',
+    }),
+  },
+  {
+    name: 'resume',
+    path: '/resume',
     component: About,
   },
   {
-    name: 'career',
-    path: '/career',
-    component: Career,
-  },
-  {
-    name: 'contacts',
-    path: '/contacts',
-    component: Contacts,
-  },
-  {
-    name: 'education',
-    path: '/education',
-    component: Education,
-  },
-  {
-    name: 'portfolio',
-    path: '/portfolio',
-    component: Portfolio,
-  },
-  {
-    name: 'skills',
-    path: '/skills',
-    component: Skills,
-  },
-  {
-    name: 'tools',
-    path: '/tools',
-    component: Tools,
-  },
-  {
     name: 'error',
-    path: '/:any(.*)',
+    path: '/:pathMatch(.*)*',
     component: E404,
   },
 ]
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
 })
 
-// Workaround for https://github.com/vitejs/vite/issues/11804
 router.onError((err, to) => {
   if (err?.message?.includes?.('Failed to fetch dynamically imported module')) {
-    if (!localStorage.getItem('vuetify:dynamic-reload')) {
+    if (!localStorage.getItem('app:dynamic-reload')) {
       console.log('Reloading page to fix dynamic import error')
-      localStorage.setItem('vuetify:dynamic-reload', 'true')
+      localStorage.setItem('app:dynamic-reload', 'true')
       location.assign(to.fullPath)
     } else {
       console.error('Dynamic import error, reloading page did not fix it', err)
@@ -72,7 +42,7 @@ router.onError((err, to) => {
 })
 
 router.isReady().then(() => {
-  localStorage.removeItem('vuetify:dynamic-reload')
+  localStorage.removeItem('app:dynamic-reload')
 })
 
 export default router
