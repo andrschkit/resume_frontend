@@ -70,20 +70,21 @@
 }
 
 .education-card {
-  background: white;
+  background: rgba(var(--v-theme-surface), 0.5);
+  border: 1px solid rgba(var(--v-theme-border), 0.3);
+  border-top: 4px solid rgb(var(--v-theme-primary));
   border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
   padding: 2rem;
   transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
   height: 100%;
-  border-top: 5px solid #6a5acd;
 }
 
 .education-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 15px 40px rgba(106, 90, 205, 0.2);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(var(--v-theme-primary), 0.12);
 }
 
 .education-header {
@@ -100,11 +101,11 @@
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #6a5acd, #4b6cb7);
+  background: linear-gradient(135deg, rgb(var(--v-theme-primary)), #4b6cb7);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 6px 15px rgba(106, 90, 205, 0.3);
+  box-shadow: 0 4px 12px rgba(var(--v-theme-primary), 0.25);
 }
 
 .education-info {
@@ -112,7 +113,7 @@
 }
 
 .education-title {
-  color: #2c3e50;
+  color: rgb(var(--v-theme-text));
   font-size: 1.6rem;
   margin-bottom: 0.5rem;
 }
@@ -120,35 +121,35 @@
 .education-interval {
   display: flex;
   align-items: center;
-  color: #6a5acd;
+  color: rgb(var(--v-theme-primary));
   font-weight: 500;
   font-size: 1.1rem;
 }
 
 .education-interval .mdi-icon {
   margin-right: 8px;
-  color: #6a5acd;
+  color: rgb(var(--v-theme-primary));
 }
 
 .education-description {
   font-size: 1.1rem;
   line-height: 1.7;
-  color: #3a506b;
+  color: rgb(var(--v-theme-subtext));
   margin-bottom: 1.5rem;
   flex-grow: 1;
   padding: 0 0.5rem;
 }
 
 .education-footer {
-  border-top: 1px solid #eee;
+  border-top: 1px solid rgba(var(--v-theme-border), 0.35);
   padding-top: 1rem;
 }
 
 .education-badge {
   display: inline-flex;
   align-items: center;
-  background: rgba(106, 90, 205, 0.1);
-  color: #6a5acd;
+  background: rgba(var(--v-theme-primary), 0.1);
+  color: rgb(var(--v-theme-primary));
   padding: 6px 12px;
   border-radius: 20px;
   font-weight: 500;

@@ -71,9 +71,10 @@
 }
 
 .project-card {
-  background: white;
+  background: rgba(var(--v-theme-surface), 0.5);
+  border: 1px solid rgba(var(--v-theme-border), 0.3);
   border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
   overflow: hidden;
   transition: all 0.3s ease;
   display: flex;
@@ -81,8 +82,8 @@
 }
 
 .project-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 15px 40px rgba(206, 83, 83, 0.2);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(206, 83, 83, 0.15);
 }
 
 .project-image-container {
@@ -109,12 +110,12 @@
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  background: white;
+  background: rgb(var(--v-theme-surface));
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  border: 5px solid white;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+  border: 5px solid rgb(var(--v-theme-surface));
 }
 
 .project-logo img {
@@ -132,7 +133,7 @@
 }
 
 .project-title {
-  color: #2c3e50;
+  color: rgb(var(--v-theme-text));
   font-size: 1.6rem;
   margin-bottom: 1rem;
   padding-right: 60px;
@@ -141,13 +142,13 @@
 .project-description {
   font-size: 1.1rem;
   line-height: 1.7;
-  color: #3a506b;
+  color: rgb(var(--v-theme-subtext));
   margin-bottom: 1.5rem;
   flex-grow: 1;
 }
 
 .project-footer {
-  border-top: 1px solid #eee;
+  border-top: 1px solid rgba(var(--v-theme-border), 0.35);
   padding-top: 1.5rem;
 }
 

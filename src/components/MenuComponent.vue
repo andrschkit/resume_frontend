@@ -196,7 +196,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px 16px;
+  padding-top: 20px;
   transition: all 0.3s ease;
   overflow: hidden;
 }
