@@ -9,9 +9,7 @@
       <div v-for="project in portfolioItems" :key="project.id" class="project-card">
         <div class="project-image-container">
           <img :alt="project.name" class="project-image" :src="project.img">
-          <div class="project-logo">
-            <img :alt="project.name + ' лого'" :src="project.logo">
-          </div>
+
         </div>
 
         <div class="project-content">
@@ -19,26 +17,58 @@
           <p class="project-description">{{ project.description }}</p>
 
           <div class="project-footer">
-            <a class="project-link" :href="project.link" target="_blank">
+            <a
+              v-if="project.link && !project.nda"
+              class="project-link"
+              :href="project.link"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <MdiIcon icon="mdi-open-in-new" />
               <span>Посмотреть проект</span>
             </a>
+
+            <button
+              v-if="project.nda"
+              class="project-link project-link--nda"
+              type="button"
+              @click="openModal(project)"
+            >
+              <MdiIcon icon="mdi-lock" />
+              <span>NDA — скриншоты</span>
+            </button>
           </div>
         </div>
       </div>
     </div>
+
+    <ProjectModal
+      :is-open="modalOpen"
+      :title="selectedProject && selectedProject.name"
+      :subtitle="selectedProject && selectedProject.description"
+      :images="selectedProject && selectedProject.screenshots"
+      :header-icon="selectedProject && selectedProject.nda ? 'mdi-lock' : 'mdi-image-multiple'"
+      @close="closeModal"
+    />
   </div>
 </template>
 
 <script>
-  import MenuComponent from '@/components/MenuComponent.vue';
+  import MdiIcon from '@/components/MdiIcon.vue';
   import PageHeader from '@/components/PageHeader.vue';
+  import ProjectModal from '@/components/ProjectModal.vue';
   import store from '@/plugins/store.js';
   import { mapGetters } from 'vuex';
 
   export default {
     name: 'Portfolio',
-    components: { MenuComponent, PageHeader },
+    components: { PageHeader, MdiIcon, ProjectModal },
+    data () {
+      return {
+        modalOpen: false,
+        selectedProject: null,
+      };
+    },
     computed: {
       ...mapGetters('resume_store', { portfolioItems: 'products_all' }),
     },
@@ -46,11 +76,13 @@
       store.dispatch('resume_store/loadProducts');
     },
     methods: {
-      handleImageError (e) {
-        e.target.src = this.defaultImage;
+      openModal (project) {
+        this.selectedProject = project;
+        this.modalOpen = true;
       },
-      handleLogoError (e) {
-        e.target.src = this.defaultLogo;
+      closeModal () {
+        this.modalOpen = false;
+        this.selectedProject = null;
       },
     },
   }
@@ -150,6 +182,9 @@
 .project-footer {
   border-top: 1px solid rgba(var(--v-theme-border), 0.35);
   padding-top: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
 }
 
 .project-link {
@@ -162,11 +197,24 @@
   padding: 8px 16px;
   border-radius: 8px;
   background: rgba(206, 83, 83, 0.1);
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
 }
 
 .project-link:hover {
   background: rgba(206, 83, 83, 0.2);
   color: #b54545;
+}
+
+.project-link--nda {
+  background: rgba(var(--v-theme-primary), 0.08);
+  color: rgb(var(--v-theme-primary));
+}
+
+.project-link--nda:hover {
+  background: rgba(var(--v-theme-primary), 0.16);
+  color: rgb(var(--v-theme-primary));
 }
 
 .project-link .mdi-icon {

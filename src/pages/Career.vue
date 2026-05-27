@@ -40,13 +40,14 @@
 </template>
 
 <script>
+  import MdiIcon from '@/components/MdiIcon.vue';
   import PageHeader from '@/components/PageHeader.vue';
   import store from '@/plugins/store.js';
   import { mapGetters } from 'vuex';
 
   export default {
     name: 'Career',
-    components: { PageHeader },
+    components: { PageHeader, MdiIcon },
     computed: {
       ...mapGetters('resume_store', { work_places: 'work_places_all' }),
       workPlacesNewestFirst () {
