@@ -27,17 +27,34 @@
         </div>
 
         <div class="education-footer">
-          <div class="education-badge">
+          <div
+            class="education-badge"
+            :class="{ 'education-badge--clickable': item.certificateUrl }"
+            role="button"
+            tabindex="0"
+            @click="item.certificateUrl && openModal(item)"
+            @keydown.enter="item.certificateUrl && openModal(item)"
+            @keydown.space.prevent="item.certificateUrl && openModal(item)"
+          >
             <MdiIcon icon="mdi-certificate" size="small" />
             <span>Диплом/Сертификат</span>
           </div>
         </div>
       </div>
     </div>
+
+    <CertificateModal
+      :is-open="modalOpen"
+      :certificate-url="selectedItem && selectedItem.certificateUrl"
+      :title="selectedItem && selectedItem.name"
+      @close="closeModal"
+    />
   </div>
 </template>
 
 <script>
+  import CertificateModal from '@/components/CertificateModal.vue';
+  import MdiIcon from '@/components/MdiIcon.vue';
   import MenuComponent from '@/components/MenuComponent.vue';
   import PageHeader from '@/components/PageHeader.vue';
   import store from '@/plugins/store.js';
@@ -45,12 +62,28 @@
 
   export default {
     name: 'Education',
-    components: { MenuComponent, PageHeader },
+    components: { MenuComponent, PageHeader, MdiIcon, CertificateModal },
+    data () {
+      return {
+        modalOpen: false,
+        selectedItem: null,
+      };
+    },
     computed: {
       ...mapGetters('resume_store', { educationPlaces: 'education_places_all' }),
     },
     mounted () {
       store.dispatch('resume_store/loadEducationPlaces');
+    },
+    methods: {
+      openModal (item) {
+        this.selectedItem = item;
+        this.modalOpen = true;
+      },
+      closeModal () {
+        this.modalOpen = false;
+        this.selectedItem = null;
+      },
     },
   }
 </script>
@@ -143,6 +176,10 @@
 .education-footer {
   border-top: 1px solid rgba(var(--v-theme-border), 0.35);
   padding-top: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
 }
 
 .education-badge {
@@ -157,6 +194,21 @@
 
 .education-badge .mdi-icon {
   margin-right: 6px;
+}
+
+.education-badge--clickable {
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.education-badge--clickable:hover {
+  background: rgba(var(--v-theme-primary), 0.12);
+  transform: translateY(-1px);
+}
+
+.education-badge--clickable:focus-visible {
+  outline: 2px solid rgba(var(--v-theme-primary), 0.5);
+  outline-offset: 2px;
 }
 
 @media (max-width: 959px) {
