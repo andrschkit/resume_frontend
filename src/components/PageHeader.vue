@@ -79,7 +79,7 @@ export default {
 }
 
 .page-header--hero .page-header__title {
-  font-size: clamp(2rem, 10vw, 4rem);
+  font-size: clamp(1.5rem, 10vw, 3.5rem);
   font-weight: 800;
   line-height: 1;
 }
