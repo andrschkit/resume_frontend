@@ -63,6 +63,29 @@
         </div>
       </div>
 
+      <!-- GitHub -->
+      <div class="tool-card">
+        <div class="tool-header">
+          <div class="tool-logo">
+            <MdiIcon color="#181717" icon="mdi-github" size="large" />
+          </div>
+          <h2 class="tool-name">GitHub</h2>
+        </div>
+        <p class="tool-description">
+          Репозитории проекта с исходным кодом фронтенда и бэкенда.
+        </p>
+        <div class="tool-footer">
+          <a class="tool-link" href="https://github.com/andrschkit/resume_frontend" target="_blank">
+            <MdiIcon icon="mdi-open-in-new" size="small" />
+            <span>Frontend repository</span>
+          </a>
+          <a class="tool-link" href="https://github.com/andrschkit/resume_backend" target="_blank">
+            <MdiIcon icon="mdi-open-in-new" size="small" />
+            <span>Backend repository</span>
+          </a>
+        </div>
+      </div>
+
       <!-- Swagger -->
       <div class="tool-card">
         <div class="tool-header">
