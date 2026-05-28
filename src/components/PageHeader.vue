@@ -37,7 +37,7 @@ export default {
 <style scoped>
 .page-header {
   margin-bottom: 2.5rem;
-  padding: 1.25rem 0 1.5rem;
+  padding-bottom: 0.5rem;
   border-bottom: 1px solid rgba(var(--v-theme-border), 0.35);
 }
 

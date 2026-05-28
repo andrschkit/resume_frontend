@@ -162,7 +162,6 @@ onBeforeUnmount(() => {
 }
 
 .page-section {
-  min-height: 100vh;
   padding: 24px;
   border-bottom: 1px solid rgba(var(--v-theme-border), 0.4);
 }
