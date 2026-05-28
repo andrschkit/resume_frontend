@@ -96,7 +96,7 @@
 </template>
 
 <script>
-import MdiIcon from '@/components/MdiIcon.vue';
+import MdiIcon from '@/components/MdiIcon.vue'
 
 export default {
   name: 'ProjectModal',
@@ -124,77 +124,77 @@ export default {
     },
   },
   emits: ['close'],
-  data () {
+  data() {
     return {
       activeIndex: 0,
       imageLoading: true,
       imageError: false,
-    };
+    }
   },
   computed: {
-    safeImages () {
-      return (this.images || []).filter(Boolean);
+    safeImages() {
+      return (this.images || []).filter(Boolean)
     },
-    activeImage () {
-      return this.safeImages[this.activeIndex] || '';
+    activeImage() {
+      return this.safeImages[this.activeIndex] || ''
     },
   },
   watch: {
-    isOpen (val) {
+    isOpen(val) {
       if (val) {
-        this.resetState();
-        document.body.style.overflow = 'hidden';
+        this.resetState()
+        document.body.style.overflow = 'hidden'
       } else {
-        document.body.style.overflow = '';
+        document.body.style.overflow = ''
       }
     },
-    images () {
+    images() {
       if (this.isOpen) {
-        this.resetState();
+        this.resetState()
       }
     },
   },
-  beforeUnmount () {
-    document.body.style.overflow = '';
+  beforeUnmount() {
+    document.body.style.overflow = ''
   },
   methods: {
-    resetState () {
-      this.activeIndex = 0;
-      this.imageLoading = true;
-      this.imageError = false;
+    resetState() {
+      this.activeIndex = 0
+      this.imageLoading = true
+      this.imageError = false
     },
-    close () {
-      this.$emit('close');
+    close() {
+      this.$emit('close')
     },
-    setActive (idx) {
-      const safeIdx = Math.max(0, Math.min(idx, this.safeImages.length - 1));
-      if (safeIdx === this.activeIndex) return;
-      this.activeIndex = safeIdx;
-      this.imageLoading = true;
-      this.imageError = false;
+    setActive(idx) {
+      const safeIdx = Math.max(0, Math.min(idx, this.safeImages.length - 1))
+      if (safeIdx === this.activeIndex) return
+      this.activeIndex = safeIdx
+      this.imageLoading = true
+      this.imageError = false
     },
-    prev () {
-      if (this.safeImages.length < 2) return;
-      const nextIdx = (this.activeIndex - 1 + this.safeImages.length) % this.safeImages.length;
-      this.setActive(nextIdx);
+    prev() {
+      if (this.safeImages.length < 2) return
+      const nextIdx = (this.activeIndex - 1 + this.safeImages.length) % this.safeImages.length
+      this.setActive(nextIdx)
     },
-    next () {
-      if (this.safeImages.length < 2) return;
-      const nextIdx = (this.activeIndex + 1) % this.safeImages.length;
-      this.setActive(nextIdx);
+    next() {
+      if (this.safeImages.length < 2) return
+      const nextIdx = (this.activeIndex + 1) % this.safeImages.length
+      this.setActive(nextIdx)
     },
-    onImageLoad () {
-      this.imageLoading = false;
+    onImageLoad() {
+      this.imageLoading = false
     },
-    onImageError () {
-      this.imageLoading = false;
-      this.imageError = true;
+    onImageError() {
+      this.imageLoading = false
+      this.imageError = true
     },
-    onThumbError (e) {
-      e.target.style.display = 'none';
+    onThumbError(e) {
+      e.target.style.display = 'none'
     },
   },
-};
+}
 </script>
 
 <style scoped>
@@ -268,7 +268,9 @@ export default {
   background: rgba(var(--v-theme-border), 0.2);
   color: rgb(var(--v-theme-subtext));
   cursor: pointer;
-  transition: background 0.2s, color 0.2s;
+  transition:
+    background 0.2s,
+    color 0.2s;
 }
 
 .modal-close:hover {
@@ -316,7 +318,9 @@ export default {
   color: rgb(var(--v-theme-text));
   border-radius: 12px;
   cursor: pointer;
-  transition: background 0.2s, transform 0.15s;
+  transition:
+    background 0.2s,
+    transform 0.15s;
 }
 
 .nav-btn:hover:enabled {
@@ -380,7 +384,9 @@ export default {
   cursor: pointer;
   width: 120px;
   height: 72px;
-  transition: border-color 0.2s, transform 0.15s;
+  transition:
+    border-color 0.2s,
+    transform 0.15s;
 }
 
 .thumb:hover {
@@ -433,7 +439,9 @@ export default {
   color: rgb(var(--v-theme-text));
   font-size: 0.95rem;
   cursor: pointer;
-  transition: background 0.2s, border-color 0.2s;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
 }
 
 .modal-btn-close:hover {
@@ -446,8 +454,12 @@ export default {
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .modal-fade-enter-active,
@@ -462,7 +474,9 @@ export default {
 
 .modal-fade-enter-active .modal-window,
 .modal-fade-leave-active .modal-window {
-  transition: transform 0.25s ease, opacity 0.25s ease;
+  transition:
+    transform 0.25s ease,
+    opacity 0.25s ease;
 }
 
 .modal-fade-enter-from .modal-window {

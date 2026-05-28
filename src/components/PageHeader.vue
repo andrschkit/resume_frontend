@@ -9,38 +9,35 @@
 </template>
 
 <script>
-  export default {
-    name: 'PageHeader',
-    props: {
-      title: {
-        type: String,
-        required: true,
-      },
-      subtitle: {
-        type: String,
-        default: '',
-      },
-      variant: {
-        type: String,
-        default: 'default',
-        validator: value => ['default', 'hero'].includes(value),
-      },
+export default {
+  name: 'PageHeader',
+  props: {
+    title: {
+      type: String,
+      required: true,
     },
-    computed: {
-      headerClasses () {
-        return [
-          'page-header',
-          this.variant === 'hero' && 'page-header--hero',
-        ].filter(Boolean)
-      },
+    subtitle: {
+      type: String,
+      default: '',
     },
-  }
+    variant: {
+      type: String,
+      default: 'default',
+      validator: (value) => ['default', 'hero'].includes(value),
+    },
+  },
+  computed: {
+    headerClasses() {
+      return ['page-header', this.variant === 'hero' && 'page-header--hero'].filter(Boolean)
+    },
+  },
+}
 </script>
 
 <style scoped>
 .page-header {
   margin-bottom: 2.5rem;
-  padding: 1.25rem 0 1.5rem;
+  padding-bottom: 0.5rem;
   border-bottom: 1px solid rgba(var(--v-theme-border), 0.35);
 }
 
@@ -82,7 +79,7 @@
 }
 
 .page-header--hero .page-header__title {
-  font-size: clamp(2rem, 10vw, 4rem);
+  font-size: clamp(1.5rem, 10vw, 3.5rem);
   font-weight: 800;
   line-height: 1;
 }

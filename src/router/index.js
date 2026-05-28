@@ -4,7 +4,7 @@ import About from '@/pages/About.vue'
 const routes = [
   {
     path: '/',
-    redirect: to => ({
+    redirect: (to) => ({
       path: '/resume',
       hash: to.hash || '#about',
     }),
@@ -13,7 +13,7 @@ const routes = [
     name: 'resume',
     path: '/resume',
     component: About,
-  }
+  },
 ]
 
 const router = createRouter({

@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="layout-wrapper"
-    :style="{ '--nav-width': isMobile ? '0px' : `${currentWidth}px` }"
-  >
+  <div class="layout-wrapper" :style="{ '--nav-width': isMobile ? '0px' : `${currentWidth}px` }">
     <aside
       v-if="!isMobile"
       class="side-nav custom-navigation"
@@ -11,7 +8,7 @@
     >
       <div class="user-data" :style="rail ? 'height:10vh' : 'height:21vh'">
         <div class="avatar" :class="{ 'avatar--small': rail }">
-          <img alt="Avatar" src="@/assets/avatar.jpg">
+          <img alt="Avatar" src="@/assets/avatar.jpg" />
         </div>
 
         <transition name="fade">
@@ -22,7 +19,7 @@
         </transition>
       </div>
 
-      <hr class="divider">
+      <hr class="divider" />
 
       <nav class="menu-list">
         <button
@@ -39,7 +36,7 @@
               class="menu-icon"
               :class="darkMode ? 'menu-icon-light' : 'menu-icon-dark'"
               :src="item.icon"
-            >
+            />
           </span>
 
           <transition name="fade">
@@ -63,7 +60,7 @@
             <span class="theme-toggle-thumb" />
           </span>
         </button>
-        <img alt="" class="mode-icon" :src="darkMode ? sun : moon">
+        <img alt="" class="mode-icon" :src="darkMode ? sun : moon" />
       </div>
     </aside>
 
@@ -93,7 +90,7 @@
           :aria-label="darkMode ? 'Светлая тема' : 'Тёмная тема'"
           @click="toggleDarkMode"
         >
-          <img alt="" class="mode-icon mode-icon--compact" :src="darkMode ? sun : moon">
+          <img alt="" class="mode-icon mode-icon--compact" :src="darkMode ? sun : moon" />
         </button>
       </header>
 
@@ -119,7 +116,7 @@
       >
         <div class="mobile-drawer-user">
           <div class="mobile-drawer-avatar">
-            <img alt="Avatar" src="@/assets/avatar.jpg">
+            <img alt="Avatar" src="@/assets/avatar.jpg" />
           </div>
           <div>
             <p class="mobile-drawer-name">Щербаков Андрей</p>
@@ -127,7 +124,7 @@
           </div>
         </div>
 
-        <hr class="divider mobile-drawer-divider">
+        <hr class="divider mobile-drawer-divider" />
 
         <div class="mobile-drawer-menu">
           <button
@@ -144,7 +141,7 @@
                 class="menu-icon menu-icon--mobile"
                 :class="darkMode ? 'menu-icon-light' : 'menu-icon-dark'"
                 :src="item.icon"
-              >
+              />
             </span>
             <span class="mobile-drawer-item-title">{{ item.title }}</span>
           </button>
@@ -155,124 +152,124 @@
 </template>
 
 <script setup>
-  import { computed, nextTick, onMounted, onUnmounted, ref } from 'vue'
-  import { applyTheme, getInitialTheme, isDarkTheme } from '@/plugins/theme'
-  import MdiIcon from '@/components/MdiIcon.vue'
-  import moon from '@/assets/moon-svgrepo.svg'
-  import sun from '@/assets/sun-svgrepo.svg'
+import { computed, nextTick, onMounted, onUnmounted, ref } from 'vue'
+import { applyTheme, getInitialTheme, isDarkTheme } from '@/plugins/theme'
+import MdiIcon from '@/components/MdiIcon.vue'
+import moon from '@/assets/moon-svgrepo.svg'
+import sun from '@/assets/sun-svgrepo.svg'
 
-  const rail = ref(true)
-  const darkMode = ref(false)
-  const isMobile = ref(false)
-  const mobileMenuOpen = ref(false)
-  const mobileMenuToggleRef = ref(null)
-  const mobileDrawerRef = ref(null)
-  const collapsedWidth = 80
-  const expandedWidth = 240
+const rail = ref(true)
+const darkMode = ref(false)
+const isMobile = ref(false)
+const mobileMenuOpen = ref(false)
+const mobileMenuToggleRef = ref(null)
+const mobileDrawerRef = ref(null)
+const collapsedWidth = 80
+const expandedWidth = 240
 
-  const props = defineProps({
-    menu: {
-      type: Array,
-      required: true,
-    },
-    activeSection: {
-      type: String,
-      required: true,
-    },
-  })
-  const emit = defineEmits(['scroll-to'])
+const props = defineProps({
+  menu: {
+    type: Array,
+    required: true,
+  },
+  activeSection: {
+    type: String,
+    required: true,
+  },
+})
+const emit = defineEmits(['scroll-to'])
 
-  const checkMobile = () => {
-    const wasMobile = isMobile.value
-    isMobile.value = window.innerWidth < 960
+const checkMobile = () => {
+  const wasMobile = isMobile.value
+  isMobile.value = window.innerWidth < 960
 
-    if (wasMobile && !isMobile.value) {
-      closeMobileMenu()
-    }
-  }
-
-  const activeMenuTitle = computed(() => {
-    const active = props.menu.find(item => item.route === props.activeSection)
-    return active?.title ?? 'Резюме'
-  })
-
-  const currentWidth = computed(() => (rail.value ? collapsedWidth : expandedWidth))
-
-  const toggleRail = () => {
-    rail.value = !rail.value
-    localStorage.setItem('navigationRail', String(rail.value))
-  }
-
-  const setTheme = themeName => {
-    applyTheme(themeName)
-    darkMode.value = isDarkTheme(themeName)
-    localStorage.setItem('theme', themeName)
-  }
-
-  const toggleDarkMode = () => {
-    setTheme(darkMode.value ? 'customLightTheme' : 'customDarkTheme')
-  }
-
-  const setBodyScrollLock = locked => {
-    document.body.style.overflow = locked ? 'hidden' : ''
-  }
-
-  const closeMobileMenu = () => {
-    if (!mobileMenuOpen.value) return
-
-    mobileMenuToggleRef.value?.focus()
-    mobileMenuOpen.value = false
-    setBodyScrollLock(false)
-  }
-
-  const openMobileMenu = async () => {
-    mobileMenuOpen.value = true
-    setBodyScrollLock(true)
-
-    await nextTick()
-
-    const activeItem = mobileDrawerRef.value?.querySelector('.mobile-drawer-item--active')
-    const firstItem = mobileDrawerRef.value?.querySelector('.mobile-drawer-item')
-    ;(activeItem ?? firstItem)?.focus()
-  }
-
-  const toggleMobileMenu = () => {
-    if (mobileMenuOpen.value) {
-      closeMobileMenu()
-    } else {
-      openMobileMenu()
-    }
-  }
-
-  const onMobileNavClick = route => {
-    emit('scroll-to', route)
+  if (wasMobile && !isMobile.value) {
     closeMobileMenu()
   }
+}
 
-  const onEscapeKey = event => {
-    if (event.key === 'Escape' && mobileMenuOpen.value) {
-      closeMobileMenu()
-    }
+const activeMenuTitle = computed(() => {
+  const active = props.menu.find((item) => item.route === props.activeSection)
+  return active?.title ?? 'Резюме'
+})
+
+const currentWidth = computed(() => (rail.value ? collapsedWidth : expandedWidth))
+
+const toggleRail = () => {
+  rail.value = !rail.value
+  localStorage.setItem('navigationRail', String(rail.value))
+}
+
+const setTheme = (themeName) => {
+  applyTheme(themeName)
+  darkMode.value = isDarkTheme(themeName)
+  localStorage.setItem('theme', themeName)
+}
+
+const toggleDarkMode = () => {
+  setTheme(darkMode.value ? 'customLightTheme' : 'customDarkTheme')
+}
+
+const setBodyScrollLock = (locked) => {
+  document.body.style.overflow = locked ? 'hidden' : ''
+}
+
+const closeMobileMenu = () => {
+  if (!mobileMenuOpen.value) return
+
+  mobileMenuToggleRef.value?.focus()
+  mobileMenuOpen.value = false
+  setBodyScrollLock(false)
+}
+
+const openMobileMenu = async () => {
+  mobileMenuOpen.value = true
+  setBodyScrollLock(true)
+
+  await nextTick()
+
+  const activeItem = mobileDrawerRef.value?.querySelector('.mobile-drawer-item--active')
+  const firstItem = mobileDrawerRef.value?.querySelector('.mobile-drawer-item')
+  ;(activeItem ?? firstItem)?.focus()
+}
+
+const toggleMobileMenu = () => {
+  if (mobileMenuOpen.value) {
+    closeMobileMenu()
+  } else {
+    openMobileMenu()
+  }
+}
+
+const onMobileNavClick = (route) => {
+  emit('scroll-to', route)
+  closeMobileMenu()
+}
+
+const onEscapeKey = (event) => {
+  if (event.key === 'Escape' && mobileMenuOpen.value) {
+    closeMobileMenu()
+  }
+}
+
+onMounted(() => {
+  checkMobile()
+  window.addEventListener('resize', checkMobile)
+
+  const savedRail = localStorage.getItem('navigationRail')
+  if (savedRail !== null) {
+    rail.value = savedRail === 'true'
   }
 
-  onMounted(() => {
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
+  setTheme(getInitialTheme())
+  window.addEventListener('keydown', onEscapeKey)
+})
 
-    const savedRail = localStorage.getItem('navigationRail')
-    if (savedRail !== null) {
-      rail.value = savedRail === 'true'
-    }
-
-    setTheme(getInitialTheme())
-    window.addEventListener('keydown', onEscapeKey)
-  })
-
-  onUnmounted(() => {
-    window.removeEventListener('resize', checkMobile)
-    window.removeEventListener('keydown', onEscapeKey)
-    setBodyScrollLock(false)
-  })
+onUnmounted(() => {
+  window.removeEventListener('resize', checkMobile)
+  window.removeEventListener('keydown', onEscapeKey)
+  setBodyScrollLock(false)
+})
 </script>
 
 <style scoped>
@@ -313,7 +310,7 @@
   padding: var(--page-mobile-gutter);
 }
 
-.content-mobile :deep(.page-section > [class$="-container"]) {
+.content-mobile :deep(.page-section > [class$='-container']) {
   padding: 0;
 }
 

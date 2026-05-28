@@ -25,7 +25,7 @@ const THEMES = {
   },
 }
 
-export function applyTheme (themeName) {
+export function applyTheme(themeName) {
   const colors = THEMES[themeName] ?? THEMES.customLightTheme
   const root = document.documentElement
 
@@ -38,7 +38,7 @@ export function applyTheme (themeName) {
   document.body.style.color = `rgb(${colors.text})`
 }
 
-export function getInitialTheme () {
+export function getInitialTheme() {
   const saved = localStorage.getItem('theme')
   if (saved && THEMES[saved]) {
     return saved
@@ -49,6 +49,6 @@ export function getInitialTheme () {
     : 'customLightTheme'
 }
 
-export function isDarkTheme (themeName) {
+export function isDarkTheme(themeName) {
   return themeName === 'customDarkTheme'
 }

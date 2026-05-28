@@ -10,46 +10,44 @@
 </template>
 
 <script setup>
-  import { computed } from 'vue'
-  import mdiVk from '@/assets/mdi--vk.svg?raw'
+import { computed } from 'vue'
+import mdiVk from '@/assets/mdi--vk.svg?raw'
 
-  /** Иконки брендов, удалённые из @mdi/font (например mdi-vk — с v5.0.45) */
-  const CUSTOM_SVG_ICONS = {
-    'mdi-vk': mdiVk,
+/** Иконки брендов, удалённые из @mdi/font (например mdi-vk — с v5.0.45) */
+const CUSTOM_SVG_ICONS = {
+  'mdi-vk': mdiVk,
+}
+
+const props = defineProps({
+  icon: {
+    type: String,
+    required: true,
+  },
+  size: {
+    type: String,
+    default: '',
+  },
+  color: {
+    type: String,
+    default: '',
+  },
+})
+
+const iconName = computed(() => (props.icon.startsWith('mdi-') ? props.icon : `mdi-${props.icon}`))
+
+const customSvgMarkup = computed(() => CUSTOM_SVG_ICONS[iconName.value] ?? null)
+
+const iconClasses = computed(() => {
+  const sizeClass = props.size ? `mdi-icon--${props.size}` : ''
+
+  if (customSvgMarkup.value) {
+    return ['mdi-icon', 'mdi-icon--svg', sizeClass].filter(Boolean)
   }
 
-  const props = defineProps({
-    icon: {
-      type: String,
-      required: true,
-    },
-    size: {
-      type: String,
-      default: '',
-    },
-    color: {
-      type: String,
-      default: '',
-    },
-  })
+  return ['mdi', iconName.value, 'mdi-icon', sizeClass].filter(Boolean)
+})
 
-  const iconName = computed(() =>
-    props.icon.startsWith('mdi-') ? props.icon : `mdi-${props.icon}`,
-  )
-
-  const customSvgMarkup = computed(() => CUSTOM_SVG_ICONS[iconName.value] ?? null)
-
-  const iconClasses = computed(() => {
-    const sizeClass = props.size ? `mdi-icon--${props.size}` : ''
-
-    if (customSvgMarkup.value) {
-      return ['mdi-icon', 'mdi-icon--svg', sizeClass].filter(Boolean)
-    }
-
-    return ['mdi', iconName.value, 'mdi-icon', sizeClass].filter(Boolean)
-  })
-
-  const iconStyle = computed(() => (props.color ? { color: props.color } : undefined))
+const iconStyle = computed(() => (props.color ? { color: props.color } : undefined))
 </script>
 
 <style scoped>

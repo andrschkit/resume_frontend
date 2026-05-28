@@ -1,5 +1,5 @@
 <template>
-  <div class="education-container">
+  <div class="education-container page-container">
     <PageHeader
       subtitle="Учебные заведения и курсы повышения квалификации"
       title="Моё образование"
@@ -53,46 +53,44 @@
 </template>
 
 <script>
-  import CertificateModal from '@/components/CertificateModal.vue';
-  import MdiIcon from '@/components/MdiIcon.vue';
-  import MenuComponent from '@/components/MenuComponent.vue';
-  import PageHeader from '@/components/PageHeader.vue';
-  import store from '@/plugins/store.js';
-  import { mapGetters } from 'vuex';
+import CertificateModal from '@/components/CertificateModal.vue'
+import MdiIcon from '@/components/MdiIcon.vue'
+import MenuComponent from '@/components/MenuComponent.vue'
+import PageHeader from '@/components/PageHeader.vue'
+import store from '@/plugins/store.js'
+import { mapGetters } from 'vuex'
 
-  export default {
-    name: 'Education',
-    components: { MenuComponent, PageHeader, MdiIcon, CertificateModal },
-    data () {
-      return {
-        modalOpen: false,
-        selectedItem: null,
-      };
+export default {
+  name: 'Education',
+  components: { MenuComponent, PageHeader, MdiIcon, CertificateModal },
+  data() {
+    return {
+      modalOpen: false,
+      selectedItem: null,
+    }
+  },
+  computed: {
+    ...mapGetters('resume_store', { educationPlaces: 'education_places_all' }),
+  },
+  mounted() {
+    store.dispatch('resume_store/loadEducationPlaces')
+  },
+  methods: {
+    openModal(item) {
+      this.selectedItem = item
+      this.modalOpen = true
     },
-    computed: {
-      ...mapGetters('resume_store', { educationPlaces: 'education_places_all' }),
+    closeModal() {
+      this.modalOpen = false
+      this.selectedItem = null
     },
-    mounted () {
-      store.dispatch('resume_store/loadEducationPlaces');
-    },
-    methods: {
-      openModal (item) {
-        this.selectedItem = item;
-        this.modalOpen = true;
-      },
-      closeModal () {
-        this.modalOpen = false;
-        this.selectedItem = null;
-      },
-    },
-  }
+  },
+}
 </script>
 
 <style scoped>
 .education-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem 1.5rem;
+  width: 100%;
 }
 
 .education-grid {
@@ -106,9 +104,9 @@
   background: rgba(var(--v-theme-surface), 0.5);
   border: 1px solid rgba(var(--v-theme-border), 0.3);
   border-top: 4px solid rgb(var(--v-theme-primary));
-  border-radius: 15px;
+  border-radius: var(--radius-card);
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-  padding: 2rem;
+  padding: 1.5rem;
   transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
@@ -123,7 +121,6 @@
 .education-header {
   display: flex;
   align-items: center;
-  margin-bottom: 1.5rem;
 }
 
 .education-logo {
@@ -131,8 +128,8 @@
 }
 
 .logo-placeholder {
-  width: 80px;
-  height: 80px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
   background: linear-gradient(135deg, rgb(var(--v-theme-primary)), #4b6cb7);
   display: flex;
@@ -147,7 +144,7 @@
 
 .education-title {
   color: rgb(var(--v-theme-text));
-  font-size: 1.6rem;
+  font-size: var(--fs-card-title);
   margin-bottom: 0.5rem;
 }
 
@@ -165,10 +162,9 @@
 }
 
 .education-description {
-  font-size: 1.1rem;
+  font-size: var(--fs-body);
   line-height: 1.7;
   color: rgb(var(--v-theme-subtext));
-  margin-bottom: 1.5rem;
   flex-grow: 1;
   padding: 0 0.5rem;
 }
@@ -198,7 +194,9 @@
 
 .education-badge--clickable {
   cursor: pointer;
-  transition: background 0.2s, transform 0.15s;
+  transition:
+    background 0.2s,
+    transform 0.15s;
 }
 
 .education-badge--clickable:hover {
@@ -209,12 +207,6 @@
 .education-badge--clickable:focus-visible {
   outline: 2px solid rgba(var(--v-theme-primary), 0.5);
   outline-offset: 2px;
-}
-
-@media (max-width: 959px) {
-  .education-container {
-    padding: 0;
-  }
 }
 
 @media (max-width: 900px) {
@@ -231,20 +223,19 @@
 
   .education-logo {
     margin-right: 0;
-    margin-bottom: 1.5rem;
   }
 
   .education-title {
-    font-size: 1.5rem;
+    font-size: clamp(1.15rem, 1.05rem + 0.7vw, 1.35rem);
   }
 
   .education-card {
-    padding: 1.5rem;
+    padding: 1rem;
   }
 
   .logo-placeholder {
-    width: 70px;
-    height: 70px;
+    width: 56px;
+    height: 56px;
   }
 }
 
@@ -252,6 +243,5 @@
   .education-grid {
     grid-template-columns: 1fr;
   }
-
 }
 </style>

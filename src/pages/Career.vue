@@ -1,16 +1,12 @@
 <template>
-  <div class="career-container">
+  <div class="career-container page-container">
     <PageHeader
       subtitle="Опыт в промышленности, госсекторе и управлении IT-командой"
       title="Профессиональный путь"
     />
 
     <div class="career-list">
-      <article
-        v-for="item in workPlacesNewestFirst"
-        :key="item.id"
-        class="career-card"
-      >
+      <article v-for="item in workPlacesNewestFirst" :key="item.id" class="career-card">
         <div class="career-header">
           <div class="career-logo">
             <div class="logo-placeholder">
@@ -40,42 +36,40 @@
 </template>
 
 <script>
-  import MdiIcon from '@/components/MdiIcon.vue';
-  import PageHeader from '@/components/PageHeader.vue';
-  import store from '@/plugins/store.js';
-  import { mapGetters } from 'vuex';
+import MdiIcon from '@/components/MdiIcon.vue'
+import PageHeader from '@/components/PageHeader.vue'
+import store from '@/plugins/store.js'
+import { mapGetters } from 'vuex'
 
-  export default {
-    name: 'Career',
-    components: { PageHeader, MdiIcon },
-    computed: {
-      ...mapGetters('resume_store', { work_places: 'work_places_all' }),
-      workPlacesNewestFirst () {
-        return [...this.work_places].reverse();
-      },
+export default {
+  name: 'Career',
+  components: { PageHeader, MdiIcon },
+  computed: {
+    ...mapGetters('resume_store', { work_places: 'work_places_all' }),
+    workPlacesNewestFirst() {
+      return [...this.work_places].reverse()
     },
-    mounted () {
-      store.dispatch('resume_store/loadWorkPlaces');
+  },
+  mounted() {
+    store.dispatch('resume_store/loadWorkPlaces')
+  },
+  methods: {
+    achievementBullets(description) {
+      if (!description || !String(description).includes('•')) {
+        return []
+      }
+      return String(description)
+        .split('•')
+        .map((s) => s.trim())
+        .filter(Boolean)
     },
-    methods: {
-      achievementBullets (description) {
-        if (!description || !String(description).includes('•')) {
-          return [];
-        }
-        return String(description)
-          .split('•')
-          .map(s => s.trim())
-          .filter(Boolean);
-      },
-    },
-  }
+  },
+}
 </script>
 
 <style scoped>
 .career-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem 1.5rem;
+  width: 100%;
 }
 
 .career-list {
@@ -88,10 +82,12 @@
   background: rgba(var(--v-theme-surface), 0.5);
   border: 1px solid rgba(var(--v-theme-border), 0.3);
   border-top: 4px solid rgb(var(--v-theme-primary));
-  border-radius: 15px;
+  border-radius: var(--radius-card);
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-  padding: 1.75rem 2rem;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  padding: 1.5rem;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .career-card:hover {
@@ -130,7 +126,7 @@
 
 .career-title {
   margin: 0 0 0.4rem;
-  font-size: 1.4rem;
+  font-size: var(--fs-card-title);
   font-weight: 600;
   color: rgb(var(--v-theme-text));
   line-height: 1.3;
@@ -146,7 +142,7 @@
 }
 
 .career-description {
-  font-size: 1.05rem;
+  font-size: var(--fs-body);
   line-height: 1.65;
   color: rgb(var(--v-theme-subtext));
 }
@@ -168,15 +164,9 @@
   margin-bottom: 0;
 }
 
-@media (max-width: 959px) {
-  .career-container {
-    padding: 0;
-  }
-}
-
 @media (max-width: 768px) {
   .career-card {
-    padding: 1.5rem;
+    padding: 1rem;
   }
 
   .career-header {
@@ -194,7 +184,7 @@
   }
 
   .career-title {
-    font-size: 1.25rem;
+    font-size: clamp(1.1rem, 1.02rem + 0.55vw, 1.25rem);
   }
 
   .logo-placeholder {
