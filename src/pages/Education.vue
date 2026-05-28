@@ -53,39 +53,39 @@
 </template>
 
 <script>
-  import CertificateModal from '@/components/CertificateModal.vue';
-  import MdiIcon from '@/components/MdiIcon.vue';
-  import MenuComponent from '@/components/MenuComponent.vue';
-  import PageHeader from '@/components/PageHeader.vue';
-  import store from '@/plugins/store.js';
-  import { mapGetters } from 'vuex';
+import CertificateModal from '@/components/CertificateModal.vue'
+import MdiIcon from '@/components/MdiIcon.vue'
+import MenuComponent from '@/components/MenuComponent.vue'
+import PageHeader from '@/components/PageHeader.vue'
+import store from '@/plugins/store.js'
+import { mapGetters } from 'vuex'
 
-  export default {
-    name: 'Education',
-    components: { MenuComponent, PageHeader, MdiIcon, CertificateModal },
-    data () {
-      return {
-        modalOpen: false,
-        selectedItem: null,
-      };
+export default {
+  name: 'Education',
+  components: { MenuComponent, PageHeader, MdiIcon, CertificateModal },
+  data() {
+    return {
+      modalOpen: false,
+      selectedItem: null,
+    }
+  },
+  computed: {
+    ...mapGetters('resume_store', { educationPlaces: 'education_places_all' }),
+  },
+  mounted() {
+    store.dispatch('resume_store/loadEducationPlaces')
+  },
+  methods: {
+    openModal(item) {
+      this.selectedItem = item
+      this.modalOpen = true
     },
-    computed: {
-      ...mapGetters('resume_store', { educationPlaces: 'education_places_all' }),
+    closeModal() {
+      this.modalOpen = false
+      this.selectedItem = null
     },
-    mounted () {
-      store.dispatch('resume_store/loadEducationPlaces');
-    },
-    methods: {
-      openModal (item) {
-        this.selectedItem = item;
-        this.modalOpen = true;
-      },
-      closeModal () {
-        this.modalOpen = false;
-        this.selectedItem = null;
-      },
-    },
-  }
+  },
+}
 </script>
 
 <style scoped>
@@ -194,7 +194,9 @@
 
 .education-badge--clickable {
   cursor: pointer;
-  transition: background 0.2s, transform 0.15s;
+  transition:
+    background 0.2s,
+    transform 0.15s;
 }
 
 .education-badge--clickable:hover {
@@ -241,6 +243,5 @@
   .education-grid {
     grid-template-columns: 1fr;
   }
-
 }
 </style>

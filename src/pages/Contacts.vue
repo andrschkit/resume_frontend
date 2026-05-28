@@ -14,7 +14,7 @@
             class="avatar"
             :src="user.photo_url"
             @error="showPhoto = false"
-          >
+          />
           <div v-else class="avatar-placeholder">
             <MdiIcon icon="mdi-account" size="large" />
           </div>
@@ -52,108 +52,108 @@
 </template>
 
 <script>
-  import PageHeader from '@/components/PageHeader.vue';
-  import store from '@/plugins/store.js';
-  import { mapGetters, mapState } from 'vuex';
+import PageHeader from '@/components/PageHeader.vue'
+import store from '@/plugins/store.js'
+import { mapGetters, mapState } from 'vuex'
 
-  export default {
-    name: 'Contacts',
-    components: { PageHeader },
-    data () {
-      return { showPhoto: true };
+export default {
+  name: 'Contacts',
+  components: { PageHeader },
+  data() {
+    return { showPhoto: true }
+  },
+  computed: {
+    ...mapGetters('resume_store', { users: 'users_all' }),
+    ...mapState('resume_store', { loadError: 'error' }),
+    user() {
+      return this.users[0] || null
     },
-    computed: {
-      ...mapGetters('resume_store', { users: 'users_all' }),
-      ...mapState('resume_store', { loadError: 'error' }),
-      user () {
-        return this.users[0] || null;
-      },
-      fullName () {
-        if (!this.user) return '';
-        const { last_name, first_name, middle_name } = this.user;
-        return [last_name, first_name, middle_name].filter(Boolean).join(' ');
-      },
-      channels () {
-        if (!this.user) return [];
+    fullName() {
+      if (!this.user) return ''
+      const { last_name, first_name, middle_name } = this.user
+      return [last_name, first_name, middle_name].filter(Boolean).join(' ')
+    },
+    channels() {
+      if (!this.user) return []
 
-        const u = this.user;
-        const items = [
-          {
-            id: 'phone',
-            label: 'Телефон',
-            value: u.phone,
-            href: u.phone ? `tel:${this.phoneHref(u.phone)}` : null,
-            icon: 'mdi-phone',
-            external: false,
-          },
-          {
-            id: 'mail',
-            label: 'Email',
-            value: u.mail,
-            href: u.mail ? `mailto:${u.mail}` : null,
-            icon: 'mdi-email',
-            external: false,
-          },
-          {
-            id: 'telegram',
-            label: 'Telegram',
-            value: this.formatTelegram(u.telegram),
-            href: u.telegram,
-            icon: 'mdi-send',
-            external: true,
-          },
-          {
-            id: 'vk',
-            label: 'ВКонтакте',
-            value: this.formatVk(u.vk),
-            href: u.vk,
-            icon: 'mdi-vk',
-            external: true,
-          },
-          {
-            id: 'git',
-            label: 'GitHub',
-            value: this.formatGitHub(u.git),
-            href: u.git,
-            icon: 'mdi-github',
-            external: true,
-          },
-        ];
+      const u = this.user
+      const items = [
+        {
+          id: 'phone',
+          label: 'Телефон',
+          value: u.phone,
+          href: u.phone ? `tel:${this.phoneHref(u.phone)}` : null,
+          icon: 'mdi-phone',
+          external: false,
+        },
+        {
+          id: 'mail',
+          label: 'Email',
+          value: u.mail,
+          href: u.mail ? `mailto:${u.mail}` : null,
+          icon: 'mdi-email',
+          external: false,
+        },
+        {
+          id: 'telegram',
+          label: 'Telegram',
+          value: this.formatTelegram(u.telegram),
+          href: u.telegram,
+          icon: 'mdi-send',
+          external: true,
+        },
+        {
+          id: 'vk',
+          label: 'ВКонтакте',
+          value: this.formatVk(u.vk),
+          href: u.vk,
+          icon: 'mdi-vk',
+          external: true,
+        },
+        {
+          id: 'git',
+          label: 'GitHub',
+          value: this.formatGitHub(u.git),
+          href: u.git,
+          icon: 'mdi-github',
+          external: true,
+        },
+      ]
 
-        return items.filter(item => item.href && item.value);
-      },
+      return items.filter((item) => item.href && item.value)
     },
-    mounted () {
-      store.dispatch('resume_store/loadUsers');
+  },
+  mounted() {
+    store.dispatch('resume_store/loadUsers')
+  },
+  methods: {
+    phoneHref(phone) {
+      return String(phone).replace(/\D/g, '')
     },
-    methods: {
-      phoneHref (phone) {
-        return String(phone).replace(/\D/g, '');
-      },
-      formatTelegram (url) {
-        if (!url) return '';
-        const match = String(url).match(/t\.me\/([^/?#]+)/i);
-        return match ? `@${match[1]}` : url;
-      },
-      formatVk (url) {
-        if (!url) return '';
-        try {
-          return new URL(url).pathname.replace(/^\//, '');
-        } catch {
-          return url;
-        }
-      },
-      formatGitHub (url) {
-        if (!url) return '';
-        try {
-          const host = new URL(url).hostname.replace(/^www\./, '');
-          return `${host}${new URL(url).pathname}`.replace(/\/$/, '');
-        } catch {
-          return url;
-        }
-      },
+    formatTelegram(url) {
+      if (!url) return ''
+      const match = String(url).match(/t\.me\/([^/?#]+)/i)
+      return match ? `@${match[1]}` : url
     },
-  }
+    formatVk(url) {
+      if (!url) return ''
+      try {
+        return new URL(url).pathname.replace(/^\//, '')
+      } catch {
+        return url
+      }
+    },
+    formatGitHub(url) {
+      if (!url) return ''
+      try {
+        const host = new URL(url).hostname.replace(/^www\./, '')
+        return `${host}${new URL(url).pathname}`.replace(/\/$/, '')
+      } catch {
+        return url
+      }
+    },
+  },
+}
 </script>
 
 <style scoped>
@@ -288,7 +288,9 @@
   flex-shrink: 0;
   color: rgb(var(--v-theme-primary));
   opacity: 0.6;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
 }
 
 .channel-card:hover .channel-arrow {

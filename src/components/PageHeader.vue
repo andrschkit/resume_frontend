@@ -9,32 +9,29 @@
 </template>
 
 <script>
-  export default {
-    name: 'PageHeader',
-    props: {
-      title: {
-        type: String,
-        required: true,
-      },
-      subtitle: {
-        type: String,
-        default: '',
-      },
-      variant: {
-        type: String,
-        default: 'default',
-        validator: value => ['default', 'hero'].includes(value),
-      },
+export default {
+  name: 'PageHeader',
+  props: {
+    title: {
+      type: String,
+      required: true,
     },
-    computed: {
-      headerClasses () {
-        return [
-          'page-header',
-          this.variant === 'hero' && 'page-header--hero',
-        ].filter(Boolean)
-      },
+    subtitle: {
+      type: String,
+      default: '',
     },
-  }
+    variant: {
+      type: String,
+      default: 'default',
+      validator: (value) => ['default', 'hero'].includes(value),
+    },
+  },
+  computed: {
+    headerClasses() {
+      return ['page-header', this.variant === 'hero' && 'page-header--hero'].filter(Boolean)
+    },
+  },
+}
 </script>
 
 <style scoped>

@@ -6,11 +6,7 @@
     />
 
     <div class="career-list">
-      <article
-        v-for="item in workPlacesNewestFirst"
-        :key="item.id"
-        class="career-card"
-      >
+      <article v-for="item in workPlacesNewestFirst" :key="item.id" class="career-card">
         <div class="career-header">
           <div class="career-logo">
             <div class="logo-placeholder">
@@ -40,35 +36,35 @@
 </template>
 
 <script>
-  import MdiIcon from '@/components/MdiIcon.vue';
-  import PageHeader from '@/components/PageHeader.vue';
-  import store from '@/plugins/store.js';
-  import { mapGetters } from 'vuex';
+import MdiIcon from '@/components/MdiIcon.vue'
+import PageHeader from '@/components/PageHeader.vue'
+import store from '@/plugins/store.js'
+import { mapGetters } from 'vuex'
 
-  export default {
-    name: 'Career',
-    components: { PageHeader, MdiIcon },
-    computed: {
-      ...mapGetters('resume_store', { work_places: 'work_places_all' }),
-      workPlacesNewestFirst () {
-        return [...this.work_places].reverse();
-      },
+export default {
+  name: 'Career',
+  components: { PageHeader, MdiIcon },
+  computed: {
+    ...mapGetters('resume_store', { work_places: 'work_places_all' }),
+    workPlacesNewestFirst() {
+      return [...this.work_places].reverse()
     },
-    mounted () {
-      store.dispatch('resume_store/loadWorkPlaces');
+  },
+  mounted() {
+    store.dispatch('resume_store/loadWorkPlaces')
+  },
+  methods: {
+    achievementBullets(description) {
+      if (!description || !String(description).includes('•')) {
+        return []
+      }
+      return String(description)
+        .split('•')
+        .map((s) => s.trim())
+        .filter(Boolean)
     },
-    methods: {
-      achievementBullets (description) {
-        if (!description || !String(description).includes('•')) {
-          return [];
-        }
-        return String(description)
-          .split('•')
-          .map(s => s.trim())
-          .filter(Boolean);
-      },
-    },
-  }
+  },
+}
 </script>
 
 <style scoped>
@@ -89,7 +85,9 @@
   border-radius: var(--radius-card);
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
   padding: 1.5rem;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .career-card:hover {

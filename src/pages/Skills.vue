@@ -12,7 +12,7 @@
           Управление и процессы
         </h2>
         <div class="skills-grid">
-          <div v-for="item in coreSkills" :key="'core-'+item.id" class="skill-card">
+          <div v-for="item in coreSkills" :key="'core-' + item.id" class="skill-card">
             <div class="skill-icon">
               <MdiIcon :icon="getSkillIcon(item.name)" size="large" />
             </div>
@@ -28,7 +28,7 @@
           Разработка (frontend)
         </h2>
         <div class="skills-grid">
-          <div v-for="item in frontendSkills" :key="'front-'+item.id" class="skill-card">
+          <div v-for="item in frontendSkills" :key="'front-' + item.id" class="skill-card">
             <div class="skill-icon">
               <MdiIcon :icon="getSkillIcon(item.name)" size="large" />
             </div>
@@ -44,7 +44,7 @@
           Инфраструктура и backend
         </h2>
         <div class="skills-grid">
-          <div v-for="item in backendSkills" :key="'back-'+item.id" class="skill-card">
+          <div v-for="item in backendSkills" :key="'back-' + item.id" class="skill-card">
             <div class="skill-icon">
               <MdiIcon :icon="getSkillIcon(item.name)" size="large" />
             </div>
@@ -58,52 +58,52 @@
 </template>
 
 <script>
-  import PageHeader from '@/components/PageHeader.vue';
-  import store from '@/plugins/store.js';
-  import { mapGetters } from 'vuex';
+import PageHeader from '@/components/PageHeader.vue'
+import store from '@/plugins/store.js'
+import { mapGetters } from 'vuex'
 
-  const ICONS = {
-    'Управление командами': 'mdi-account-supervisor',
-    'Agile (Scrum, Kanban)': 'mdi-chart-timeline-variant',
-    'KPI и процессы': 'mdi-target',
-    'Jira / GitLab': 'mdi-jira',
-    'Docker': 'mdi-docker',
-    'GitLab CI/CD': 'mdi-git',
-    'Микросервисная архитектура': 'mdi-sitemap',
-    'Self-hosting': 'mdi-cloud-outline',
-    'Техническое лидерство': 'mdi-lightbulb-on',
-    'Vue.js': 'mdi-vuejs',
-    'JavaScript': 'mdi-language-javascript',
-    'HTML5 / CSS3': 'mdi-language-html5',
-    'Bootstrap': 'mdi-bootstrap',
-    'Java / Spring Boot': 'mdi-language-java',
-    'PostgreSQL': 'mdi-database',
-    'REST API': 'mdi-api',
-    'OAuth2': 'mdi-shield-key',
-    'Linux': 'mdi-linux',
-  };
+const ICONS = {
+  'Управление командами': 'mdi-account-supervisor',
+  'Agile (Scrum, Kanban)': 'mdi-chart-timeline-variant',
+  'KPI и процессы': 'mdi-target',
+  'Jira / GitLab': 'mdi-jira',
+  Docker: 'mdi-docker',
+  'GitLab CI/CD': 'mdi-git',
+  'Микросервисная архитектура': 'mdi-sitemap',
+  'Self-hosting': 'mdi-cloud-outline',
+  'Техническое лидерство': 'mdi-lightbulb-on',
+  'Vue.js': 'mdi-vuejs',
+  JavaScript: 'mdi-language-javascript',
+  'HTML5 / CSS3': 'mdi-language-html5',
+  Bootstrap: 'mdi-bootstrap',
+  'Java / Spring Boot': 'mdi-language-java',
+  PostgreSQL: 'mdi-database',
+  'REST API': 'mdi-api',
+  OAuth2: 'mdi-shield-key',
+  Linux: 'mdi-linux',
+}
 
-  export default {
-    name: 'Skills',
-    components: { PageHeader },
-    computed: {
-      ...mapGetters('resume_store', {
-        coreSkills: 'main_skills_all',
-        frontendSkills: 'frontend_skills_all',
-        backendSkills: 'backend_skills_all',
-      }),
+export default {
+  name: 'Skills',
+  components: { PageHeader },
+  computed: {
+    ...mapGetters('resume_store', {
+      coreSkills: 'main_skills_all',
+      frontendSkills: 'frontend_skills_all',
+      backendSkills: 'backend_skills_all',
+    }),
+  },
+  mounted() {
+    store.dispatch('resume_store/loadMainSkills')
+    store.dispatch('resume_store/loadFrontendSkills')
+    store.dispatch('resume_store/loadBackendSkills')
+  },
+  methods: {
+    getSkillIcon(skillName) {
+      return ICONS[skillName] || 'mdi-code-braces'
     },
-    mounted () {
-      store.dispatch('resume_store/loadMainSkills');
-      store.dispatch('resume_store/loadFrontendSkills');
-      store.dispatch('resume_store/loadBackendSkills');
-    },
-    methods: {
-      getSkillIcon (skillName) {
-        return ICONS[skillName] || 'mdi-code-braces';
-      },
-    },
-  }
+  },
+}
 </script>
 
 <style scoped>

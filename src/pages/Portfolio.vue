@@ -8,8 +8,7 @@
     <div class="portfolio-grid">
       <div v-for="project in portfolioItems" :key="project.id" class="project-card">
         <div class="project-image-container">
-          <img :alt="project.name" class="project-image" :src="project.img">
-
+          <img :alt="project.name" class="project-image" :src="project.img" />
         </div>
 
         <div class="project-content">
@@ -54,38 +53,38 @@
 </template>
 
 <script>
-  import MdiIcon from '@/components/MdiIcon.vue';
-  import PageHeader from '@/components/PageHeader.vue';
-  import ProjectModal from '@/components/ProjectModal.vue';
-  import store from '@/plugins/store.js';
-  import { mapGetters } from 'vuex';
+import MdiIcon from '@/components/MdiIcon.vue'
+import PageHeader from '@/components/PageHeader.vue'
+import ProjectModal from '@/components/ProjectModal.vue'
+import store from '@/plugins/store.js'
+import { mapGetters } from 'vuex'
 
-  export default {
-    name: 'Portfolio',
-    components: { PageHeader, MdiIcon, ProjectModal },
-    data () {
-      return {
-        modalOpen: false,
-        selectedProject: null,
-      };
+export default {
+  name: 'Portfolio',
+  components: { PageHeader, MdiIcon, ProjectModal },
+  data() {
+    return {
+      modalOpen: false,
+      selectedProject: null,
+    }
+  },
+  computed: {
+    ...mapGetters('resume_store', { portfolioItems: 'products_all' }),
+  },
+  mounted() {
+    store.dispatch('resume_store/loadProducts')
+  },
+  methods: {
+    openModal(project) {
+      this.selectedProject = project
+      this.modalOpen = true
     },
-    computed: {
-      ...mapGetters('resume_store', { portfolioItems: 'products_all' }),
+    closeModal() {
+      this.modalOpen = false
+      this.selectedProject = null
     },
-    mounted () {
-      store.dispatch('resume_store/loadProducts');
-    },
-    methods: {
-      openModal (project) {
-        this.selectedProject = project;
-        this.modalOpen = true;
-      },
-      closeModal () {
-        this.modalOpen = false;
-        this.selectedProject = null;
-      },
-    },
-  }
+  },
+}
 </script>
 
 <style scoped>

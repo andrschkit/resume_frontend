@@ -38,57 +38,66 @@
 </template>
 
 <script>
-  import MdiIcon from '@/components/MdiIcon.vue';
-  import MenuComponent from '@/components/MenuComponent.vue';
-  import PageHeader from '@/components/PageHeader.vue';
+import MdiIcon from '@/components/MdiIcon.vue'
+import MenuComponent from '@/components/MenuComponent.vue'
+import PageHeader from '@/components/PageHeader.vue'
 
-  export default {
-    name: 'Tools',
-    components: { MenuComponent, PageHeader, MdiIcon },
-    data () {
-      return {
-        swaggerLink: 'http://localhost:8080/swagger-ui/index.html',
-        tools: [
-          {
-            name: 'Vue 3',
-            icon: 'mdi-vuejs',
-            description: 'Фреймворк для создания пользовательских интерфейсов. Использован для разработки фронтенд части резюме.',
-            links: [{ label: 'Официальный сайт', href: 'https://vuejs.org/' }],
-          },
-          {
-            name: 'Java',
-            icon: 'mdi-language-java',
-            description: 'Язык программирования для бэкенд разработки. Использован для создания API и бизнес-логики приложения.',
-            links: [{ label: 'Официальный сайт', href: 'https://www.java.com/' }],
-          },
-          {
-            name: 'PostgreSQL',
-            icon: 'mdi-database',
-            description: 'Реляционная СУБД. Использована для хранения данных резюме и обеспечения их целостности.',
-            links: [{ label: 'Официальный сайт', href: 'https://www.postgresql.org/' }],
-          },
-          {
-            name: 'GitHub',
-            icon: 'mdi-github',
-            description: 'Репозитории проекта с исходным кодом фронтенда и бэкенда.',
-            links: [
-              { label: 'Frontend repository', href: 'https://github.com/andrschkit/resume_frontend' },
-              { label: 'Backend repository', href: 'https://github.com/andrschkit/resume_backend' },
-            ],
-          },
-          {
-            name: 'Swagger',
-            icon: 'mdi-api',
-            description: 'Инструмент для документирования и тестирования API. Использован для описания эндпоинтов бэкенда.',
-            links: [
-              { label: 'Официальный сайт', href: 'https://swagger.io/' },
-              { label: 'Моя документация', href: 'http://localhost:8080/swagger-ui/index.html', icon: 'mdi-link-variant', isAccent: true },
-            ],
-          },
-        ],
-      }
-    },
-  }
+export default {
+  name: 'Tools',
+  components: { MenuComponent, PageHeader, MdiIcon },
+  data() {
+    return {
+      swaggerLink: 'http://localhost:8080/swagger-ui/index.html',
+      tools: [
+        {
+          name: 'Vue 3',
+          icon: 'mdi-vuejs',
+          description:
+            'Фреймворк для создания пользовательских интерфейсов. Использован для разработки фронтенд части резюме.',
+          links: [{ label: 'Официальный сайт', href: 'https://vuejs.org/' }],
+        },
+        {
+          name: 'Java',
+          icon: 'mdi-language-java',
+          description:
+            'Язык программирования для бэкенд разработки. Использован для создания API и бизнес-логики приложения.',
+          links: [{ label: 'Официальный сайт', href: 'https://www.java.com/' }],
+        },
+        {
+          name: 'PostgreSQL',
+          icon: 'mdi-database',
+          description:
+            'Реляционная СУБД. Использована для хранения данных резюме и обеспечения их целостности.',
+          links: [{ label: 'Официальный сайт', href: 'https://www.postgresql.org/' }],
+        },
+        {
+          name: 'GitHub',
+          icon: 'mdi-github',
+          description: 'Репозитории проекта с исходным кодом фронтенда и бэкенда.',
+          links: [
+            { label: 'Frontend repository', href: 'https://github.com/andrschkit/resume_frontend' },
+            { label: 'Backend repository', href: 'https://github.com/andrschkit/resume_backend' },
+          ],
+        },
+        {
+          name: 'Swagger',
+          icon: 'mdi-api',
+          description:
+            'Инструмент для документирования и тестирования API. Использован для описания эндпоинтов бэкенда.',
+          links: [
+            { label: 'Официальный сайт', href: 'https://swagger.io/' },
+            {
+              label: 'Моя документация',
+              href: 'http://localhost:8080/swagger-ui/index.html',
+              icon: 'mdi-link-variant',
+              isAccent: true,
+            },
+          ],
+        },
+      ],
+    }
+  },
+}
 </script>
 
 <style scoped>
@@ -232,6 +241,5 @@
   .tools-grid {
     grid-template-columns: 1fr;
   }
-
 }
 </style>
