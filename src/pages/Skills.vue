@@ -1,5 +1,5 @@
 <template>
-  <div class="skills-container">
+  <div class="skills-container page-container">
     <PageHeader
       subtitle="Управление, разработка и инфраструктура — в одном профиле"
       title="Компетенции"
@@ -108,9 +108,7 @@
 
 <style scoped>
 .skills-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem 1.5rem;
+  width: 100%;
 }
 
 .skills-categories {
@@ -124,7 +122,7 @@
   align-items: center;
   gap: 1rem;
   color: rgb(var(--v-theme-text));
-  font-size: 2rem;
+  font-size: var(--fs-section-title);
   margin-bottom: 2rem;
   padding-bottom: 0.5rem;
   border-bottom: 2px solid rgba(var(--v-theme-primary), 0.2);
@@ -138,7 +136,7 @@
 
 .skill-card {
   background: rgba(var(--v-theme-surface), 0.5);
-  border-radius: 15px;
+  border-radius: var(--radius-card);
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
   padding: 2rem;
   transition: all 0.3s ease;
@@ -156,35 +154,30 @@
 }
 
 .skill-icon {
-  width: 70px;
-  height: 70px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
   background: linear-gradient(135deg, rgb(var(--v-theme-primary)), #4b6cb7);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
   color: white;
 }
 
 .skill-name {
   color: rgb(var(--v-theme-text));
-  font-size: 1.4rem;
+  font-size: var(--fs-card-title);
+  margin-top: 0;
   margin-bottom: 1rem;
   font-weight: 600;
 }
 
 .skill-description {
   color: rgb(var(--v-theme-subtext));
-  font-size: 1.1rem;
+  font-size: var(--fs-body);
   line-height: 1.6;
   margin: 0;
-}
-
-@media (max-width: 959px) {
-  .skills-container {
-    padding: 0;
-  }
 }
 
 @media (max-width: 900px) {
@@ -195,11 +188,16 @@
 
 @media (max-width: 768px) {
   .category-title {
-    font-size: 1.8rem;
+    font-size: clamp(1.35rem, 1.2rem + 0.95vw, 1.65rem);
   }
 
   .skill-card {
     padding: 1.5rem;
+  }
+
+  .skill-icon {
+    width: 56px;
+    height: 56px;
   }
 }
 

@@ -1,6 +1,6 @@
 <template>
 
-  <div class="about-container">
+  <div class="about-container page-container">
 
     <PageHeader
 
@@ -65,83 +65,61 @@
 
 
         <div v-for="user in contacts" :key="user.id" class="user-card">
-
           <div class="contact-section">
+            <h3 class="contact-title">Контактные данные</h3>
 
-            <div class="contact-info">
+            <div class="contact-grid">
+              <a class="contact-item contact-link-card" :href="`tel:${phoneHref(user.phone)}`">
+                <span class="contact-icon-wrap">
+                  <MdiIcon icon="mdi-phone" size="small" />
+                </span>
+                <span class="contact-content">
+                  <span class="contact-label">Телефон</span>
+                  <span class="contact-value">{{ user.phone }}</span>
+                </span>
+              </a>
 
-              <div class="contact-item">
+              <a class="contact-item contact-link-card" :href="`mailto:${user.mail}`">
+                <span class="contact-icon-wrap">
+                  <MdiIcon icon="mdi-email-outline" size="small" />
+                </span>
+                <span class="contact-content">
+                  <span class="contact-label">Email</span>
+                  <span class="contact-value">{{ user.mail }}</span>
+                </span>
+              </a>
 
-                <span class="icon">📱</span>
+              <a class="contact-item contact-link-card" :href="user.git" rel="noopener noreferrer" target="_blank">
+                <span class="contact-icon-wrap">
+                  <MdiIcon icon="mdi-github" size="small" />
+                </span>
+                <span class="contact-content">
+                  <span class="contact-label">GitHub</span>
+                  <span class="contact-value">Профиль</span>
+                </span>
+              </a>
 
-                <a class="contact-value contact-link" :href="`tel:${phoneHref(user.phone)}`">
+              <a v-if="user.telegram" class="contact-item contact-link-card" :href="user.telegram" rel="noopener noreferrer" target="_blank">
+                <span class="contact-icon-wrap">
+                  <MdiIcon icon="mdi-send" size="small" />
+                </span>
+                <span class="contact-content">
+                  <span class="contact-label">Telegram</span>
+                  <span class="contact-value">Написать</span>
+                </span>
+              </a>
 
-                  {{ user.phone }}
-
-                </a>
-
-              </div>
-
-
-
-              <div class="contact-item">
-
-                <span class="icon">✉️</span>
-
-                <a class="contact-value contact-link" :href="`mailto:${user.mail}`">
-
-                  {{ user.mail }}
-
-                </a>
-
-              </div>
-
-
-
-              <div class="contact-item">
-
-                <span class="icon">🔗</span>
-
-                <a class="contact-link" :href="user.git" rel="noopener noreferrer" target="_blank">
-
-                  GitHub
-
-                </a>
-
-              </div>
-
-
-
-              <div v-if="user.telegram" class="contact-item">
-
-                <span class="icon">✈️</span>
-
-                <a class="contact-link" :href="user.telegram" rel="noopener noreferrer" target="_blank">
-
-                  Telegram
-
-                </a>
-
-              </div>
-
-
-
-              <div v-if="user.vk" class="contact-item">
-
-                <span class="icon">💬</span>
-
-                <a class="contact-link" :href="user.vk" rel="noopener noreferrer" target="_blank">
-
-                  ВКонтакте
-
-                </a>
-
-              </div>
-
+              <a v-if="user.vk" class="contact-item contact-link-card" :href="user.vk" rel="noopener noreferrer" target="_blank">
+                <span class="contact-icon-wrap">
+                  <MdiIcon icon="mdi-vk" size="small" />
+                </span>
+                <span class="contact-content">
+                  <span class="contact-label">ВКонтакте</span>
+                  <span class="contact-value">Профиль</span>
+                </span>
+              </a>
             </div>
-
           </div>
-
         </div>
 
       </div>
@@ -221,12 +199,7 @@
 <style scoped>
 
 .about-container {
-
-  max-width: 1300px;
-
-  margin: 0 auto;
-
-  padding: 2rem 1.5rem;
+  width: 100%;
 
 }
 
@@ -260,11 +233,11 @@
 
   background-color: rgba(var(--v-theme-surface), 0.1) !important;
 
-  border-radius: 15px;
+  border-radius: var(--radius-card);
 
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 
-  padding: 2.5rem;
+  padding: 1.5rem;
 
   transition: transform 0.3s ease;
 
@@ -284,7 +257,7 @@
 
   color: rgb(var(--v-theme-text)) !important;
 
-  font-size: 2.2rem;
+  font-size: var(--fs-section-title);
 
   margin-bottom: 1.5rem;
 
@@ -316,7 +289,7 @@
 
 .bio-section p {
 
-  font-size: 1.1rem;
+  font-size: var(--fs-body);
 
   line-height: 1.8;
 
@@ -438,31 +411,34 @@
 
 .contact-section {
 
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
   background-color: rgba(var(--v-theme-info), 0.1) !important;
 
   border-radius: 12px;
+}
 
-  padding: 1.5rem;
+
+
+.contact-title {
+
+  margin: 0 0 1rem;
+
+  font-size: 1.15rem;
+
+  font-weight: 600;
+
+  color: rgb(var(--v-theme-text));
 
 }
 
 
 
-.contact-info {
+.contact-grid {
 
-  display: flex;
+  display: grid;
 
-  flex-wrap: wrap;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 
-  align-items: center;
-
-  justify-content: center;
+  gap: 0.9rem;
 
 }
 
@@ -472,21 +448,17 @@
 
   display: flex;
 
-  justify-content: center;
-
   align-items: center;
 
-  min-width: 260px;
-
-  margin: 1rem 1.5rem;
-
-  padding: 1rem 1.5rem;
+  padding: 0.9rem 1rem;
 
   background: rgba(var(--v-theme-background), 0.5) !important;
 
   border-radius: 10px;
 
-  transition: all 0.3s ease;
+  border: 1px solid rgba(var(--v-theme-primary), 0.08);
+
+  transition: all 0.25s ease;
 
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 
@@ -498,21 +470,61 @@
 
   background-color: rgba(var(--v-theme-primary), 0.05);
 
-  transform: translateX(5px);
+  transform: translateY(-2px);
+
+  border-color: rgba(var(--v-theme-primary), 0.2);
 
 }
 
 
 
-.icon {
+.contact-icon-wrap {
 
-  font-size: 1.5rem;
+  width: 36px;
 
-  margin-right: 1rem;
+  height: 36px;
 
-  min-width: 30px;
+  flex-shrink: 0;
 
-  text-align: center;
+  margin-right: 0.8rem;
+
+  border-radius: 50%;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  color: rgb(var(--v-theme-primary));
+
+  background: rgba(var(--v-theme-primary), 0.12);
+
+}
+
+
+
+.contact-content {
+
+  display: flex;
+
+  flex-direction: column;
+
+  min-width: 0;
+
+}
+
+
+
+.contact-label {
+
+  font-size: 0.8rem;
+
+  color: rgb(var(--v-theme-subtext));
+
+  line-height: 1.2;
+
+  margin-bottom: 0.2rem;
 
 }
 
@@ -520,37 +532,23 @@
 
 .contact-value {
 
-  font-size: 1.2rem;
+  font-size: var(--fs-body);
 
   color: rgb(var(--v-theme-text)) !important;
 
-  font-weight: 500;
+  font-weight: 600;
+
+  word-break: break-word;
 
 }
 
 
 
-.contact-link {
-
-  font-size: 1.2rem;
-
-  color: rgb(var(--v-theme-primary));
-
-  font-weight: 500;
+.contact-link-card {
 
   text-decoration: none;
 
-  transition: all 0.3s ease;
-
-}
-
-
-
-.contact-link:hover {
-
-  text-decoration: underline;
-
-  opacity: 0.9;
+  color: inherit;
 
 }
 
@@ -558,14 +556,8 @@
 
 @media (max-width: 959px) {
 
-  .about-container {
-    padding: 0;
-  }
-
   .contact-item {
     min-width: 0;
-    margin-left: 0;
-    margin-right: 0;
   }
 
 }

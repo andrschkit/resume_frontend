@@ -1,5 +1,5 @@
 <template>
-  <div class="portfolio-container">
+  <div class="portfolio-container page-container">
     <PageHeader
       subtitle="Корпоративные продукты и инфраструктура с измеримым результатом. (NDA не позволяет публиковать все проекты)"
       title="Кейсы и проекты"
@@ -90,9 +90,7 @@
 
 <style scoped>
 .portfolio-container {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 2rem 1.5rem;
+  width: 100%;
 }
 
 .portfolio-grid {
@@ -105,7 +103,7 @@
 .project-card {
   background: rgba(var(--v-theme-surface), 0.5);
   border: 1px solid rgba(var(--v-theme-border), 0.3);
-  border-radius: 15px;
+  border-radius: var(--radius-card);
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
   overflow: hidden;
   transition: all 0.3s ease;
@@ -158,7 +156,7 @@
 }
 
 .project-content {
-  padding: 2rem;
+  padding: 1.5rem;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -166,22 +164,24 @@
 
 .project-title {
   color: rgb(var(--v-theme-text));
-  font-size: 1.6rem;
+  font-size: var(--fs-card-title);
+  margin-top: 0;
   margin-bottom: 1rem;
   padding-right: 60px;
 }
 
 .project-description {
-  font-size: 1.1rem;
+  font-size: var(--fs-body);
   line-height: 1.7;
   color: rgb(var(--v-theme-subtext));
-  margin-bottom: 1.5rem;
+  margin-top: 0;
+  margin-bottom: 1rem;
   flex-grow: 1;
 }
 
 .project-footer {
   border-top: 1px solid rgba(var(--v-theme-border), 0.35);
-  padding-top: 1.5rem;
+  padding-top: 1rem;
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
@@ -221,12 +221,6 @@
   margin-right: 8px;
 }
 
-@media (max-width: 959px) {
-  .portfolio-container {
-    padding: 0;
-  }
-}
-
 @media (max-width: 1200px) {
   .portfolio-grid {
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -250,11 +244,11 @@
   }
 
   .project-content {
-    padding: 1.5rem;
+    padding: 1rem;
   }
 
   .project-title {
-    font-size: 1.5rem;
+    font-size: clamp(1.15rem, 1.05rem + 0.7vw, 1.35rem);
     padding-right: 50px;
   }
 }

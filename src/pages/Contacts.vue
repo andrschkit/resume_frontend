@@ -1,5 +1,5 @@
 <template>
-  <div class="contacts-container">
+  <div class="contacts-container page-container">
     <PageHeader
       subtitle="Телефон, почта и мессенджеры — для HR или сотрудничества"
       title="Связаться со мной"
@@ -158,15 +158,13 @@
 
 <style scoped>
 .contacts-container {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 2rem 1.5rem;
+  width: 100%;
 }
 
 .contacts-card {
   background: rgba(var(--v-theme-surface), 0.5);
   border: 1px solid rgba(var(--v-theme-border), 0.3);
-  border-radius: 15px;
+  border-radius: var(--radius-card);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   padding: 2.5rem;
   transition: transform 0.3s ease;
@@ -213,14 +211,14 @@
 
 .profile-name {
   margin: 0 0 0.5rem;
-  font-size: 1.85rem;
+  font-size: var(--fs-section-title);
   font-weight: 600;
   color: rgb(var(--v-theme-text));
 }
 
 .profile-role {
   margin: 0;
-  font-size: 1rem;
+  font-size: var(--fs-body);
   color: rgb(var(--v-theme-subtext));
 }
 
@@ -278,7 +276,7 @@
 }
 
 .channel-value {
-  font-size: 1.1rem;
+  font-size: var(--fs-body);
   font-weight: 500;
   color: rgb(var(--v-theme-text));
   overflow: hidden;
@@ -308,19 +306,13 @@
   color: #e57373;
 }
 
-@media (max-width: 959px) {
-  .contacts-container {
-    padding: 0;
-  }
-}
-
 @media (max-width: 768px) {
   .contacts-card {
     padding: 1.75rem 1.25rem;
   }
 
   .profile-name {
-    font-size: 1.5rem;
+    font-size: clamp(1.35rem, 1.2rem + 0.95vw, 1.65rem);
   }
 
   .channel-card {
