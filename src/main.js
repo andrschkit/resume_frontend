@@ -1,22 +1,15 @@
-/**
- * main.js
- *
- * Bootstraps Vuetify and other plugins then mounts the App`
- */
-
-// Plugins
 import { registerPlugins } from '@/plugins'
-
-// Components
 import App from './App.vue'
-
-// Composables
+import MdiIcon from '@/components/MdiIcon.vue'
 import { createApp } from 'vue'
 
-// Styles
+import '@mdi/font/css/materialdesignicons.css'
+import '@/styles/theme.css'
 import 'unfonts.css'
 
 const app = createApp(App)
+
+app.component('MdiIcon', MdiIcon)
 
 registerPlugins(app)
 
