@@ -1,16 +1,34 @@
 <template>
   <div class="app-root">
-    <MenuComponent :active-section="activeSection" :menu="menuItems" @scroll-to="scrollTo">
+    <MenuComponent
+      :active-section="activeSection"
+      :is-mobile="isMobile"
+      :menu="menuItems"
+      :mobile-groups="mobileNavGroups"
+      @navigate="navigateTo"
+    >
       <template #content>
         <main class="app-main">
-          <section
-            v-for="(item, index) in menuItems"
-            :id="item.route"
-            :key="index"
-            class="page-section"
-          >
-            <component :is="getComponent(item.route)" />
-          </section>
+          <template v-if="!isMobile">
+            <section
+              v-for="item in menuItems"
+              :id="item.route"
+              :key="item.route"
+              class="page-section"
+            >
+              <component :is="getComponent(item.route)" />
+            </section>
+          </template>
+
+          <transition v-else name="section-switch" mode="out-in">
+            <section
+              :id="activeSection"
+              :key="activeSection"
+              class="page-section page-section--solo"
+            >
+              <component :is="getComponent(activeSection)" />
+            </section>
+          </transition>
         </main>
       </template>
     </MenuComponent>
@@ -18,7 +36,7 @@
 </template>
 
 <script setup>
-import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
 import About from '@/pages/About.vue'
 import Education from '@/pages/Education.vue'
@@ -29,32 +47,22 @@ import Contacts from '@/pages/Contacts.vue'
 import Tools from '@/pages/Tools.vue'
 
 import MenuComponent from '@/components/MenuComponent.vue'
+import { useMobileLayout } from '@/composables/useMobileLayout'
+import {
+  DEFAULT_SECTION,
+  MENU_ITEMS,
+  MOBILE_NAV_GROUPS,
+  resolveSectionId,
+  sectionUrl,
+} from '@/config/navigation'
 
-import addressCard from '@/assets/address-card.svg'
-import educationIcon from '@/assets/graduation-hat-alt.svg'
-import careerIcon from '@/assets/career.svg'
-import portfolioIcon from '@/assets/folder-user.svg'
-import skillsIcon from '@/assets/skills.svg'
-import contactsIcon from '@/assets/pen.svg'
-import toolsIcon from '@/assets/tools.svg'
+const { isMobile } = useMobileLayout()
 
-const BASE_PATH = '/resume'
-const DEFAULT_SECTION = 'about'
+const menuItems = MENU_ITEMS
+const mobileNavGroups = MOBILE_NAV_GROUPS
 const activeSection = ref('')
 const scrollTimeout = ref(null)
 const isProgrammaticScroll = ref(false)
-
-const sectionUrl = (id) => `${BASE_PATH}#${id}`
-
-const menuItems = ref([
-  { route: 'about', title: 'Обо мне', icon: addressCard },
-  { route: 'education', title: 'Образование', icon: educationIcon },
-  { route: 'career', title: 'Карьера', icon: careerIcon },
-  { route: 'portfolio', title: 'Портфолио', icon: portfolioIcon },
-  { route: 'skills', title: 'Навыки', icon: skillsIcon },
-  { route: 'contacts', title: 'Контакты', icon: contactsIcon },
-  { route: 'tools', title: 'Инструменты', icon: toolsIcon },
-])
 
 const getComponent = (routeName) => {
   switch (routeName) {
@@ -78,9 +86,11 @@ const getComponent = (routeName) => {
 }
 
 const updateActiveSection = () => {
+  if (isMobile.value) return
+
   clearTimeout(scrollTimeout.value)
   scrollTimeout.value = setTimeout(() => {
-    const sections = menuItems.value.map((item) => document.getElementById(item.route))
+    const sections = menuItems.map((item) => document.getElementById(item.route))
     const scrollPosition = window.scrollY + 600
 
     for (const section of sections) {
@@ -112,37 +122,85 @@ const scrollToElement = (id, behavior = 'smooth') => {
   window.scrollTo({ top: y, behavior })
 }
 
-const scrollTo = (id) => {
+const navigateTo = (id, { replace = false } = {}) => {
+  const sectionId = resolveSectionId(id)
+
   isProgrammaticScroll.value = true
-  history.pushState(null, '', sectionUrl(id))
-  activeSection.value = id
-  scrollToElement(id)
+  activeSection.value = sectionId
+
+  const url = sectionUrl(sectionId)
+  if (replace) {
+    history.replaceState(null, '', url)
+  } else {
+    history.pushState(null, '', url)
+  }
+
+  if (isMobile.value) {
+    window.scrollTo({ top: 0, behavior: 'instant' })
+    setTimeout(() => {
+      isProgrammaticScroll.value = false
+    }, 50)
+    return
+  }
+
+  scrollToElement(sectionId)
   setTimeout(() => {
     isProgrammaticScroll.value = false
   }, 800)
 }
 
 const onPopState = () => {
-  const id = location.hash.slice(1) || DEFAULT_SECTION
+  const id = resolveSectionId(location.hash.slice(1))
 
   isProgrammaticScroll.value = true
   activeSection.value = id
-  scrollToElement(id, 'auto')
+
+  if (isMobile.value) {
+    window.scrollTo({ top: 0, behavior: 'instant' })
+  } else {
+    scrollToElement(id, 'auto')
+  }
+
   setTimeout(() => {
     isProgrammaticScroll.value = false
   }, 50)
 }
 
+const syncScrollListener = () => {
+  window.removeEventListener('scroll', updateActiveSection)
+
+  if (!isMobile.value) {
+    window.addEventListener('scroll', updateActiveSection)
+    updateActiveSection()
+  }
+}
+
+watch(isMobile, async (mobile, wasMobile) => {
+  if (mobile === wasMobile) return
+
+  if (mobile) {
+    window.scrollTo({ top: 0, behavior: 'instant' })
+  } else {
+    await nextTick()
+    scrollToElement(activeSection.value, 'auto')
+  }
+
+  syncScrollListener()
+})
+
 onMounted(() => {
-  const initialId = location.hash.slice(1) || DEFAULT_SECTION
+  const initialId = resolveSectionId(location.hash.slice(1))
   activeSection.value = initialId
   history.replaceState(null, '', sectionUrl(initialId))
 
-  requestAnimationFrame(() => scrollToElement(initialId, 'auto'))
+  if (isMobile.value) {
+    window.scrollTo({ top: 0, behavior: 'instant' })
+  } else {
+    requestAnimationFrame(() => scrollToElement(initialId, 'auto'))
+  }
 
   window.addEventListener('popstate', onPopState)
-  window.addEventListener('scroll', updateActiveSection)
-  updateActiveSection()
+  syncScrollListener()
 })
 
 onBeforeUnmount(() => {
@@ -164,6 +222,21 @@ onBeforeUnmount(() => {
 .page-section {
   padding: 24px;
   border-bottom: 1px solid rgba(var(--v-theme-border), 0.4);
+}
+
+.page-section--solo {
+  border-bottom: none;
+  min-height: calc(100vh - var(--mobile-chrome-offset, 0px));
+}
+
+.section-switch-enter-active,
+.section-switch-leave-active {
+  transition: opacity 0.12s ease;
+}
+
+.section-switch-enter-from,
+.section-switch-leave-to {
+  opacity: 0;
 }
 
 @media (max-width: 959px) {

@@ -88,7 +88,7 @@ export default {
             { label: 'Официальный сайт', href: 'https://swagger.io/' },
             {
               label: 'Моя документация',
-              href: 'http://localhost:8080/swagger-ui/index.html',
+              href: 'https://portfolio.shcherb.ru/api/swagger-ui/index.html',
               icon: 'mdi-link-variant',
               isAccent: true,
             },

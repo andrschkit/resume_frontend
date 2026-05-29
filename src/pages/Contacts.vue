@@ -12,7 +12,7 @@
             v-if="showPhoto"
             :alt="fullName"
             class="avatar"
-            :src="user.photo_url"
+            src="@/assets/avatar.jpg"
             @error="showPhoto = false"
           />
           <div v-else class="avatar-placeholder">
