@@ -6,7 +6,7 @@
       :class="{ collapsed: rail }"
       :style="{ width: `${currentWidth}px` }"
     >
-      <div class="user-data" :style="rail ? 'height:10vh' : 'height:21vh'">
+      <div class="user-data" :class="{ 'user-data--rail': rail }">
         <div class="avatar" :class="{ 'avatar--small': rail }">
           <img alt="Avatar" src="@/assets/avatar.jpg" />
         </div>
@@ -232,6 +232,33 @@ onMounted(() => {
 }
 
 .side-nav {
+  --user-block-height: 22vh;
+  --user-block-height-rail: 10vh;
+  --user-data-min-height: 200px;
+  --user-data-min-height-rail: 100px;
+  --user-data-padding-top: 20px;
+  --avatar-size: 130px;
+  --avatar-size-rail: 70px;
+  --avatar-border: 5px;
+  --avatar-margin-bottom: 15px;
+  --username-size: 1.4rem;
+  --user-role-size: 0.8rem;
+  --menu-item-min-height: 50px;
+  --menu-item-margin: 8px;
+  --menu-item-padding-x: 16px;
+  --menu-item-gap: 12px;
+  --menu-icon-size: 26px;
+  --menu-title-size: 1.1rem;
+  --divider-margin-y: 15px;
+  --mode-toggle-bottom: 12vh;
+  --menu-list-padding-bottom: calc(var(--mode-toggle-bottom) + var(--toggle-btn-size) + 12px);
+  --toggle-btn-size: 40px;
+  --toggle-btn-offset: 20px;
+  --theme-track-width: 44px;
+  --theme-track-height: 24px;
+  --theme-thumb-size: 20px;
+  --mode-icon-size: 28px;
+
   position: fixed;
   left: 0;
   top: 0;
@@ -239,6 +266,7 @@ onMounted(() => {
   z-index: 100;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
   transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border-right: 1px solid rgba(var(--v-theme-border), 0.3);
   background: rgba(var(--v-theme-background), 0.95);
@@ -292,25 +320,37 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 20px;
+  flex-shrink: 0;
+  padding-top: var(--user-data-padding-top);
+  height: var(--user-block-height);
+  min-height: var(--user-data-min-height);
   transition: all 0.3s ease;
   overflow: hidden;
 }
 
+.user-data--rail {
+  height: var(--user-block-height-rail);
+  min-height: var(--user-data-min-height-rail);
+}
+
 .avatar {
-  width: 120px;
-  height: 120px;
+  width: var(--avatar-size);
+  height: var(--avatar-size);
+  min-width: var(--avatar-size);
+  min-height: var(--avatar-size);
   border-radius: 50%;
   overflow: hidden;
   transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-  margin-bottom: 15px;
-  border: 5px solid rgba(var(--v-theme-primary), 0.1);
+  margin-bottom: var(--avatar-margin-bottom);
+  border: var(--avatar-border) solid rgba(var(--v-theme-primary), 0.1);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .avatar--small {
-  width: 70px;
-  height: 70px;
+  width: var(--avatar-size-rail);
+  height: var(--avatar-size-rail);
+  min-width: var(--avatar-size-rail);
+  min-height: var(--avatar-size-rail);
 }
 
 .avatar:hover {
@@ -330,7 +370,7 @@ onMounted(() => {
 
 .username {
   white-space: nowrap;
-  font-size: 1.4rem;
+  font-size: var(--username-size);
   font-weight: 600;
   color: rgba(var(--v-theme-on-background), 0.9);
   margin: 0;
@@ -338,7 +378,7 @@ onMounted(() => {
 
 .user-role {
   margin: 0.35rem 0 0;
-  font-size: 0.8rem;
+  font-size: var(--user-role-size);
   font-weight: 400;
   line-height: 1.3;
   color: rgba(var(--v-theme-on-background), 0.65);
@@ -346,7 +386,8 @@ onMounted(() => {
 }
 
 .divider {
-  margin: 15px 16px;
+  flex-shrink: 0;
+  margin: var(--divider-margin-y) 16px;
   border: none;
   border-top: 1px solid rgba(var(--v-theme-border), 0.3);
 }
@@ -355,9 +396,12 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  padding: 5px 12px;
+  padding: 5px 12px var(--menu-list-padding-bottom);
   flex: 1;
-  overflow: hidden;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: thin;
 }
 
 .menu-item {
@@ -365,13 +409,13 @@ onMounted(() => {
   border: none;
   background: transparent;
   border-radius: 12px;
-  margin: 8px 0;
+  margin: var(--menu-item-margin) 0;
   transition: all 0.3s ease;
-  min-height: 50px;
+  min-height: var(--menu-item-min-height);
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 0 16px;
+  gap: var(--menu-item-gap);
+  padding: 0 var(--menu-item-padding-x);
   cursor: pointer;
   text-align: left;
   font: inherit;
@@ -388,8 +432,8 @@ onMounted(() => {
 }
 
 .menu-icon {
-  width: 26px;
-  height: 26px;
+  width: var(--menu-icon-size);
+  height: var(--menu-icon-size);
   transition: all 0.3s ease;
 }
 
@@ -403,7 +447,7 @@ onMounted(() => {
 
 .menu-title {
   white-space: nowrap;
-  font-size: 1.1rem;
+  font-size: var(--menu-title-size);
   font-weight: 500;
   color: rgba(var(--v-theme-on-background), 0.8);
 }
@@ -419,8 +463,8 @@ onMounted(() => {
 
 .toggle-button {
   position: absolute;
-  bottom: 20px;
-  right: 20px;
+  bottom: var(--toggle-btn-offset);
+  right: var(--toggle-btn-offset);
   cursor: pointer;
   padding: 10px;
   border: none;
@@ -430,8 +474,8 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: var(--toggle-btn-size);
+  height: var(--toggle-btn-size);
   color: rgb(var(--v-theme-primary));
 }
 
@@ -457,7 +501,7 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   position: absolute;
-  bottom: 12vh;
+  bottom: var(--mode-toggle-bottom);
   padding: 8px;
   gap: 12px;
 }
@@ -480,9 +524,9 @@ onMounted(() => {
 
 .theme-toggle-track {
   display: block;
-  width: 44px;
-  height: 24px;
-  border-radius: 12px;
+  width: var(--theme-track-width);
+  height: var(--theme-track-height);
+  border-radius: calc(var(--theme-track-height) / 2);
   background: rgba(var(--v-theme-border), 0.5);
   position: relative;
   transition: background 0.2s ease;
@@ -496,8 +540,8 @@ onMounted(() => {
   position: absolute;
   top: 2px;
   left: 2px;
-  width: 20px;
-  height: 20px;
+  width: var(--theme-thumb-size);
+  height: var(--theme-thumb-size);
   border-radius: 50%;
   background: #fff;
   transition: transform 0.2s ease;
@@ -505,11 +549,11 @@ onMounted(() => {
 }
 
 .theme-toggle-track--on .theme-toggle-thumb {
-  transform: translateX(20px);
+  transform: translateX(calc(var(--theme-track-width) - var(--theme-thumb-size) - 4px));
 }
 
 .mode-icon {
-  font-size: 28px;
+  font-size: var(--mode-icon-size);
   color: rgba(var(--v-theme-on-background), 0.85);
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
   transition: transform 0.3s ease;
@@ -663,6 +707,84 @@ onMounted(() => {
 
 .mobile-bottom-nav-item--active .mobile-bottom-nav-icon {
   opacity: 1;
+}
+
+@media (max-height: 940px) {
+  .side-nav {
+    --user-block-height: 22vh;
+    --user-block-height-rail: 9vh;
+    --user-data-min-height: 170px;
+    --user-data-min-height-rail: 88px;
+    --user-data-padding-top: 14px;
+    --avatar-size: 110px;
+    --avatar-size-rail: 62px;
+    --avatar-border: 4px;
+    --avatar-margin-bottom: 10px;
+    --username-size: 1.25rem;
+    --user-role-size: 0.75rem;
+    --menu-item-min-height: 44px;
+    --menu-item-margin: 6px;
+    --menu-icon-size: 24px;
+    --menu-title-size: 1rem;
+    --divider-margin-y: 10px;
+    --mode-toggle-bottom: 80px;
+    --menu-list-padding-bottom: 128px;
+  }
+}
+
+@media (max-height: 800px) {
+  .side-nav {
+    --user-block-height: 21vh;
+    --user-block-height-rail: 8vh;
+    --user-data-min-height: 140px;
+    --user-data-min-height-rail: 72px;
+    --user-data-padding-top: 10px;
+    --avatar-size: 88px;
+    --avatar-size-rail: 52px;
+    --avatar-border: 3px;
+    --avatar-margin-bottom: 8px;
+    --username-size: 1.1rem;
+    --user-role-size: 0.7rem;
+    --menu-item-min-height: 38px;
+    --menu-item-margin: 4px;
+    --menu-item-padding-x: 12px;
+    --menu-item-gap: 10px;
+    --menu-icon-size: 22px;
+    --menu-title-size: 0.95rem;
+    --divider-margin-y: 8px;
+    --mode-toggle-bottom: 68px;
+    --toggle-btn-size: 36px;
+    --toggle-btn-offset: 14px;
+    --theme-track-width: 40px;
+    --theme-track-height: 22px;
+    --theme-thumb-size: 18px;
+    --mode-icon-size: 24px;
+    --menu-list-padding-bottom: 112px;
+  }
+}
+
+@media (max-height: 700px) {
+  .side-nav {
+    --user-block-height: 21vh;
+    --user-block-height-rail: 7vh;
+    --user-data-min-height: 115px;
+    --user-data-min-height-rail: 60px;
+    --user-data-padding-top: 8px;
+    --avatar-size: 72px;
+    --avatar-size-rail: 44px;
+    --avatar-margin-bottom: 6px;
+    --username-size: 1rem;
+    --user-role-size: 0.65rem;
+    --menu-item-min-height: 34px;
+    --menu-item-margin: 3px;
+    --menu-icon-size: 20px;
+    --menu-title-size: 0.875rem;
+    --divider-margin-y: 6px;
+    --mode-toggle-bottom: 60px;
+    --toggle-btn-size: 32px;
+    --mode-icon-size: 22px;
+    --menu-list-padding-bottom: 100px;
+  }
 }
 
 @media (max-width: 960px) {
